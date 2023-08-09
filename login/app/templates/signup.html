@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}SignUp{% endblock  %}
+
+ 
+
+ {% block body  %}
+    <div class="wrapper">
+        <div class="logo">
+            <img src="{% static 'images/ict.png' %}" alt=""> 
+        </div>
+        <form method="post" >
+            {% csrf_token %}
+            <div class="text-center  name">SignUp</div>
+            <div class="p-10 m-10">
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="text" placeholder="Username" name="username" id="username">
+            </div>
+
+            <div class="form-field d-flex align-items-center">
+                <span class="far fa-user"></span>
+                <input type="email" placeholder="Email or Phone" name="email" id="email">
+            </div>
+
+            <div class="form-field d-flex align-items-center">
+                <span class="fas fa-key"></span>
+                <input type="password" placeholder="Password" id="password1" name="password1">
+            </div>
+
+            <div class="form-field d-flex align-items-center">
+                <span class="fas fa-key"></span>
+                <input type="password" placeholder="Confirm Password" id="password2" name="password2">
+            </div>
+
+            <button class="btn mt-3">SIGNUP</button>
+        </div>
+        </form>
+        <div class="text-center fs-6">
+            <a href="{% url 'login' %}" >i have already have account</a>
+        </div>
+    </div>
+        <!-- <input type="button" value=""> -->
+        <!-- <div class="social">
+          <div class="go"><i class="fab fa-google"></i>  Google</div>
+          <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
+        </div> -->
+    </form>
+{% endblock %}
