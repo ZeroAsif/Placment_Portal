@@ -29,13 +29,21 @@ def LoginPage(request):
         print(username)
         pass1=request.POST.get('password')
         user=authenticate(request,username=username,password=pass1)
-        if user is not None:
+        if user is not None and user.is_staff == False:
             login(request,user)
             return redirect('home')
+        
+        elif user is not None and user.is_staff == True:
+            login(request, user)
+            return redirect('admins')
+        
         else:
             return HttpResponse ("Username or Password is incorrect!!!")
 
     return render (request,'login.html')
+
+def AdminPage(request):
+    return render(request,"admin.html")
 
 def LogoutPage(request):
     logout(request)
