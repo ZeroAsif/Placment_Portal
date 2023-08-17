@@ -1,0 +1,293 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> {% block title %}{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <!--    User  Profile Card css -->
+    <style>
+          .card-container{
+width: 250px;
+height: 350px;
+background: #FFF;
+border-radius: 6px;
+position: absolute;
+top: 35%;
+left: 10%;
+transform: translate(-50%,-50%);
+box-shadow: 0px 1px 5px 1px #000;
+overflow: hidden;
+display: inline-block;
+}
+.upper-container{
+height: 100px;
+background: #7F00FF;
+}
+.image-container{
+background: white;
+width: 80px;
+height: 80px;
+border-radius: 50%;
+position:absolute;
+left: 35%;
+top:8%;
+<!--transform: translate(100px,100px);-->
+}
+.image-container img{
+width: 80px;
+height: 80px;
+border-radius: 50%;
+}
+.lower-container{
+height: 280px;
+background: #FFF;
+padding: 10px;
+padding-top: 21px;
+text-align: center;
+}
+.lower-container h3, h4{
+box-sizing: border-box;
+line-height: .9;
+font-weight: lighter;
+}
+.lower-container h4{
+color: #7F00FF;
+opacity: .6;
+font-weight: bold;
+}
+.lower-container p{
+font-size: 16px;
+color: gray;
+margin-bottom: 30px;
+}
+.lower-container .btn{
+padding: 12px 20px;
+width:100%;
+background: #7F00FF;
+border: none;
+color: white;
+border-radius: 30px;
+font-size: 12px;
+text-decoration: none;
+font-weight: bold;
+transition: all .3s ease-in;
+}
+.lower-container .btn:hover{
+background: transparent;
+color: #7F00FF;
+border: 2px solid #7F00FF;
+}
+
+    </style>
+
+    <style>
+/* Navbar css */
+.gradient-custom {
+  /* fallback for old browsers */
+  background: #6a11cb;
+
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
+
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
+}
+
+    </style>
+    <!--      search bar css-->
+    <style>
+          input[type=search]{
+          width :400px;
+          }
+
+    </style>
+
+    <!--      Form css-->
+    <style>
+
+  .containers {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    width: 1000px;
+    margin: auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .form-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    outline: none;
+  }
+
+  .form-group input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    border: none;
+  }
+  .btns{
+  position:relative;
+  top:34px;
+  width:80px;
+  height:40px;
+  background-color:#7F00FF;
+  border-radius:10px;
+  color:white;
+  }
+
+    </style>
+
+    <!--      section style-->
+    <style>
+                .edit {
+            position: absolute;
+            top: 100px;
+            right: 300px;
+        }
+               .edit1 {
+            position: absolute;
+            top: 370px;
+            right: 300px;
+        }
+                .edit2 {
+            position: absolute;
+            top: 640px;
+            right: 300px;
+        }
+                 .edit3 {
+            position: absolute;
+            top: 911px;
+            right: 300px;
+        }
+                  .edit4 {
+            position: absolute;
+            top: 1182px;
+            right: 300px;
+        }
+                  .edit5 {
+            position: absolute;
+            top: 1455px;
+            right: 300px;
+        }
+
+                   .edit6 {
+            position: absolute;
+            top: 1730px;
+            right: 300px;
+        }
+    </style>
+
+
+    <!--      Resume File Upload Section Css-->
+    <style>
+.drop_box {
+  margin: 10px 0;
+  padding: 30px;
+  display: flex;
+  width:100%;
+  height:100px;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 3px dotted #a3a3a3;
+  border-radius: 5px;
+  margin-top:120px;
+}
+
+    </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar  sticky-top navbar-expand-lg navbar-dark bg-light gradient-custom">
+    <!-- Container wrapper -->
+    <div class="container-fluid">
+        <!-- Toggle button -->
+        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Navbar brand -->
+            <a class="navbar-brand navbar-nav mt-2 mt-lg-0" href="#">
+                <h4 class="pt-1 mb-1">ICT</h4>
+            </a>
+            <!-- Left links -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Projects</a>
+                </li>
+            </ul>
+            <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
+
+        <!-- Right elements -->
+        <div class="d-flex align-items-center">
+            <!-- Avatar -->
+            <div class="dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+                   id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{% static 'images/ict.png' %}" class="rounded-circle" height="25" alt="PROFILE"/>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                    <li>
+                        <a class="dropdown-item" href="{% url 'viewprofile' %}">My profile</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="#">Settings</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Right elements -->
+    </div>
+    <!-- Container wrapper -->
+</nav>
+<!-- Navbar -->
+{% block body %}
+{% endblock body %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+</body>
+</html>

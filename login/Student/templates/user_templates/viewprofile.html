@@ -1,0 +1,496 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}ViewProfile{% endblock  %}
+
+{% block body %}
+
+<!-- Personal Information Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color:white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <div class="user-detail" style="position:relative;top:40px;">
+        <img src="{% static 'images/ict.png'%}" width="100px">
+    </div>
+    <h4><strong>Personal Information</strong></h4>
+    <div class="edit">
+        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
+                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#personalModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Resume Upload Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <div class="drop_box">
+        <div style="position:relative;left:5%;top:5%;">
+            <label for="formFileLg" class="form-label"><strong>Upload Resume</strong></label>
+            <input class="form-control" accept=".png,.doc,.docx" id="formFileLg" type="file">
+        </div>
+    </div>
+</div>
+
+
+<!-- Experience Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <h2>Experience</h2>
+    <div class="edit2">
+        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
+                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#experienceModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Certification Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <h2>Certification</h2>
+    <div class="edit3">
+        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
+                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#certificationModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Education Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <h2>Education</h2>
+    <div class="edit4">
+        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
+                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#educationModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Project Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <h2>Project</h2>
+    <div class="edit5">
+        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
+                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#projectModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<!-- Additional skill Section Button -->
+<div class="container my-4"
+     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
+    <h2>Additional Skills</h2>
+    <div class="edit6">
+        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
+                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#additionalModal">
+            <i class="fa fa-plus"></i>
+        </button>
+    </div>
+</div>
+
+
+<!--              Modal Section               -->
+
+
+<!-- Personal Form Modal -->
+<div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="personalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Personal Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example1">First name</label>
+                                <input type="text" id="form6Example1" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example2">Middle name</label>
+                                <input type="text" id="form6Example2" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example3">Last name</label>
+                                <input type="text" id="form6Example3" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example4">Email</label>
+                                <input type="email" id="form6Example4" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example4">Phone</label>
+                                <input type="text" id="form6Example5" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-outline">
+                                <label class="form-label" for="form6Example4">Date of birth</label>
+                                <input type="date" id="form6Example6" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="inputZip" class="form-label">Zip</label>
+                            <input type="text" class="form-control" id="inputZip">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFile" class="form-label">Default file input example</label>
+                        <input class="form-control" type="file" id="formFile">
+                    </div>
+                    <div class="col-12">
+                        <label for="inputAddress2" class="form-label">Address</label>
+                        <input type="text" class="form-control" id="inputAddress2"
+                               placeholder="Apartment, studio, or floor">
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Objective</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Experience Form Modal -->
+<div class="modal fade" id="experienceModal" tabindex="-1" aria-labelledby="experienceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="experienceModalLabel">Experience</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <select id="employmentType" class="form-select" aria-label="Default select example">
+                                <option selected>Employment type</option>
+                                <option value="1">Full-time</option>
+                                <option value="2">Internship</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Company name</label>
+                                <input type="text" id="company_name" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Monthly salary</label>
+                                <input type="number" id="salary" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">location</label>
+                                <input type="text" id="location" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="workingfrom">Working from</label>
+                                <input type="date" id="workingfrom" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="workingtill">Working till</label>
+                                <input type="date" id="workingtill" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col" id="designationField">
+                        <div class="form-outline">
+                            <label class="form-label" for="designation">Designation</label>
+                            <input type="text" id="designation" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Role & Responsibility</label>
+                        <textarea class="form-control" id="rr" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Certification Form Modal -->
+<div class="modal fade" id="certificationModal" tabindex="-1" aria-labelledby="certificationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="certificationModalLabel">Certifications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Certification name</label>
+                                <input type="text" id="certification_name" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">issue-organization</label>
+                                <input type="text" id="issue-organization" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Issue Date</label>
+                                <input type="date" id="i_d" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">certification link</label>
+                                <input type="url" id="c_l" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" id="desc" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Education From Modal  -->
+<div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="educationModalLabel">Education</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Institution name</label>
+                                <input type="text" id="i_name" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Field of study</label>
+                                <input type="text" id="fos" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start date</label>
+                                <input type="date" id="sd" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End date</label>
+                                <input type="date" id="ed" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label class="form-label" for="">Department</label>
+                            <select id="department" class="form-select" aria-label="Default select example">
+                                <option selected>Department</option>
+                                <option value="1">coming soon</option>
+                                <option value="2">coming soon</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">CGPA</label>
+                                <input type="number" id="cgpa" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" id="des" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Project Form Modal -->
+<div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="projectModalLabel">Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Project Title</label>
+                                <input type="text" id="title" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Advisor name</label>
+                                <input type="text" id="a_name" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start date</label>
+                                <input type="date" id="std" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End date</label>
+                                <input type="date" id="ede" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label class="form-label" for="">Technologies used</label>
+                            <input type="text" id="tu" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" id="descr" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Additional Form Modal -->
+<div class="modal fade" id="additionalModal" tabindex="-1" aria-labelledby="additionalModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="additionalModalLabel">Additional Skills</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Interest Job</label>
+                                <input type="text" id="ij" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Language</label>
+                                <input type="text" id="lan" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Skill name</label>
+                                <input type="text" id="s_name" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const employmentTypeSelect = document.getElementById('employmentType');
+    const designationField = document.getElementById('designationField');
+
+    employmentTypeSelect.addEventListener('change', () => {
+        if (employmentTypeSelect.value === '2') { // If "Internship" is selected
+            designationField.style.display = 'none'; // Hide the designation field
+        } else {
+            designationField.style.display = 'block'; // Show the designation field
+        }
+    });
+
+</script>
+{% endblock %}
