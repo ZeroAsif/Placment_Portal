@@ -1,78 +1,251 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,400i,500');
+ /* ... Previous CSS ... */
+ body, h1, h2, p, ul, li {
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  overflow-x: hidden;
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
+  font-family: Arial, sans-serif;
 }
 
-
-/* Toggle Styles */
-
-#viewport {
-  padding-left: 250px;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
-  
-
-}
-
-#content {
-  width: 100%;
-  position: relative;
-  margin-right: 0;
-}
-
-/* Sidebar Styles */
-
-#sidebar {
-  z-index: 1000;
+/* Sidebar styles */
+.sidebar {
   position: fixed;
-  left: 250px;
+  left: 0;
+  top: 0;
   width: 250px;
   height: 100%;
-  margin-left: -250px;
+  background-color: #333;
+  color: #fff;
+  padding-top: 2rem;
   overflow-y: auto;
-  background: #6a11cb;
-  -webkit-transition: all 0.5s ease;
-  -moz-transition: all 0.5s ease;
-  -o-transition: all 0.5s ease;
-  transition: all 0.5s ease;
+  z-index: 1;
 }
 
-#sidebar header {
- 
-  font-size: 20px;
-  line-height: 52px;
+.sidebar ul {
+  list-style: none;
+}
+
+.sidebar li {
+  margin-bottom: 1rem;
+}
+
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 1rem 2rem;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.sidebar a:hover {
+  background-color: #444;
+}
+
+/* Main content styles */
+
+  .content {
+  position: relative;
+  margin-left: 250px;
+  padding: 2rem;
+  z-index: 2; /* Adjusted z-index */
+}
+
+
+/* Content sections */
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+/* Footer styles */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #444;
+  color: #fff;
+  padding: 1rem;
   text-align: center;
 }
 
-#sidebar header a {
+/* previous css end here */
+
+/* Cards styles */
+.card-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.card {
+  flex: 1;
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card.blue {
+  background-color: #2196F3;
   color: #fff;
+}
+
+.card.green {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.card.orange {
+  background-color: #FF9800;
+  color: #fff;
+}
+
+.card.red {
+  background-color: #F44336;
+  color: #fff;
+}
+
+/* Table styles */
+.table {
+  margin-top: 2rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background-color: #f2f2f2;
+}
+
+/* job posting css here */
+.modal {
+  display: none;
+  position:fixed;
+  z-index: 1000;
+  left: 30rem;
+  top: 0;
+  width: 50%;
+  height: 80%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000
+}
+
+.modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 3rem;
+  box-shadow: 0px 2px 6px rgba(242, 240, 240, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+}
+
+.close-modal {
+  cursor: pointer;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
   display: block;
-  text-decoration: none;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
-#sidebar header a:hover {
+.form-input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-button {
+  background-color: #00bcd4;
   color: #fff;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-
-#sidebar .nav a{
-  background: none;
-  border-bottom: 1px solid #455A64;
-  color: #CFD8DC;
-  font-size: 14px;
-  padding: 16px 24px;
+.hamburger {
+  display: none;
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  cursor: pointer;
+  z-index: 2;
 }
 
-#sidebar .nav a:hover{
-  background: none;
-  color: #ECEFF1;
+.hamburger span {
+  display: block;
+  width: 30px;
+  height: 4px;
+  background-color: #333;
+  margin: 5px 0;
 }
 
-#sidebar .nav a i{
-  margin-right: 16px;
+/* Responsive layout */
+@media (max-width: 768px) {
+  .hamburger {
+    display: block;
+  }
+
+  .sidebar {
+    width: 0;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #333;
+    overflow-x: hidden;
+    transition: 0.3s;
+  }
+
+  .sidebar.active {
+    width: 250px;
+  }
+
+  .sidebar ul {
+    padding: 1rem;
+  }
+
+  .content {
+    margin: 2rem 0;
+    padding: 1rem;
+    z-index: 0;
+  }
+
+  .card-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
 }

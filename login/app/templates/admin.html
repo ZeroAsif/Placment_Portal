@@ -1,188 +1,181 @@
-<!doctype html>
+<!DOCTYPE html>
 {% load static %}
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
 
-    <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
-        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-    <link rel="stylesheet" href="{% static 'css/admin.css' %}"> 
+    <title>Admin Interface</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <script src="{% static 'js/admin.js' %}" defer></script>
 
-    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
-    <![endif]-->
+    <style>
+
+
+    </style>
 </head>
 
 <body>
+    <div class="sidebar" id="sidebar">
+        <!-- ... Sidebar Links ... -->
+        <ul>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#job-posting">Job Posting</a></li>
+            <li><a href="#job-listing">Job Listing</a></li>
+            <li><a href="#users">Users</a></li>
+            <li><a href="#analytics">Analytics</a></li>
+            <li><a href="#settings">Settings</a></li>
+        </ul>
 
-    <div id="viewport">
-        <!-- Sidebar -->
-        <div id="sidebar">
-            <header>
-                <a href="#"> <img src="{% static 'images/ict.png' %}" class="rounded-circle" height="40"
-                        loading="lazy" /></a>
-            </header>
-            <ul class="nav">
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-view-dashboard"></i> Dashboard
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-link"></i> All Jobs
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-widgets"></i> Overview
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-calendar"></i> Events
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-info-outline"></i> About
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-settings"></i> Services
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-comment-more"></i> Contact
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="zmdi zmdi-comment-more"></i> Logout
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <!-- Content -->
-        <div id="content">
-            <nav class="navbar navbar-default">
-                <div class="container-fluid">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <a href="#"><i class="zmdi zmdi-notifications text-danger"></i>
-                            </a>
-                        </li>
-                        <li>
-                              <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-primary " data-toggle="modal"
-                                data-target="#exampleModal">
-                                Add
-                            </button>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-            <div class="container-fluid text-center ">
-                <h1>Placement Portal</h1>
-                <p>
-                    Make sure to keep all page content within the
-                    <code>#content</code>.
-                </p>
-            </div>
-        </div>
+    </div>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
     </div>
 
-  
+    <div class="content">
+        <div id="dashboard" class="section active">
+
+            <h2>Dashboard</h2>
+            <p>Welcome to the Admin Dashboard section.</p>
 
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Company's</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <!-- Name input -->
-                        <div class="form-outline mb-4">
-                            <label class="form-label" for="form4Example1">Company Name</label>
-                          <input type="text" id="form4Example1" class="form-control" />
-                        </div>
-                      
-                        <!-- Email input -->
-                        <div class="form-outline mb-4">
-                            <label class="form-label" for="form4Example2">Job Title</label>
-                          <input type="email" id="form4Example2" class="form-control" />
-                        </div>
-                        
-                        <div class="form-outline mb-4">
-                            <label class="form-label" for="form4Example2">Location</label>
-                          <input type="text" id="form4Example2" class="form-control" />
+              <!-- Modal -->
+           
+              <div class="modal" id="addJobModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Add New Job</h3>
+                        <span class="close-modal" id="closeModal">&times;</span>
+                    </div>
+
+                    <form method="POST" action="{% url 'addjob' %}"> {% csrf_token %}
+                        <div class="form-group">
+                            <label for="jobTitle" class="form-label">Job Title</label>
+                            <input type="text" id="jobTitle" name="j_title" class="form-input" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="jobCategory" class="form-label">Company Name</label>
+                            <input type="text" id="jobCategory"  name="c_name" class="form-input" required>
+                        </div>
 
-                      
-                        <!-- Message input -->
-                        <div class="form-outline mb-4">
-                            <label class="form-label" for="form4Example3">Job Description</label>
-                          <textarea class="form-control" id="form4Example3" rows="4"></textarea>
+                        <div class="form-group">
+                            <label for="jobLocation" class="form-label">Job Location</label>
+                            <input type="text" id="jobLocation" name="j_location" class="form-input" required>
                         </div>
-                      
-                        <!-- Checkbox -->
-                        <div class="form-check d-flex justify-content-center mb-4">
-                          <input class="form-check-input me-2" type="checkbox" value="" id="form4Example4" checked />
-                          <label class="form-check-label" for="form4Example4">
-                            this company currently hiring
-                          </label>
+
+                        <div class="form-group">
+                            <label for="jobDescription" class="form-label">Job Description</label>
+                            <textarea id="jobDescription"  name="j_description" class="form-input" rows="4" required></textarea>
                         </div>
-                      
-                        <!-- Submit button -->
-                        <button type="submit" class="btn btn-primary btn-block mb-4">Submit</button>
-                      </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+
+                        <div class="form-group">
+                            <label for="jobDescription" class="form-label">Requirments</label>
+                            <textarea id="jobDescription"  name="requirments" class="form-input" rows="4" required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="jobDescription" class="form-label">Application deadline</label>
+                            <input type="datetime-local" name="a_deadline">
+                        </div>
+
+                         <button type="submit" class="form-button">Submit</button>
+                    </form>
                 </div>
             </div>
+            <!-- modal end  -->
+
+
+            <div class="card-container">
+                <div class="card blue" style="margin: 1rem;">
+                    <h3>Total Jobs</h3>
+                    <p>356</p>
+                </div>
+                <div class="card green" style="margin: 1rem;">
+                    <h3>New Applications</h3>
+                    <p>28</p>
+                </div>
+                <div class="card orange" style="margin: 1rem;">
+                    <h3>Users Online</h3>
+                    <p>124</p>
+                </div>
+                <div class="card red" style="margin: 1rem;">
+                    <h3>Revenue</h3>
+                    <p>$15,240</p>
+                </div>
+            </div>
+            <h2>Job Listings</h2>
+
+            <!-- button -->
+            <button type="button" class="btn btn-info my-2" id="addJobButton"  style="float: right;">Add Jobs</button>
+
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Job Title</th>
+                        <th>Company Name</th>
+                        <th>Job Location</th>
+                        <th>Job Description</th>
+                        <th>Requirments</th>
+                        <th>Application deadline</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Frontend Developer</td>
+                        <td>TCS</td>
+                        <td>Mumbai</td>
+                        <td>UI/UX</td>
+                        <td>JavaScript</td>
+                        <td>2023-08-16</td>
+                        <td><button type="button" class="btn btn-primary ">Edit</button><button type="button"
+                            class="btn btn-danger mx-2">Delete</button></td>
+                       
+                    </tr>
+
+
+                    <!-- Add more table rows here -->
+                </tbody>
+            </table>
+
+        </div>
+
+        <!-- modal -->
+        
+
+        <!-- job postin end here -->
+
+        <div id="job-listing" class="section">
+            <h2>Job Listing</h2>
+            <p>View and manage job listings here.</p>
+        </div>
+        <div id="users" class="section">
+            <h2>Users</h2>
+            <p>Manage user accounts and permissions.</p>
+        </div>
+        <div id="analytics" class="section">
+            <h2>Analytics</h2>
+            <p>View and analyze data and insights.</p>
+        </div>
+        <div id="settings" class="section">
+            <h2>Settings</h2>
+            <p>Configure application settings.</p>
         </div>
     </div>
-
-
-
     </div>
-    </div>
-    </div>
+    <footer>
+        <p>&copy; 2023 Admin Interface. All rights reserved.</p>
+    </footer>
 
+    
 
-
-
-
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://code.jquery.com/jquery-1.12.4.min.js"
-        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ"
-        crossorigin="anonymous"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js"
-        integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
-        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 </body>
 
 </html>

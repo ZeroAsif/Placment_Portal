@@ -1,7 +1,12 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
+from .models import JobPosting
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django. contrib import messages
+
+
+
 # Create your views here.
 @login_required(login_url='login')
 def HomePage(request):
@@ -48,3 +53,31 @@ def AdminPage(request):
 def LogoutPage(request):
     logout(request)
     return redirect('login')
+
+# ADD COMPANY HERE
+
+def Jobposting(request):
+    print('>>>>>>>>>>',"enter")
+    try:
+        if request.method == 'POST':
+            print('****************post')
+            j_title = request.POST.get('j_title','')
+            print('****************',j_title)
+            c_name = request.POST.get('c_name','')
+            print('****************',c_name)
+            location = request.POST.get('j_location','')
+            print('****************',location)
+            description = request.POST.get('j_description','')
+            print('****************',description)
+            requirements = request.POST.get('requirments','')
+            print('****************',requirements)
+            application_deadline = request.POST.get('a_deadline','')
+            print('######',application_deadline)
+            
+            obj = JobPosting(job_title = j_title, company_name = c_name, location = location, description = description, requirements = requirements, application_deadline = application_deadline )
+            obj.save()
+            messages.success(request,"Add Insruments Successfully")
+            return redirect('admins')
+    except:
+        messages.error(request,"Please Fill Correct Information")
+        return redirect('admins')
