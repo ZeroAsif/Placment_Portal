@@ -118,6 +118,14 @@ body {
 </style>
   </head>
   <body>
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{message}}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+{% endif %}
     <div class="wrapper">
         <div class="logo">
             <img src="{% static 'images/ict.jpeg ' %}" alt=""> 
@@ -159,6 +167,7 @@ body {
           <div class="fb"><i class="fab fa-facebook"></i>  Facebook</div>
         </div> -->
     </form>
+
     
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </body>

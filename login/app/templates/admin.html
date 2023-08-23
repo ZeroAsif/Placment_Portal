@@ -124,8 +124,8 @@
                         <th>Job Title</th>
                         <th>Company Name</th>
                         <th>Job Location</th>
-                        <th>Job Description</th>
-                        <th>Requirments</th>
+                        {% comment %} <th>Job Description</th>
+                        <th>Requirments</th> {% endcomment %}
                         <th>salary_range</th>
                         <th>Status</th>
                         <th>Update</th>
@@ -140,11 +140,11 @@
                             <td>{{jp.job_title}}</td>
                             <td>{{jp.company_name}}</td>
                             <td>{{jp.location}}</td>
-                            <td>
+
+                            {% comment %} <td>
                                 <div class="form-outline w-100">
                                     <textarea class="form-control" id="textAreaExample1"
                                         rows="4">{{jp.description}}</textarea>
-
                                 </div>
                             </td>
                             <td>
@@ -153,7 +153,7 @@
                                         rows="4">{{jp.requirements}}</textarea>
 
                                 </div>
-                            </td>
+                            </td> {% endcomment %}
 
                             <td>{{jp.salary_range}}</td>
 
@@ -195,7 +195,7 @@
                                             <input type="text" id="updateJobLocation" name="location" class="form-input"
                                                 value="{{ jp.location }}" required>
                                         </div>
-
+{% comment %} 
                                         <div class="form-group">
                                             <label for="updateJobDescription" class="form-label">Job Description</label>
                                             <textarea id="updateJobDescription" name="description" class="form-input"
@@ -206,7 +206,7 @@
                                             <label for="updateJobRequirements" class="form-label">Requirements</label>
                                             <textarea id="updateJobRequirements" name="requirements" class="form-input"
                                                 rows="4" required>{{ jp.requirements }}</textarea>
-                                        </div>
+                                        </div> {% endcomment %}
 
                                         <div class="form-group">
                                             <label for="updateJobRequirements" class="form-label">Salary Range</label>
