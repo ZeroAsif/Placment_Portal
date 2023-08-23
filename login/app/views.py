@@ -9,21 +9,25 @@ from .models import JobPosting
 
 
 # Create your views here.
-
 def SignupPage(request):
     if request.method == 'POST':
-        uname=request.POST.get('username')
-        email=request.POST.get('email')
-        pass1=request.POST.get('password1')
-        pass2=request.POST.get('password2')
+        uname = request.POST.get('username')
+        email = request.POST.get('email')
+        pass1 = request.POST.get('password1')
+        pass2 = request.POST.get('password2')
 
         if pass1 != pass2:
-            return HttpResponse("Your password and conform password are not Same!!")
-        else:
+            messages.error(request,"passwords do not match")
+            return redirect("signup")
+        if uname and email and pass1:
             my_user = User.objects.create_user(uname,email,pass1)
             my_user.save()
             return redirect('login')
+        else:
+            messages.error(request,'please enter all required fields')
     return render(request,'signup.html')
+
+
 
 def LoginPage(request):
     if request.method=='POST':
@@ -40,8 +44,11 @@ def LoginPage(request):
             return redirect('admins')
 
         else:
-            return HttpResponse ("Username or Password is incorrect!!!")
+            messages.error(request,"passwords or username is Wrong ")
     return render (request,'login.html')
+
+
+
 
 def AdminPage(request):
     try:
