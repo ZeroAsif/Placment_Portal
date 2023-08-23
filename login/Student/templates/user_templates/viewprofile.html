@@ -1,103 +1,215 @@
-{% extends 'base.html' %}
+{% extends 'user_templates/base.html' %}
 {% load static %}
 {% block title %}ViewProfile{% endblock  %}
 
 {% block body %}
 
-<!-- Personal Information Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color:white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <div class="user-detail" style="position:relative;top:40px;">
-        <img src="{% static 'images/ict.png'%}" width="100px">
-    </div>
-    <h4><strong>Personal Information</strong></h4>
-    <div class="edit">
-        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
-                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#personalModal">
-            <i class="fa fa-plus"></i>
-        </button>
+<!--  personal-info section -->
+<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+    <div class="row">
+        {% if personal_info.profile_picture %}
+        <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
+            <img id="images" src="media/{{personal_info.profile_picture}}"
+                 class="img-fluid  mx-4">
+        </div>
+        {% else %}
+        <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
+            <img id="images" src="{% static 'images/ict.png' %}"
+                 class="img-fluid  mx-4">
+        </div>
+        {% endif %}
+        <div class="col-md-9 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Personal-Information</h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#personalModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+            <hr>
+            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
+                <div class="col">
+                    <p>{{personal_info.first_name}}-{{personal_info.last_name}}
+                    </p>
+                    {% if personal_info.middle_name %}
+                    <p>{{personal_info.middle_name}}</p>
+                    {% else %}
+                    {% endif %}
+                    <p>{{personal_info.date_of_birth}}</p>
+                    <p>{{personal_info.address}}</p>
+                </div>
+                <div class="line_mid"></div>
+                <div class="col">
+                    <p>{{personal_info.phone_number}}</p>
+                    <p>{{personal_info.email}}</p>
+                    <p>{{personal_info.zip_code}}</p>
+                </div>
+                <div class="line_mid"></div>
+                <div class="col">
+                    <p>{{personal_info.objectives}}</p>
+                    <p>{{personal_info.student_college_id}}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
+<!-- resume upload section -->
+<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-5 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Resume</h2>
+            </div>
+        </div>
+        <hr>
+        <div class="container col-md-10">
+            {% if resume %}
+            <div class="d-flex justify-content-center"><a href='download/{{resume.id}}'>{{resume.resume_file}}</a></div>
+            {% else %}
+            <p class="text-center">Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.</p>
+            {% endif %}
+        </div>
+        <div class="container my-3 p-2">
+            <div class="" style="border:dotted 2px;">
+                <form class="p-4" action="" method="POST"> {% csrf_token %}
+                    <input class="form-control" accept=".pdf,.doc,.docx" name="resume" type="file">
+                    <div class="d-flex my-2 justify-content-center">
+                        Supported Formats: doc, docx, rtf, pdf
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button class="btn btn-outline-primary" type="submit">Upload</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<!-- Resume Upload Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <div class="drop_box">
-        <div style="position:relative;left:5%;top:5%;">
-            <label for="formFileLg" class="form-label"><strong>Upload Resume</strong></label>
-            <input class="form-control" accept=".png,.doc,.docx" id="formFileLg" type="file">
+<!-- Experience Section-->
+<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Experience Section</h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#experienceModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+            <hr>
+            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
+                <div class="col">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Education Section-->
+<div class="container border rounded my-3 p-3" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Education</h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#educationModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+            <hr>
+            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
+                <div class="col">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Certification Section-->
+<div class="container border rounded my-3 p-3" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Certification</h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#certificationModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+            <hr>
+            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
+                <div class="col">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- project Section-->
+<div class="container border rounded my-3 p-3" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Project</h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#projectModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+            <hr>
+            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
+                <div class="col">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- project Section-->
+<div class="container border rounded my-3 p-3" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">Additional</h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#additionalModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+            <hr>
+            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
+                <div class="col">
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                    <p></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 
-<!-- Experience Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <h2>Experience</h2>
-    <div class="edit2">
-        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
-                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#experienceModal">
-            <i class="fa fa-plus"></i>
-        </button>
-    </div>
-</div>
 
 
-<!-- Certification Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <h2>Certification</h2>
-    <div class="edit3">
-        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
-                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#certificationModal">
-            <i class="fa fa-plus"></i>
-        </button>
-    </div>
-</div>
-
-
-<!-- Education Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <h2>Education</h2>
-    <div class="edit4">
-        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
-                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#educationModal">
-            <i class="fa fa-plus"></i>
-        </button>
-    </div>
-</div>
-
-
-<!-- Project Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <h2>Project</h2>
-    <div class="edit5">
-        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
-                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#projectModal">
-            <i class="fa fa-plus"></i>
-        </button>
-    </div>
-</div>
-
-
-<!-- Additional skill Section Button -->
-<div class="container my-4"
-     style="display: flex;flex-direction:row;gap: 10px;  width:1000px; margin: auto;padding:20px;background-color: white;height:250px ;border-radius: 30px;box-shadow:2px 0px 3px 4px rgba(0, 0, 0, 0.1);">
-    <h2>Additional Skills</h2>
-    <div class="edit6">
-        <button type="button" style="border-radius:50%;width:50px; height:50px;background-color:#6a11cb;"
-                class="btn btn-success mr-2 my-2" data-bs-toggle="modal" data-bs-target="#additionalModal">
-            <i class="fa fa-plus"></i>
-        </button>
-    </div>
-</div>
-
-
-<!--              Modal Section               -->
+<!--&lt;!&ndash;              Modal Section               &ndash;&gt;-->
 
 
 <!-- Personal Form Modal -->
@@ -109,72 +221,78 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="{% url 'personal-info' %}" method="POST" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="form6Example1">First name</label>
-                                <input type="text" id="form6Example1" class="form-control"/>
+                                <label class="form-label" for="">First name</label>
+                                <input type="text" id="first-name" name="first_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="form6Example2">Middle name</label>
-                                <input type="text" id="form6Example2" class="form-control"/>
+                                <label class="form-label" for="">Middle name</label>
+                                <input type="text" id="mdn" name="middle_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="form6Example3">Last name</label>
-                                <input type="text" id="form6Example3" class="form-control"/>
+                                <label class="form-label" for="">Last name</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label class="form-label" for="form6Example4">Email</label>
-                                <input type="email" id="form6Example4" class="form-control"/>
+                                <label class="form-label" for="">Email</label>
+                                <input type="email" id="email" name="email" class="form-control"/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label class="form-label" for="form6Example4">Phone</label>
-                                <input type="text" id="form6Example5" class="form-control"/>
+                                <label class="form-label" for="">Phone</label>
+                                <input type="text" id="phone" name="phone_number" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-outline">
-                                <label class="form-label" for="form6Example4">Date of birth</label>
-                                <input type="date" id="form6Example6" class="form-control"/>
+                                <label class="form-label" for="">Date of birth</label>
+                                <input type="date" id="dob" name="date_of_birth" class="form-control"/>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label for="inputZip" class="form-label">Zip</label>
-                            <input type="text" class="form-control" id="inputZip">
+                        <div class="col-md-4">
+                            <label for="inputZip" class="form-label">Post_Code</label>
+                            <input type="text" class="form-control" id="postcode" name="zip_code">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="" class="form-label">Student_id</label>
+                            <input type="text" class="form-control" id="inputZip" name="student_id">
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">Default file input example</label>
-                        <input class="form-control" type="file" id="formFile">
+                        <label for="formFile" class="form-label">profile_picture</label>
+                        <input class="form-control" type="file" name="profile_picture" id="formFile"
+                               accept="image/*">
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="inputAddress2"
+                        <input type="text" class="form-control" name="address" id="inputAddress2"
                                placeholder="Apartment, studio, or floor">
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Objective</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1"
+                                  rows="3"></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-primary">Add</button>
             </div>
+            </form>
         </div>
     </div>
 </div>
@@ -242,60 +360,6 @@
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Role & Responsibility</label>
                         <textarea class="form-control" id="rr" rows="3"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<!-- Certification Form Modal -->
-<div class="modal fade" id="certificationModal" tabindex="-1" aria-labelledby="certificationModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="certificationModalLabel">Certifications</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Certification name</label>
-                                <input type="text" id="certification_name" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">issue-organization</label>
-                                <input type="text" id="issue-organization" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Issue Date</label>
-                                <input type="date" id="i_d" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">certification link</label>
-                                <input type="url" id="c_l" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="desc" rows="3"></textarea>
                     </div>
                 </form>
             </div>
@@ -377,6 +441,61 @@
 </div>
 
 
+<!-- Certification Form Modal -->
+<div class="modal fade" id="certificationModal" tabindex="-1" aria-labelledby="certificationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="certificationModalLabel">Certifications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Certification name</label>
+                                <input type="text" id="certification_name" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">issue-organization</label>
+                                <input type="text" id="issue-organization" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Issue Date</label>
+                                <input type="date" id="i_d" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">certification link</label>
+                                <input type="url" id="c_l" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" id="desc" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- Project Form Modal -->
 <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
@@ -449,7 +568,7 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Interest Job</label>
+                                <label class="form-label" for="">Interested Hobbies</label>
                                 <input type="text" id="ij" class="form-control"/>
                             </div>
                         </div>
@@ -480,6 +599,7 @@
     </div>
 </div>
 
+
 <script>
     const employmentTypeSelect = document.getElementById('employmentType');
     const designationField = document.getElementById('designationField');
@@ -491,6 +611,7 @@
             designationField.style.display = 'block'; // Show the designation field
         }
     });
+
 
 </script>
 {% endblock %}

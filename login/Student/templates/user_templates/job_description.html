@@ -1,0 +1,57 @@
+{% extends 'user_templates/base.html' %}
+{% load static %}
+{% block title %}View-Description{% endblock  %}
+
+
+{% block body %}
+<div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="row gy-5 gx-4">
+            <div class="col-lg-8">
+                <div class="d-flex align-items-center mb-5">
+                    <img class="flex-shrink-0 img-fluid border rounded" src="img/com-logo-2.jpg" alt=""
+                         style="width: 80px; height: 80px;">
+                    <div class="text-start ps-4">
+                        <h3 class="mb-3">{{job_description.job_title}}</h3>
+                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{job_description.location}}</span>
+                        <span class="text-truncate me-3"><i class="fa-regular fa-building text-primary me-2"></i>{{job_description.company_name}}</span>
+                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
+                    </div>
+                </div>
+
+                <div style="overflow-wrap: break-word; word-wrap:break-word;" class="mb-5">
+                    <h4 class="mb-3">Job description</h4>
+                    <p>{{job_description.description}}</p>
+                    <h4 class="mb-3">Responsibility</h4>
+                    <p>{{job_description.requirements}}</p>
+                </div>
+
+
+                <h4 class="mb-4 text-center" style="color:green;">Show Your Interest!</h4>
+
+                <div class="col-12">
+                    {% if job_description.id in applied_jobs_ids %}
+                    <button class="btn btn-outline-success w-100" disabled><i class="fa-solid fa-check"></i>Applied</button>
+                    {% else %}
+                    <a class="btn btn-outline-success w-100" href="{% url 'interest' job_description.id %}">Interest</a>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
+                    <h4 class="mb-4">Job Summery</h4>
+                    {% load humanize %}
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: {{job_description.created_at|naturaltime}}</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: Full Time</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: $123 - $456</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location: {{job_description.location}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

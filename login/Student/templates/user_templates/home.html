@@ -4,48 +4,99 @@
 
 {% block body %}
 
-<div class="card-container ">
-    <div class="upper-container">
-        <div class="image-container">
-            <img src="{% static 'images/ict.png'%}"/>
-        </div>
+<!--  Profile Card  -->
+<div class="card shadow-sm bg-white rounded" style="width: 15rem;">
+    <img id="images" src="media/{{profile_image.profile_picture}}"
+         class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+            content.</p>
+        <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary btn-sm">ViewProfile</a>
     </div>
-    <div class="lower-container">
-        <div>
-            <h6><strong>{{user.username}}</strong></h6>
-            <h6>Front-end Developer</h6>
-        </div>
-        <div>
-            <p>sodales accumsan ligula. Aenean sed diam tristique,
-                fermentum mi nec, ornare arch.
-            </p>
-        </div>
-        <div>
-            <a href="{% url 'viewprofile' %}" class="btn">View profile</a>
+</div>
+
+
+<!-- Search Bar Section -->
+<div class="row justify-content-end mx-1">
+    <div class="col-xl-10">
+        <div class="container mt-3 p-4 border rounded">
+            <form method="GET" action="job-search">
+                <div class="d-flex align-items-end">
+                    <div class="col-5">
+                        <div class="form-outline">
+                            <input type="text" name="company-name" placeholder="Enter keyword / Designation / Companies"
+                                   class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-5 mx-2">
+                        <div class="form-outline">
+                            <select name="employment-type" class="form-select" aria-label="Default select example">
+                                <option selected>Select location</option>
+                                {% for location in show_job %}
+                                <option value="{{location.location}}">{{location.location}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-outline-primary btn-md mx-2">Search</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-<div class="d-flex mt-3" style="position:absolute;left:30%;">
-    <form action="#">
-        <div class="containers">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" placeholder="Enter your name">
+
+
+<!-- latest jobs-->
+<div class="row justify-content-end mx-1">
+    <div class="col-xl-10">
+        <h1 class="text-center my-2">Latest Jobs</h1>
+        <div class="container mt-3 p-3 border rounded overflow-auto" style="height: 450px;">
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active">
+                    {% for show_jobs in show_job %}
+                    <div class="job-item p-4 mb-4 border rounded">
+                        <div class="row g-4">
+                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                <img class="flex-shrink-0 img-fluid border rounded" src="img/com-logo-1.jpg" alt=""
+                                     style="width: 80px; height: 80px;">
+                                <div class="text-start ps-4">
+                                    <a href="job-description/{{show_jobs.id}}" class="description"><h5
+                                            class="view-description" class="mb-3">{{show_jobs.job_title}}</h5></a>
+                                    <span class="text-truncate me-3"><i
+                                            class="fa fa-map-marker-alt text-primary me-2"></i>{{show_jobs.location}}</span>
+                                    <span class="text-truncate me-3"><i
+                                            class="fa-regular fa-building text-primary me-2"></i>{{show_jobs.company_name}}</span>
+                                    <span class="text-truncate me-0"><i
+                                            class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                <div class="d-flex mb-3">
+                                    {% if user.is_authenticated %}
+                                    <!-- Custom template tag to check if user is interested -->
+                                    {% if show_jobs.id in applied_jobs_ids %}
+                                    <span class="btn btn-success disabled"><i class="fa-solid fa-check"></i>Applied</span>
+                                    {% else %}
+                                    <a class="btn btn-success" href="{% url 'interest' show_jobs.id %}">Interest</a>
+                                    {% endif %}
+                                    {% else %}
+                                    <a class="btn btn-success" href="{% url 'login' %}">Log in to Apply</a>
+                                    {% endif %}
+                                </div>
+                                {% load humanize %}
+                                <small class="text-truncate"><i class="fa-regular fa-clock text-primary me-2"></i>{{show_jobs.created_at|naturaltime}}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
-            <div class="form-group">
-                <label for="phone">Phone No.</label>
-                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address" placeholder="Enter your address">
-            </div>
-            <div class="form-group">
-                <label for="pincode">Pincode</label>
-                <input type="text" id="pincode" name="pincode" placeholder="Enter your pincode">
-            </div>
-        <button class="btns" type="submit">Search</button>
         </div>
-    </form>
+    </div>
 </div>
-{% endblock  %}
+
+
+{% endblock %}
