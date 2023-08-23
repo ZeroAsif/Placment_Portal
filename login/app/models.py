@@ -7,10 +7,17 @@ class JobPosting(models.Model):
     location = models.CharField(max_length=100)
     description = models.TextField()
     requirements = models.TextField()
-    application_deadline = models.DateField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    HIRING_STATUS_CHOICES = [
+        ('hiring', 'Hiring'),
+        ('hiring_closed', 'Hiring Closed'),
+    ]
+    hiring_status = models.CharField(max_length=20, choices=HIRING_STATUS_CHOICES, default='hiring')
+    salary_range = models.CharField(max_length=50)
+
+    
 
 
     
