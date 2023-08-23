@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class JobPosting(models.Model):
     job_title = models.CharField(max_length=100, blank=True, null=True)
     company_name = models.CharField(max_length=100, blank=True, null=True)
@@ -19,8 +20,5 @@ class JobPosting(models.Model):
 
     
 
-
-    
     def __str__(self):
         return f"{self.job_title} at {self.company_name}"
-
