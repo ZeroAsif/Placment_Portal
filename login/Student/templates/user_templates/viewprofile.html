@@ -7,14 +7,18 @@
 <!--  personal-info section -->
 <div class="container border rounded my-3 p-3 " style="width: 75rem;">
     <div class="row">
-        {% if personal_info.profile_picture %}
+        {% if personal_infos %}
+        {% for profile_image in personal_infos %}
+        {% if profile_image.profile_picture %}
         <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
-            <img id="images" src="media/{{personal_info.profile_picture}}"
+            <img id="images" src="media/{{profile_image.profile_picture}}"
                  class="img-fluid  mx-4">
         </div>
+        {% endif %}
+        {% endfor %}
         {% else %}
         <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
-            <img id="images" src="{% static 'images/ict.png' %}"
+            <img id="images" src="{% static 'images/ict.jpeg' %}"
                  class="img-fluid  mx-4">
         </div>
         {% endif %}
@@ -27,29 +31,35 @@
                 </button>
             </div>
             <hr>
-            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
-                <div class="col">
-                    <p>{{personal_info.first_name}}-{{personal_info.last_name}}
-                    </p>
+            {% for personal_info in personal_infos %}
+            <div class="my-3 d-flex justify-content-start flex-wrap">
+                <div class="col-md-4">
+                    <p>{{ personal_info.first_name }}-{{ personal_info.last_name }}</p>
                     {% if personal_info.middle_name %}
-                    <p>{{personal_info.middle_name}}</p>
+                    <p>{{ personal_info.middle_name }}</p>
                     {% else %}
                     {% endif %}
-                    <p>{{personal_info.date_of_birth}}</p>
-                    <p>{{personal_info.address}}</p>
+                    <p>{{ personal_info.date_of_birth }}</p>
+
+                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                        {{ personal_info.address }}
+                    </p>
                 </div>
-                <div class="line_mid"></div>
-                <div class="col">
-                    <p>{{personal_info.phone_number}}</p>
-                    <p>{{personal_info.email}}</p>
-                    <p>{{personal_info.zip_code}}</p>
+
+                <div class="col-md-4">
+                    <p>{{ personal_info.phone_number }}</p>
+                    <p>{{ personal_info.email }}</p>
+                    <p>{{ personal_info.zip_code }}</p>
                 </div>
-                <div class="line_mid"></div>
-                <div class="col">
-                    <p>{{personal_info.objectives}}</p>
-                    <p>{{personal_info.student_college_id}}</p>
+
+                <div class="col-md-4">
+                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                        {{ personal_info.objectives }}
+                    </p>
+                    <p>{{ personal_info.student_college_id }}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -64,21 +74,32 @@
         </div>
         <hr>
         <div class="container col-md-10">
-            {% if resume %}
-            <div class="d-flex justify-content-center"><a href='download/{{resume.id}}'>{{resume.resume_file}}</a></div>
+            {% for cv in cvs %}
+            {% if cv %}
+            <div class="d-flex justify-content-center align-items-center">
+                {{cv.resume_file}}
+                <button class="btn btn-outline-info rounded-circle mx-2"><i class="fa-solid fa-download fa-bounce"></i>
+                </button>
+                <a href="resume-delete/{{cv.user_id}}"><button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i class="fa-regular fa-trash-can fa-bounce"></i>
+                </button></a>
+            </div>
             {% else %}
-            <p class="text-center">Resume is the most important document recruiters look for. Recruiters generally do not look at profiles without resumes.</p>
+            <p class="text-center">Resume is the most important document recruiters look for. Recruiters generally do
+                not look at profiles without resumes.</p>
             {% endif %}
+            {% endfor %}
         </div>
         <div class="container my-3 p-2">
-            <div class="" style="border:dotted 2px;">
-                <form class="p-4" action="" method="POST"> {% csrf_token %}
-                    <input class="form-control" accept=".pdf,.doc,.docx" name="resume" type="file">
+            <div class="" style="border:dotted 2px; border-radius:20px;">
+                <form class="p-4" action="upload-resume" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                    <input class="form-control" accept=".pdf,.doc,.docx" name="cv" type="file" required>
                     <div class="d-flex my-2 justify-content-center">
-                        Supported Formats: doc, docx, rtf, pdf
+                        Supported Formats: doc, docx, pdf
                     </div>
                     <div class="d-flex justify-content-center">
-                        <button class="btn btn-outline-primary" type="submit">Upload</button>
+                        <button class="btn btn-outline-primary btn-sm" type="submit"><i
+                                class="fa-solid fa-upload fa-beat mx-2"></i>Upload
+                        </button>
                     </div>
                 </form>
             </div>
@@ -91,21 +112,30 @@
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Experience Section</h2>
+                <h2 class="me-3">Experience</h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#experienceModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
             <hr>
-            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
-                <div class="col">
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+            {% for ex in experience %}
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>company_name : {{ex.company_name}}<i class="fa-regular fa-pen-to-square fa-beat mx-2"></i></p>
+                    {% if ex.designation %}
+                    <p>Designation : {{ex.designation}}</p>
+                    {% else %}
+                    {% endif %}
+                    <p>Location : {{ex.location}}</p>
+                    <p>Start_date : {{ex.working_from}}</p>
+                    <p>End_date : {{ex.working_till}}</p>
+                    <p>Salary : {{ex.monthly_salary}}</p>
+
+                    <p>description : {{ex.description}}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -122,14 +152,20 @@
                 </button>
             </div>
             <hr>
-            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
-                <div class="col">
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+            {% for ed in education %}
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>institution_name : {{ed.institution_name}}<i
+                            class="fa-regular fa-pen-to-square fa-beat mx-2"></i>
+                    </p>
+                    <p>field_of_study : {{ed.field_of_study}}</p>
+                    <p>cgpa : {{ed.cgpa}}</p>
+                    <p>Start_date : {{ed.start_date}}</p>
+                    <p>End_date : {{ed.end_date}}</p>
+                    <p>description : {{ed.description}}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -146,14 +182,19 @@
                 </button>
             </div>
             <hr>
-            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
-                <div class="col">
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+            {% for cr in certification %}
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>certification_name : {{cr.title}}<i
+                            class="fa-regular fa-pen-to-square fa-beat mx-2"></i>
+                    </p>
+                    <p>issuing_organisation : {{cr.issuing_organisation}}</p>
+                    <p>certificate_link : {{cr.certificate_link}}</p>
+                    <p>Issue_date : {{cr.issue_date}}</p>
+                    <p>description : {{cr.description}}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
@@ -170,43 +211,45 @@
                 </button>
             </div>
             <hr>
-            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
-                <div class="col">
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+            {% for pr in project %}
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>Project_title : {{pr.title}}<i class="fa-regular fa-pen-to-square fa-beat mx-2"></i></p>
+                    <p>Guide_name : {{pr.advisor_name}}</p>
+                    <p>Start_date : {{pr.start_date}}</p>
+                    <p>End_date : {{pr.end_date}}</p>
+                    <p>description : {{pr.description}}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
 
-<!-- project Section-->
+<!-- Additional Section-->
 <div class="container border rounded my-3 p-3" style="width: 75rem;">
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Additional</h2>
+                <h2 class="me-3">Additional Skill</h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#additionalModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
             <hr>
-            <div class="my-3 d-flex justify-content-start" style="height: 110px;">
-                <div class="col">
-                    <p></p>
-                    <p></p>
-                    <p></p>
-                    <p></p>
+            {% for additional in additional_skill %}
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>hobbies_name : {{additional.hobbies_name}}<i class="fa-regular fa-pen-to-square fa-beat mx-2"></i></p>
+                    <p>language_name : {{additional.language_name}}</p>
+                    <p>skill_name : {{additional.skill_name}}</p>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
 </div>
-
-
 
 
 <!--&lt;!&ndash;              Modal Section               &ndash;&gt;-->
@@ -225,8 +268,8 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">First name</label>
-                                <input type="text" id="first-name" name="first_name" class="form-control"/>
+                                <label class="form-label" for="">First name*</label>
+                                <input type="text" id="first-name" name="first_name" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
@@ -237,55 +280,55 @@
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Last name</label>
-                                <input type="text" id="last_name" name="last_name" class="form-control"/>
+                                <label class="form-label" for="">Last name*</label>
+                                <input type="text" id="last_name" name="last_name" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label class="form-label" for="">Email</label>
-                                <input type="email" id="email" name="email" class="form-control"/>
+                                <label class="form-label" for="">Email*</label>
+                                <input type="email" id="email" name="email" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label class="form-label" for="">Phone</label>
-                                <input type="text" id="phone" name="phone_number" class="form-control"/>
+                                <label class="form-label" for="">Phone*</label>
+                                <input type="text" id="phone" name="phone_number" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="form-outline">
-                                <label class="form-label" for="">Date of birth</label>
-                                <input type="date" id="dob" name="date_of_birth" class="form-control"/>
+                                <label class="form-label" for="">Date of birth*</label>
+                                <input type="date" id="dob" name="date_of_birth" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="inputZip" class="form-label">Post_Code</label>
-                            <input type="text" class="form-control" id="postcode" name="zip_code">
+                            <label for="inputZip" class="form-label">Post_Code*</label>
+                            <input type="text" class="form-control" id="postcode" name="zip_code" required/>
                         </div>
                         <div class="col-md-4">
-                            <label for="" class="form-label">Student_id</label>
-                            <input type="text" class="form-control" id="inputZip" name="student_id">
+                            <label for="" class="form-label">Student_id*</label>
+                            <input type="text" class="form-control" id="inputZip" name="student_id" required/>
                         </div>
                     </div>
                     <div class="mb-3">
-                        <label for="formFile" class="form-label">profile_picture</label>
+                        <label for="formFile" class="form-label">profile_picture*</label>
                         <input class="form-control" type="file" name="profile_picture" id="formFile"
-                               accept="image/*">
+                               accept="image/*" required>
                     </div>
                     <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Address</label>
+                        <label for="inputAddress2" class="form-label">Address*</label>
                         <input type="text" class="form-control" name="address" id="inputAddress2"
-                               placeholder="Apartment, studio, or floor">
+                               placeholder="Apartment, studio, or floor" required/>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Objective</label>
-                        <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1"
-                                  rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Objective*</label>
+                        <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1" rows="3"
+                                  required/></textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -307,12 +350,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="experience" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
-                            <select id="employmentType" class="form-select" aria-label="Default select example">
-                                <option selected>Employment type</option>
-                                <option value="1">Full-time</option>
+                            <select id="employmentType" name="employment_type" class="form-select"
+                                    aria-label="Default select example" required>
+                                <option value="1" selected>Full-time</option>
                                 <option value="2">Internship</option>
                             </select>
                         </div>
@@ -321,53 +364,53 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Company name</label>
-                                <input type="text" id="company_name" class="form-control"/>
+                                <input type="text" name="company_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Monthly salary</label>
-                                <input type="number" id="salary" class="form-control"/>
+                                <input type="number" name="m_salary" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">location</label>
-                                <input type="text" id="location" class="form-control"/>
+                                <input type="text" name="location" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="workingfrom">Working from</label>
-                                <input type="date" id="workingfrom" class="form-control"/>
+                                <label class="form-label" for="">Working from</label>
+                                <input type="date" name="working_from" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="workingtill">Working till</label>
-                                <input type="date" id="workingtill" class="form-control"/>
+                                <label class="form-label" for="">Working till</label>
+                                <input type="date" name="working_till" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="col" id="designationField">
                         <div class="form-outline">
-                            <label class="form-label" for="designation">Designation</label>
-                            <input type="text" id="designation" class="form-control"/>
+                            <label class="form-label" for="">Designation</label>
+                            <input type="text" name="designation" class="form-control"/>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Role & Responsibility</label>
-                        <textarea class="form-control" id="rr" rows="3"></textarea>
+                        <textarea class="form-control" name="rr" rows="3"></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -381,18 +424,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="education" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Institution name</label>
-                                <input type="text" id="i_name" class="form-control"/>
+                                <label class="form-label" for="">institution name</label>
+                                <input type="text" name="i_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Field of study</label>
-                                <input type="text" id="fos" class="form-control"/>
+                                <input type="text" name="fos" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -400,43 +443,39 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Start date</label>
-                                <input type="date" id="sd" class="form-control"/>
+                                <input type="date" name="sd" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">End date</label>
-                                <input type="date" id="ed" class="form-control"/>
+                                <input type="date" name="ed" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <label class="form-label" for="">Department</label>
-                            <select id="department" class="form-select" aria-label="Default select example">
-                                <option selected>Department</option>
-                                <option value="1">coming soon</option>
-                                <option value="2">coming soon</option>
-                            </select>
+                            <input type="text" name="dn" class="form-control"/>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">CGPA</label>
-                                <input type="number" id="cgpa" class="form-control"/>
+                                <input type="number" name="cgpa" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="des" rows="3"></textarea>
+                        <textarea class="form-control" name="des" rows="3"></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -451,18 +490,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="certification" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Certification name</label>
-                                <input type="text" id="certification_name" class="form-control"/>
+                                <input type="text" name="certification_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">issue-organization</label>
-                                <input type="text" id="issue-organization" class="form-control"/>
+                                <input type="text" name="issue-organization" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -470,30 +509,29 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Issue Date</label>
-                                <input type="date" id="i_d" class="form-control"/>
+                                <input type="date" name="i_d" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">certification link</label>
-                                <input type="url" id="c_l" class="form-control"/>
+                                <input type="url" name="c_l" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="desc" rows="3"></textarea>
+                        <textarea class="form-control" name="desc" rows="3"></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
-
 
 
 <!-- Project Form Modal -->
@@ -505,18 +543,18 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="projects" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Project Title</label>
-                                <input type="text" id="title" class="form-control"/>
+                                <input type="text" name="title" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Advisor name</label>
-                                <input type="text" id="a_name" class="form-control"/>
+                                <label class="form-label" for="">Guide name</label>
+                                <input type="text" name="guide_name" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -524,33 +562,27 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Start date</label>
-                                <input type="date" id="std" class="form-control"/>
+                                <input type="date" name="std" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">End date</label>
-                                <input type="date" id="ede" class="form-control"/>
+                                <input type="date" name="ede" class="form-control"/>
                             </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <label class="form-label" for="">Technologies used</label>
-                            <input type="text" id="tu" class="form-control"/>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" id="descr" rows="3"></textarea>
+                        <textarea class="form-control" name="desc" rows="3"></textarea>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
 
@@ -564,12 +596,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
+                <form action="additional-skill" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Interested Hobbies</label>
-                                <input type="text" id="ij" class="form-control"/>
+                                <input type="text" name="ij" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -577,7 +609,7 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Language</label>
-                                <input type="text" id="lan" class="form-control"/>
+                                <input type="text" name="lan" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -585,19 +617,24 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Skill name</label>
-                                <input type="text" id="s_name" class="form-control"/>
+                                <input type="text" name="s_name" class="form-control"/>
                             </div>
                         </div>
                     </div>
-                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
             </div>
         </div>
+        </form>
     </div>
 </div>
+
+
+
+
+
 
 
 <script>
@@ -605,12 +642,29 @@
     const designationField = document.getElementById('designationField');
 
     employmentTypeSelect.addEventListener('change', () => {
-        if (employmentTypeSelect.value === '2') { // If "Internship" is selected
+        if (employmentTypeSelect.id === '2') { // If "Internship" is selected
             designationField.style.display = 'none'; // Hide the designation field
         } else {
             designationField.style.display = 'block'; // Show the designation field
         }
     });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </script>

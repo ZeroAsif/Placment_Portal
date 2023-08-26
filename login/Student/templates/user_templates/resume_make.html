@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Amit Gautam - Resume</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 595px; /* A4 width */
+            height: 842px; /* A4 height */
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .con_top {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            margin-bottom: 10px;
+        }
+
+        <!-- .section p {
+            margin: 1px 0;
+        } -->
+
+        .contact-info {
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            margin: 5px 0;
+        }
+
+        .education {
+            margin-bottom: 10px;
+        }
+
+        .education table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .education th,
+        .education td {
+            padding: 1px;
+            border: 1px solid black;
+            text-align: center;
+        }
+        .section-profile {
+            margin-bottom: 20px;
+        }
+
+        .row-profile table {
+            width: 100%;
+            border-collapse: collapse;
+            display: block;
+        }
+
+        .row-profile th,
+        .row-profile td {
+            padding: 1px;
+            border: 1px solid black;
+        }
+
+        .work-experience {
+            margin-bottom: 20px;
+        }
+
+        .work-experience ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .achievements {
+            margin-bottom: 20px;
+        }
+
+        .achievements ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .responsibilities {
+            margin-bottom: 20px;
+        }
+
+        .responsibilities ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .skills {
+            margin-bottom: 20px;
+        }
+
+        .skills ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+        .interests {
+            margin-bottom: 20px;
+        }
+
+        .interests ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+
+
+        .flex_div {
+            display: flex;
+            justify-content: space-evenly;
+            border: 1px solid black;
+        }
+
+        .decor1 {
+            border-right: 1px solid black;
+
+        }
+        .row-profile {
+            display: flex;
+            justify-content: space-between;
+        }
+
+
+        /* Other styles */
+        /* ... */
+
+
+    </style>
+</head>
+<body>
+
+<div class="section">
+    <div class="row-profiles">
+        <table>
+            <th style="width: 10%;">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                     alt="" height="50px" width="50px">
+
+            </th>
+            <th style="width: 70%;">
+                <ul>
+                    <p style="text-align: start;"></p>{{user.name}}</p>
+                    <p style="text-align: start;">{{department}}</p>
+                    <p style="text-align: start;">{{institute}}</p>
+                </ul>
+            </th>
+            <th>
+                <ul>
+                    <p>{{student_college_id}}</p>
+                    <p>{{department_code}}</p>
+                    <p>{{date_of_birth}}</p>
+                </ul>
+            </th>
+
+        </table>
+
+    </div>
+</div>
+
+
+<div class="section-profile">
+    <div class="row-profile">
+        <table>
+            <th style="width: 100px; height: 100px; padding: 0; border: 1px solid black;">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                     alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            </th>
+            <th style="width: 70%;">
+                <ul>
+                    <p style="text-align: start;"><b>Address :</b>{{add}}</p>
+                    <p style="text-align: start;"><b>Mobile :</b>{{mobile}}</p>
+                    <p style="text-align: start;"><b>Email :</b>{{email}}</p>
+                </ul>
+            </th>
+            <th style="width: 100px; height: 100px; padding: 0; border: 1px solid black;">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+                     alt="" style="width: 100%; height: 100%; object-fit: cover;">
+            </th>
+
+
+        </table>
+    </div>
+</div>
+
+
+<!-- </div>
+</div> -->
+
+<div class="section">
+    <p><b>Career Objective:</b>{{Objective}}</p>
+</div>
+
+<div class="section">
+    <p>
+        <span style="font-weight: bold;">EEducational Qualifications (Pre-University and Undergraduate)</span>
+    </p>
+    <div class="education">
+        <table>
+            <tr>
+                <th>Examination</th>
+                <th>Institution</th>
+                <th>%Marks/CGPA</th>
+            </tr>
+            {% for edu in education %}
+            <tr>
+                <td>{{edu.field_of_study}}</td>
+                <td>{{edu.institution_name}}</td>
+                <td>{{edu.cgpa}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+<div class="section">
+    <p>
+        <span style="font-weight: bold;">Educational Qualifications (Postgraduate)</span>
+    </p>
+    <div class="education">
+        <table>
+
+            <p style="border: 1px solid black; padding: 5px; text-align: center;">
+                <span style="font-weight: bold;">M. Chem. Eng., Institute of Chemical Technology, Mumbai, Maharashtra</span>
+            </p>
+
+            <tr>
+                <th>Semester</th>
+                <th>Year</th>
+                <th>SGPA</th>
+                <th>CGPA</th>
+                <th>Semester</th>
+                <th>Year</th>
+                <th>SGPA</th>
+                <th>CGPA</th>
+            </tr>
+            <td>1</td>
+            <td>2023</td>
+            <td>8</td>
+            <td>9</td>
+            <td>2</td>
+            <td>2024</td>
+            <td>6</td>
+            <td>9</td>
+        </table>
+
+        <div class="section">
+            <h2>Work Experience</h2>
+            <div class="work-experience">
+                <ul>
+                    <li>Subject Matter Expert at Chegg India (Feb 2020 - Jul 2021)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Academic Achievements and Awards</h2>
+            <div class="achievements">
+                <ul>
+                    <p>NTSE Scholar by NCERT</p>
+                    <p>IOCL Merit scholar by IOCL</p>
+                    <p>Graduate Aptitude Test in Engineering (GATE 2021) - All-India Rank: 1564</p>
+                    <p>NTSE (2009)</p>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Positions of Responsibilities</h2>
+            <div class="responsibilities">
+                <ul>
+                    <p>Student Placement Coordinator (Aug 2022 - Present)</p>
+                    <p>DSW Volunteer (July 2017 - May 2019)</p>
+                    <p>Part of mess committee of Aryabhatt Boys Hostel at IET Lucknow</p>
+                    <p>Head boy of Jawahar Navodaya Vidyalaya (JNV) Hardoi (UP) for 1 year</p>
+                    <p>General Secretary of Science Club at JNV Hardoi</p>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                <ul>
+                    <li>Microsoft Office (Word, Excel, PowerPoint)</li>
+                    <li>DWSIM (Basic)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Interests and Hobbies</h2>
+            <div class="interests">
+                <ul>
+                    <p>Table Tennis</p>
+                    <p>Badminton</p>
+                    <p>Drawing</p>
+                </ul>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+                crossorigin="anonymous"></script>
+</body>
+</html>

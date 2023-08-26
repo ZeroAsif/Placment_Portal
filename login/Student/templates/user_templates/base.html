@@ -193,22 +193,22 @@
                 {% if profile_image.profile_picture %}
                 <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
                    id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="media/{{profile_image.profile_picture}}" class="rounded-circle" height="25"
+                    <img src="media/{{profile_image.profile_picture}}" class="rounded-circle" height="25" width="25"
                          alt="PROFILE"/>
                 </a>
                 {% else %}
                 <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
                    id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static 'images/ict.png' %}" class="rounded-circle" height="25"
+                    <img src="{% static 'images/ict.jpeg' %}" class="rounded-circle" height="25" width="25"
                          alt="PROFILE"/>
                 </a>
                 {% endif %}
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
                     <li>
-                        <a class="dropdown-item" href="{% url 'viewprofile' %}">My profile</a>
+                        <a class="dropdown-item" href="{% url 'viewprofile' %}"><i class="fa-solid fa-circle-user mx-2" style="color: #005af5;"></i>Student profile</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket mx-2" style="color: #ff0000;"></i>Logout</a>
                     </li>
                 </ul>
             </div>

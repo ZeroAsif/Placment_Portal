@@ -1,10 +1,15 @@
+import os
+
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from app.models import JobPosting
 from django.shortcuts import render, redirect
-from .models import PersonalInfo, Job_application, User, Resume
+from .models import *
+from django.contrib.auth.models import User
+from xhtml2pdf import pisa
+from django.template.loader import render_to_string
 import uuid
-from django.shortcuts import get_object_or_404,HttpResponse
+from django.shortcuts import get_object_or_404, HttpResponse
 
 
 # Create your views here.
@@ -36,11 +41,21 @@ def HomePage(request):
 def ViewProfile(request):
     try:
         user = request.user.id
-        personal_info = PersonalInfo.objects.get(student_id=user)
-        # resume = Resume.objects.get(user_id=user)
+        personal_info = PersonalInfo.objects.filter(student__id=user)
+        cv = Resume.objects.filter(user__id=user)
+        experience = Experience.objects.filter(user__id=user).order_by("-id")
+        education = Education.objects.filter(user__id=user).order_by("-id")
+        certification = Certificate.objects.filter(user__id=user).order_by("-id")
+        project = Project.objects.filter(user__id=user).order_by("-id")
+        additional_skill = AdditionalSkill.objects.filter(user__id=user).order_by("-id")
         context = {
-            "personal_info": personal_info,
-            # "resume": resume,
+            'personal_infos': personal_info,
+            'cvs': cv,
+            'experience': experience,
+            'education': education,
+            'certification': certification,
+            'project': project,
+            'additional_skill': additional_skill
         }
         return render(request, 'user_templates/viewprofile.html', context)
     except:
@@ -60,6 +75,7 @@ def ViewProfile(request):
 #             filtered_data = job_data.filter(name=name)
 
 
+# Student show Interest View Here.
 def job_application(request, job_id):
     job_posting = JobPosting.objects.get(id=job_id)
 
@@ -87,7 +103,6 @@ def Job_Description(request, id):
 
 
 # Here we are storing the data of Student of Personal Info using POST method
-
 def create_personal_info(request):
     if request.method == 'POST':
         personal_info_data = {
@@ -109,9 +124,7 @@ def create_personal_info(request):
     return render("request", 'user_templates/viewprofile.html')
 
 
-"""Here we are updating the data of Student of Personal Info using Update method"""
-
-
+# Here we are updating the data of Student of Personal Info using Update method
 def update_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     if request.method == 'POST':
@@ -131,9 +144,7 @@ def update_personal_info(request, personal_info_id):
     return render(request, 'update_personal_info.html', {'personal_info': personal_info})
 
 
-"""Here we are deleting the data of Student of Personal Info using Delete method"""
-
-
+# Here we are deleting the data of Student of Personal Info using Delete method
 def delete_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     if request.method == 'POST':
@@ -142,89 +153,160 @@ def delete_personal_info(request, personal_info_id):
     return render(request, 'delete_personal_info.html', {'personal_info': personal_info})
 
 
-def create_student_skills(request):
+# Upload Resume View Here.
+def Upload_Resume(request):
+    user = request.user
+
+    try:
+        existing_resume = Resume.objects.get(user=user)
+    except Resume.DoesNotExist:
+        existing_resume = None
+
     if request.method == 'POST':
-        skill_data = {
-            'user': request.user,
-            'skill_name': request.POST.get('skill_name'),
-            'id': uuid.uuid4()
-        }
-        StudentSkill.objects.create(**skill_data)
-        return redirect('profile')
-    return render(request, 'create_student_skill.html')
+        # Get the uploaded resume file from the form
+        resume = request.FILES['cv']
+
+        # If an existing resume exists, delete it
+        if existing_resume:
+            path_to_delete = existing_resume.resume_file.path
+            os.remove(path_to_delete)
+            existing_resume.delete()
+
+        # Create a new Resume object and save it
+        new_resume = Resume(user=user, resume_file=resume)
+        new_resume.save()
+        return redirect('viewprofile')
+    return render(request, 'user_templates/viewprofile.html')
 
 
-def update_student_skills(request, student_skill_id):
-    student_skill = StudentSkill.objects.get(id=student_skill_id)
+def Delete_Resume(request,id):
+    delete_resume = Resume.objects.get(user__id=id)
+    resume_path = delete_resume.resume_file.path
+    os.remove(resume_path)
+    delete_resume.delete()
+    return redirect('viewprofile')
+
+
+def Experience_Information(request):
     if request.method == 'POST':
-        student_skill.skill_name = request.POST.get('skill_name')
-        student_skill.save()
-        return redirect('student_skill')
-    return render(request, 'update_student_skills.html')
+        user = request.user
+        job_type = request.POST.get('employment_type')
+        company_name = request.POST.get('company_name')
+        m_salary = request.POST.get('m_salary')
+        location = request.POST.get('location')
+        working_from = request.POST.get('working_from')
+        working_till = request.POST.get('working_till')
+        designation = request.POST.get('designation')
+        role_responsibility = request.POST.get('rr')
+
+        experience = Experience(user=user, job_type=job_type, company_name=company_name, monthly_salary=m_salary,
+                                designation=designation, location=location, working_till=working_till,
+                                working_from=working_from, description=role_responsibility)
+        experience.save()
+        return redirect('viewprofile')
+
+    return render(request, 'user_templates/viewprofile.html')
 
 
-def delete_student_skill(request, student_skill_id):
-    student_skill = StudentSkill.objects.get(id=student_skill_id)
-    if request.method == 'DLETE':
-        student_skill.delete()
-        return redirect('student skill')
-    return render(request, 'delete_student_skill')
-
-
-def create_language_skill(request):
+def Education_Information(request):
     if request.method == 'POST':
-        try:
-            language_skills = {
-                'student': request.user,
-                'language_name': request.POST.get('language_name'),
-                'id': uuid.uuid4()
-            }
-            LanguageSkill.objects.create(**language_skills)
-            return redirect('profile')  # Redirect to the profile page or wherever you'd like
+        user = request.user
+        institution_name = request.POST.get('i_name')
+        field_of_study = request.POST.get('fos')
+        start_date = request.POST.get('sd')
+        end_date = request.POST.get('ed')
+        department = request.POST.get('dn')
+        cgpa = request.POST.get('cgpa')
+        description = request.POST.get('des')
 
-        except Exception as e:
-            error_message = f"An error occurred: {e}"
-            # Handle the error or log it as needed
+        education = Education(user=user, institution_name=institution_name, field_of_study=field_of_study, cgpa=cgpa,
+                              start_date=start_date, end_date=end_date, description=description, department=department)
+        education.save()
+        return redirect('viewprofile')
 
-    return render(request, 'create_language_skill.html')
+    return render(request, 'user_templates/viewprofile.html')
 
 
-def update_language_skill(request, language_skill_id):
-    language_skills = LanguageSkill.objects.get(id=language_skill_id)
+def Certification_Information(request):
     if request.method == 'POST':
-        try:
-            LanguageSkill.language_name = request.POST.get('language_name')
-            LanguageSkill.save()
-            return redirect('profile')  # Redirect to the profile page or wherever you'd like
+        user = request.user
+        certification_title = request.POST.get('certification_name')
+        issue_organization = request.POST.get('issue-organization')
+        issue_date = request.POST.get('i_d')
+        certification_link = request.POST.get('c_l')
+        description = request.POST.get('desc')
 
-        except Exception as e:
-            error_message = f"An error occurred: {e}"
-            # Handle the error or log it as needed
+        certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
+                                    issue_date=issue_date, certificate_link=certification_link, description=description)
+        certification.save()
+        return redirect('viewprofile')
 
-    return render(request, 'update_language_skill.html', {'language_skill': language_skills})
-
-
-def delete_language_skill(request, language_skill_id):
-    language_skills = LanguageSkill.objects.get(id=language_skill_id)
-    if request.method == 'Delete':
-        try:
-            language_skills.delete()
-            return redirect('')
-        except Exception as e:
-            error_message = f"An error occured:{e}"
-    return render(request, '', {'language_skills': language_skills})
+    return render(request, 'user_templates/viewprofile.html')
 
 
-# def Upload_Resume(request):
-#     user_id = User.objects.get(id=request.user.id)
-#     if request.method == 'POST':
-#         resume = request.POST.get('resume')
-#         obj = Resume(user=user_id, resume_file=resume)
-#         obj.save()
-#         return redirect('viewprofile')
-#     return render(request, 'user_templates/viewprofile.html')
-#
-#
+def Projects_Information(request):
+    if request.method == 'POST':
+        user = request.user
+        project_title = request.POST.get("title")
+        guide_name = request.POST.get("guide_name")
+        start_date = request.POST.get("std")
+        end_date = request.POST.get("ede")
+        description = request.POST.get("desc")
+
+        project = Project(user=user, title=project_title, advisor_name=guide_name, start_date=start_date,
+                          end_date=end_date, description=description)
+        project.save()
+        return redirect('viewprofile')
+
+    return render(request, 'user_templates/viewprofile.html')
+
+
+def Additional_Skill(request):
+    if request.method == 'POST':
+        user = request.user
+        hobbies_name = request.POST.get('ij')
+        language = request.POST.get('lan')
+        skill_name = request.POST.get('s_name')
+
+        additional_skill = AdditionalSkill(user=user, hobbies_name=hobbies_name, language_name=language, skill_name=skill_name)
+        additional_skill.save()
+        return redirect('viewprofile')
+    return render(request, 'user_templates/viewprofile.html')
+
+
+
+
+
+
+def html_to_pdf_view(request):
+    # Generate HTML content using a template or manually
+    u = request.user.id
+    user_data = PersonalInfo.objects.get(student__id=u)
+    education_data = Education.objects.filter(user__id=u)
+    name = user_data.first_name + \
+           user_data.last_name if user_data.first_name and user_data.last_name else user_data.first_name if user_data.first_name else user_data.last_name
+    accommodation = user_data.address
+    phone_number = user_data.phone_number
+    email = user_data.email
+
+    user = {'name': name, 'add': accommodation, 'mobile': phone_number, 'email': email,
+            'department': 'Department of Chemical Engineering',
+            'institute': 'Institute of Chemical Technology, Mumbai ', 'Objective': user_data.objectives,
+            'education': education_data, 'student_college_id': user_data.student_college_id,
+            'department_code': 'M.Chem Engg ', 'date_of_birth': user_data.date_of_birth}
+
+    html_content = render_to_string('user_templates/resume_make.html', user)
+
+    # Create a PDF from the HTML content
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="output.pdf"'
+    pisa.CreatePDF(html_content, dest=response)
+    return response
+
+
+def download_resume(request):
+    return render(request, 'user_templates/index2.html')
+
 # def Download_Resume(request,id):
 #         document = get_object_or_404(Resume, id=id)
 #         response = HttpResponse(document.file, content_type='application/pdf')
@@ -233,16 +315,16 @@ def delete_language_skill(request, language_skill_id):
 
 
 # job search
-def Job_Search(request):
-    designation = request.GET.get('company-name')
-    location = request.GET.get('employment-type')
-
-    jobs = JobPosting.objects.all()
-
-    if designation:
-        jobs = jobs.filter(job_title__icontains=designation)
-
-    if location:
-        jobs = jobs.filter(location__icontains=location)
-
-    return render(request, 'user_templates/home.html', {'jobs':jobs})
+# def Job_Search(request):
+#     designation = request.GET.get('company-name')
+#     location = request.GET.get('employment-type')
+#
+#     jobs = JobPosting.objects.all()
+#
+#     if designation:
+#         jobs = jobs.filter(job_title__icontains=designation)
+#
+#     if location:
+#         jobs = jobs.filter(location__icontains=location)
+#
+#     return render(request, 'user_templates/home.html', {'jobs':jobs})
