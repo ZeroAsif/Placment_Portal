@@ -274,39 +274,6 @@ def Additional_Skill(request):
     return render(request, 'user_templates/viewprofile.html')
 
 
-
-
-
-
-def html_to_pdf_view(request):
-    # Generate HTML content using a template or manually
-    u = request.user.id
-    user_data = PersonalInfo.objects.get(student__id=u)
-    education_data = Education.objects.filter(user__id=u)
-    name = user_data.first_name + \
-           user_data.last_name if user_data.first_name and user_data.last_name else user_data.first_name if user_data.first_name else user_data.last_name
-    accommodation = user_data.address
-    phone_number = user_data.phone_number
-    email = user_data.email
-
-    user = {'name': name, 'add': accommodation, 'mobile': phone_number, 'email': email,
-            'department': 'Department of Chemical Engineering',
-            'institute': 'Institute of Chemical Technology, Mumbai ', 'Objective': user_data.objectives,
-            'education': education_data, 'student_college_id': user_data.student_college_id,
-            'department_code': 'M.Chem Engg ', 'date_of_birth': user_data.date_of_birth}
-
-    html_content = render_to_string('user_templates/resume_make.html', user)
-
-    # Create a PDF from the HTML content
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="output.pdf"'
-    pisa.CreatePDF(html_content, dest=response)
-    return response
-
-
-def download_resume(request):
-    return render(request, 'user_templates/index2.html')
-
 # def Download_Resume(request,id):
 #         document = get_object_or_404(Resume, id=id)
 #         response = HttpResponse(document.file, content_type='application/pdf')
