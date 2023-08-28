@@ -5,6 +5,11 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django. contrib import messages
 from .models import JobPosting
+from Student.models import *
+from django.utils import timezone
+from datetime import timedelta
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 
@@ -51,12 +56,19 @@ def LoginPage(request):
 
 
 def AdminPage(request):
-    try:
-        job_posting = JobPosting.objects.all().order_by("-id")
-        return render(request,'admin.html',{'job_posting':job_posting})
-    except:
-        return render(request,"admin.html")
-    
+        try:
+            job_posting = JobPosting.objects.all().order_by("-created_at")
+            context = []
+            for job in job_posting:
+                jdata = job
+                sdata = Job_application.objects.filter(job_posting= job,interested=True)
+                context.append({'jdata':jdata,'sdata':sdata})
+        except ObjectDoesNotExist:
+            job_posting=[]
+            context=[]
+        return render(request,'admin.html',{'job_posting':job_posting, 'student_data':sdata,'context':context})
+       
+
 
 def LogoutPage(request):
     logout(request)
@@ -152,6 +164,3 @@ def update_job_posting(request, job_id):
 # from django.shortcuts import render
 
 
-# def admin_view_interested_students(request):
-#     interested_students = Job_application.objects.filter(interested=True).select_related('user')
-#     return render(request, 'admin_interested_students.html', {'interested_students': interested_students})
