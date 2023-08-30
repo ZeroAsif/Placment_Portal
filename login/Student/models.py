@@ -186,7 +186,8 @@ class AdditionalSkill(TimeStampedModel):
     def _str_(self):
         return self.title
 
-# # we are store Student Application here.
+
+#  we are store Student Application here.
 class Job_application(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)

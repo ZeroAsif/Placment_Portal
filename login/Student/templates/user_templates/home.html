@@ -45,7 +45,7 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <button type="submit" class="btn btn-outline-primary btn-md mx-2">Search</button>
+                        <button type="button" class="btn btn-outline-primary btn-md mx-2">Search</button>
                     </div>
                 </div>
             </form>
@@ -83,7 +83,6 @@
                             <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                 <div class="d-flex mb-3">
                                     {% if user.is_authenticated %}
-                                    <!-- Custom template tag to check if user is interested -->
                                     {% if show_jobs.id in applied_jobs_ids %}
                                     <span class="btn btn-success disabled"><i
                                             class="fa-solid fa-check"></i>Applied</span>
@@ -106,5 +105,13 @@
     </div>
 </div>
 
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+{% for flash in messages %}
+    alertify.set('notifier','position', 'top-right');
+    alertify.success('{{flash}}');
+{% endfor %}
+</script>
 
 {% endblock %}

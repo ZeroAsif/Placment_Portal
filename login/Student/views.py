@@ -1,18 +1,53 @@
 import os
-
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from app.models import JobPosting
 from django.shortcuts import render, redirect
 from .models import *
+from django.shortcuts import get_object_or_404, HttpResponse
+from django.contrib import messages
+from datetime import datetime
+from django.db import IntegrityError
 from django.contrib.auth.models import User
 from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 import uuid
-from django.shortcuts import get_object_or_404, HttpResponse
 
 
 # Create your views here.
+
+
+def Check_User_Email(request):
+    if request.method == 'GET':
+        email = request.GET['email_id']
+        if email:
+            check_email = PersonalInfo.objects.filter(email=email)
+            if len(check_email) == 1:
+                return HttpResponse("Exists")
+            else:
+                return HttpResponse("Not Exists")
+
+
+def Check_Student_ID(request):
+    if request.method == 'GET':
+        std_id = request.GET['student_college_id']
+        if std_id:
+            check_std_id = PersonalInfo.objects.filter(student_college_id=std_id)
+            if len(check_std_id) == 1:
+                return HttpResponse("Exists")
+            else:
+                return HttpResponse("Not Exists")
+
+
+def Check_Phone(request):
+    if request.method == 'GET':
+        phone = request.GET['phone']
+        if phone:
+            check_phone = PersonalInfo.objects.filter(phone_number=phone)
+            if len(check_phone) == 1:
+                return HttpResponse("Exists")
+            else:
+                return HttpResponse("Not Exists")
 
 
 # User Home_page
@@ -86,6 +121,7 @@ def job_application(request, job_id):
         existing_application.save()
     else:
         new_application = Job_application(user=request.user, job_posting=job_posting, interested=True)
+        messages.success(request, 'Applied Successfully')
         new_application.save()
     return redirect('home')
 
@@ -105,23 +141,45 @@ def Job_Description(request, id):
 # Here we are storing the data of Student of Personal Info using POST method
 def create_personal_info(request):
     if request.method == 'POST':
-        personal_info_data = {
-            'student': request.user,
-            'email': request.POST.get('email'),
-            'first_name': request.POST.get('first_name'),
-            'middle_name': request.POST.get('middle_name'),
-            'last_name': request.POST.get('last_name'),
-            'date_of_birth': request.POST.get('date_of_birth'),
-            'phone_number': request.POST.get('phone_number'),
-            'address': request.POST.get('address'),
-            'zip_code': request.POST.get('zip_code'),
-            'objectives': request.POST.get('objectives'),
-            'profile_picture': request.FILES.get('profile_picture'),
-            'student_college_id': request.POST.get('student_id'),
-        }
-        p_obj = PersonalInfo.objects.create(**personal_info_data)
-        return redirect('viewprofile')
-    return render("request", 'user_templates/viewprofile.html')
+        student = request.user
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name')
+        last_name = request.POST.get('last_name')
+        date_of_birth_str = request.POST.get('date_of_birth')
+        date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+        zip_code_str = request.POST.get('zip_code')
+        try:
+            zip_code = int(zip_code_str)
+        except:
+            zip_code = None
+        objectives = request.POST.get('objectives')
+        profile_picture = request.FILES.get('profile_picture')
+        student_college_id = request.POST.get('student_id')
+
+        try:
+            p_obj = PersonalInfo(student=student, email=email, first_name=first_name, middle_name=middle_name,
+                                 last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
+                                 address=address, zip_code=zip_code, objectives=objectives,
+                                 profile_picture=profile_picture, student_college_id=student_college_id)
+            p_obj.save()
+            messages.success(request, 'Personal-information add successfully')
+            return redirect('viewprofile')
+        except IntegrityError as e:
+            error_message = str(e).lower().strip()
+            if 'unique constraint' in error_message and 'student_id' in error_message:
+                messages.error(request,"You have already added your personal information. Use the update feature to make changes.")
+            elif 'unique constraint' in error_message and 'student_college_id' in error_message:
+                messages.error(request, 'Student ID already exist. Please choose different ones.')
+            elif 'unique constraint' in error_message and 'phone_number' in error_message:
+                messages.error(request, 'Phone Number already exist. Please choose different ones.')
+            elif 'unique constraint' in error_message and 'email' in error_message:
+                messages.error(request, 'Email ID already exist. Please choose different ones.')
+            return redirect('viewprofile')
+    messages.error(request, "You have already added your personal information. Use the update feature to make changes.")
+    return render(request, 'user_templates/viewprofile.html')
 
 
 # Here we are updating the data of Student of Personal Info using Update method
@@ -140,7 +198,9 @@ def update_personal_info(request, personal_info_id):
         personal_info.profile_picture = request.FILES.get('profile_picture')
         personal_info.student_college_id = request.POST.get('student_college_id')
         personal_info.save()
+        messages.success(request, 'Personal-info update successfully')
         return redirect('profile')  # Redirect to the profile page or wherever you'd like
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'update_personal_info.html', {'personal_info': personal_info})
 
 
@@ -175,16 +235,23 @@ def Upload_Resume(request):
         # Create a new Resume object and save it
         new_resume = Resume(user=user, resume_file=resume)
         new_resume.save()
+        messages.success(request, 'Upload Resume successfully!')
         return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
 
 def Delete_Resume(request,id):
-    delete_resume = Resume.objects.get(user__id=id)
-    resume_path = delete_resume.resume_file.path
-    os.remove(resume_path)
-    delete_resume.delete()
-    return redirect('viewprofile')
+    try:
+        delete_resume = Resume.objects.get(user__id=id)
+        resume_path = delete_resume.resume_file.path
+        os.remove(resume_path)
+        delete_resume.delete()
+        messages.success(request, "Resume delete successfully!")
+        return redirect('viewprofile')
+    except:
+        messages.error(request, "Something went wrong! Please contact Admin")
+        return redirect('viewprofile')
 
 
 def Experience_Information(request):
@@ -203,8 +270,9 @@ def Experience_Information(request):
                                 designation=designation, location=location, working_till=working_till,
                                 working_from=working_from, description=role_responsibility)
         experience.save()
+        messages.success(request, 'Experience-information add successfully!')
         return redirect('viewprofile')
-
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
 
@@ -222,8 +290,9 @@ def Education_Information(request):
         education = Education(user=user, institution_name=institution_name, field_of_study=field_of_study, cgpa=cgpa,
                               start_date=start_date, end_date=end_date, description=description, department=department)
         education.save()
+        messages.success(request, 'Education-information add successfully')
         return redirect('viewprofile')
-
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
 
@@ -239,8 +308,9 @@ def Certification_Information(request):
         certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
                                     issue_date=issue_date, certificate_link=certification_link, description=description)
         certification.save()
+        messages.success(request, 'Certification-information add successfully')
         return redirect('viewprofile')
-
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
 
@@ -256,8 +326,9 @@ def Projects_Information(request):
         project = Project(user=user, title=project_title, advisor_name=guide_name, start_date=start_date,
                           end_date=end_date, description=description)
         project.save()
+        messages.success(request, 'Project-information add successfully')
         return redirect('viewprofile')
-
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
 
@@ -270,28 +341,33 @@ def Additional_Skill(request):
 
         additional_skill = AdditionalSkill(user=user, hobbies_name=hobbies_name, language_name=language, skill_name=skill_name)
         additional_skill.save()
+        messages.success(request, 'Additional-skill add successfully')
         return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
 
-# def Download_Resume(request,id):
-#         document = get_object_or_404(Resume, id=id)
-#         response = HttpResponse(document.file, content_type='application/pdf')
-#         response['Content-Disposition'] = f'attachment; filename="{document.file.name}"'
-#         return response
+def Download_Resume(request,id):
+    try:
+        document = get_object_or_404(Resume, user__id=id)
+        response = HttpResponse(document.resume_file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{document.resume_file.name}"'
+        return response
+        messages.success(request,'Download-resume Successfully')
+    except:
+        messages.error(request, 'Something went wrong! Please contact Admin')
 
 
-# job search
-# def Job_Search(request):
-#     designation = request.GET.get('company-name')
-#     location = request.GET.get('employment-type')
+# def job_search(request):
+#     query = request.GET.get('company-name')
+#     location = request.GET.get('location')
 #
 #     jobs = JobPosting.objects.all()
 #
-#     if designation:
-#         jobs = jobs.filter(job_title__icontains=designation)
-#
+#     if query:
+#         jobs = jobs.filter(job_title__icontains=query)
 #     if location:
-#         jobs = jobs.filter(location__icontains=location)
+#         jobs = jobs.filter(location=location)
 #
-#     return render(request, 'user_templates/home.html', {'jobs':jobs})
+#     context = {'show_job': jobs}
+#     return render(request, 'user_templates/home.html', context)
