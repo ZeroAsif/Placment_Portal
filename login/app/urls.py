@@ -2,6 +2,8 @@
 from django.contrib import admin
 from django.urls import path
 from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -12,9 +14,12 @@ urlpatterns = [
      path('addjob/',Jobposting,name='addjob'),
      path('delete/<int:job_id>/', delete_job_posting, name='delete_job'),
      path('update/<int:job_id>/', update_job_posting, name='update_job'),
-     
+     path('export_excel/', ExportExcelView.as_view(), name='export_excel'),
+    
 
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

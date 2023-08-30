@@ -9,9 +9,14 @@
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
+        {% comment %} excel {% endcomment %}
+
+
+       
     <title>Admin Interface</title>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
     <script src="{% static 'js/admin.js' %}" defer></script>
+
 
 
 </head>
@@ -39,11 +44,9 @@
     <div class="content">
         <div id="dashboard" class="section active">
 
-            {% comment %} <h2>Dashboard</h2>
-            <p>Welcome to the Admin Dashboard section.</p> {% endcomment %}
 
 
-            <!-- Modal -->
+            <!-- ADD JOB Modal -->
 
             <div class="modal" id="addJobModal">
                 <div class="modal-content">
@@ -52,7 +55,7 @@
                         <span class="close-modal" id="closeModal">&times;</span>
                     </div>
 
-                    <form method="POST" action="{% url 'addjob' %}"> {% csrf_token %}
+                    <form method="POST" action="{% url 'addjob' %}" enctype="multipart/form-data"> {% csrf_token %}
                         <div class="form-group">
                             <label for="jobTitle" class="form-label">Job Title</label>
                             <input type="text" id="jobTitle" name="j_title" class="form-input" required>
@@ -85,6 +88,11 @@
                             <input type="text" id="salaryRange" name="salary_range" class="form-input" required>
                         </div>
 
+                        <div class="form-group">
+                            <label for="pdfFile" class="form-label">Upload PDF File</label>
+                            <input type="file" id="pdf_File" name="pdf_file" class="form-input" accept=".pdf" >
+                        </div>
+
 
                         <button type="submit" class="form-button">Submit</button>
                     </form>
@@ -107,8 +115,8 @@
                     <p>124</p>
                 </div>
                 <div class="card red" style="margin: 1rem;">
-                    <h3>Revenue</h3>
-                    <p>$15,240</p>
+                    <h3>Interested</h3>
+                    <p>40</p>
                 </div>
             </div>
 
@@ -124,9 +132,8 @@
                         <th>Job Title</th>
                         <th>Company Name</th>
                         <th>Job Location</th>
-                        {% comment %} <th>Job Description</th>
-                        <th>Requirments</th> {% endcomment %}
                         <th>salary_range</th>
+                        {% comment %} <th>JD File</th> {% endcomment %}
                         <th>Status</th>
                         <th>Update</th>
                         <th>Delete</th>
@@ -141,21 +148,10 @@
                             <td>{{jp.company_name}}</td>
                             <td>{{jp.location}}</td>
 
-                            {% comment %} <td>
-                                <div class="form-outline w-100">
-                                    <textarea class="form-control" id="textAreaExample1"
-                                        rows="4">{{jp.description}}</textarea>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="form-outline w-100">
-                                    <textarea class="form-control" id="textAreaExample1"
-                                        rows="4">{{jp.requirements}}</textarea>
-
-                                </div>
-                            </td> {% endcomment %}
+                            
 
                             <td>{{jp.salary_range}}</td>
+                            {% comment %} <td>{{jp.pdf_file}}</td> {% endcomment %}
 
                             <td id="statusCell_{{ jp.id }}">
                                 {{ jp.get_hiring_status_display }}
@@ -210,12 +206,20 @@
 
                                         <div class="form-group">
                                             <label for="updateJobRequirements" class="form-label">Salary Range</label>
-                                            <input type="text" id="updateJobLocation" name="location" class="form-input"
+                                            <input type="text" id="salary_range" name="salary_range" class="form-input"
                                                 value="{{ jp.salary_range }}" required>
                                         </div>
+                                        
+                                        
+                                        <div class="form-group">
+                                            <label for="updateJobRequirements" class="form-label">JD File</label>
+                                            <input type="file" id="pdf_file" name="pdf_file" class="form-input"
+                                                value="{{ jp.job_pdfs }}" >
+                                        </div>
 
-                                        <!-- ... (other form fields) ... -->
-                                        <!-- ... (other form fields) ... -->
+
+
+                 
                                         <div class="form-group">
                                             <label class="form-label">Hiring Status</label>
                                             {% for choice in jp.HIRING_STATUS_CHOICES %}
@@ -226,10 +230,8 @@
                                                 </div>
                                             {% endfor %}
                                         </div>
-                                        <!-- ... (other form fields) ... -->
-
-
-                                        <!-- ... (other form fields) ... -->
+                                        
+                               
 
 
                                         {% comment %} update modal end here {% endcomment %}
@@ -264,13 +266,13 @@
 
         
         <div id="job-listing" class="section mt-3">
-            <div class="input-box">
+            {% comment %} <div class="input-box">
                 <i class="uil uil-search"></i>
-                <input type="text" placeholder="Search here..." />
-                <button class="button">Search</button>
-            </div>
+                <input type="text"  placeholder="Search here..." />
+                <button class="button" onclick="searchTable()">Search</button>
+            </div> {% endcomment %}
 
-            {% comment %} {% if job_posting %} {% endcomment %}
+            {% comment %}  {% endcomment %}
             {% for accordion in job_posting %}
             <div class="accordion mt-3" id="accordionExample-{{ accordion.id }}">
                 <div class="accordion-item">
@@ -292,28 +294,32 @@
                                                 <div class="col-sm-4">
                                                     <div class="search-box">
                                                         <i class="material-icons">&#xE8B6;</i>
-                                                        <input type="text" class="form-control" placeholder="Search&hellip;">
+                                                        <input type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <table class="table table-striped table-hover table-bordered">
+                                        {% comment %} <button id="exportButton" class="btn btn-primary">Download to Excel</button> {% endcomment %}
+                                        
+                                        <table class="table table-striped table-hover table-bordered" id="dataTable">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Name <i class="fa fa-sort"></i></th>
-                                                    <th>Address</th>
-                                                    <th>City <i class="fa fa-sort"></i></th>
-                                                    <th>Pin Code</th>
+                                                    <th>Email</th>
+                                                    <th>Phone Number<i class="fa fa-sort"></i></th>
+                                                    <th>Resume</th>
                                                     <th>Country <i class="fa fa-sort"></i></th>
                                                     <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                
+                                               
                                                 <tr>
                                                     <td>1</td>
-                                                    <td>Thomas Hardy</td>
-                                                    <td>89 Chiaroscuro Rd.</td>
+                                                    <td>Asif Khan</td>
+                                                    <td>pasif@gmail.com</td>
                                                     <td>Portland</td>
                                                     <td>97219</td>
                                                     <td>USA</td>
@@ -323,6 +329,7 @@
                                                         <a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
                                                     </td>
                                                 </tr>
+                                                
                                                 <tr>
                                                     <td>2</td>
                                                     <td>Maria Anders</td>
@@ -376,13 +383,20 @@
                                                     </td>
                                                 </tr>        
                                             </tbody>
+                                            <a href="{% url 'export_excel' %}" class="btn btn-primary">Export to Excel</a>
+                                            
+
+                                            
+
                                         </table>
+                                        
                                         <div class="clearfix">
                                             <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
                                             <ul class="pagination">
                                                 <li class="page-item disabled"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
                                                 <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                                <li class="page-item
+                                                "><a href="#" class="page-link">2</a></li>
                                                 <li class="page-item active"><a href="#" class="page-link">3</a></li>
                                                 <li class="page-item"><a href="#" class="page-link">4</a></li>
                                                 <li class="page-item"><a href="#" class="page-link">5</a></li>
@@ -391,7 +405,7 @@
                                         </div>
                                     </div>
                                 </div>  
-                            </div>   >
+                            </div>   
                         </div>
                     </div>
                 </div>
@@ -413,15 +427,44 @@
 
     </div>
 
-    {% comment %} <div class="footer_class">
-        <p>&copy; 2023 Admin Interface. All rights reserved.</p>
-    </div> {% endcomment %}
+   
 
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        {% comment %} excel {% endcomment %}
+        
+        <script>
+            $(document).ready(function() {
+                $("#searchInput").on("keyup", function() {
+                    var value = $(this).val().toLowerCase();
+                    $("#dataTable tbody tr").filter(function() {
+                        var row = $(this);
+                        var columns = row.find("td");
+                        var found = false;
+                        
+                        columns.each(function() {
+                            var columnText = $(this).text().toLowerCase();
+                            if (columnText.indexOf(value) > -1) {
+                                found = true;
+                                return false; // Exit loop if match found in this column
+                            }
+                        });
+                        
+                        row.toggle(found);
+                    });
+                });
+            });
+            </script>
+            
+            
+            
+      
 </body>
 
 </html>

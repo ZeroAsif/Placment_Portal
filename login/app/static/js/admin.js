@@ -120,8 +120,12 @@ function updateStatusCell(jobId) {
 
 
 // inside accordio table
-$(document).ready(function(){
-	$('[data-toggle="tooltip"]').tooltip();
-});
+// $(document).ready(function(){
+// 	$('[data-toggle="tooltip"]').tooltip();
+// });
 
 
+ 
+
+
+// search accordin table

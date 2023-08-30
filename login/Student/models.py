@@ -191,5 +191,11 @@ class Job_application(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
     interested = models.BooleanField(default=False) # Set to True if interested False if not
+    INTERESTED_CHOICES = [
+        (True, 'Interested'),
+        (False, 'Not Interested'),
+    ]
 
+    def get_interested_display(self):
+        return dict(self.INTERESTED_CHOICES)[self.interested]
 

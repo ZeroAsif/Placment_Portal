@@ -17,6 +17,8 @@ class JobPosting(models.Model):
     ]
     hiring_status = models.CharField(max_length=20, choices=HIRING_STATUS_CHOICES, default='hiring')
     salary_range = models.CharField(max_length=50)
+    
+    pdf_file = models.FileField(upload_to='pdfs/', null=True, blank=True)
 
     
 
