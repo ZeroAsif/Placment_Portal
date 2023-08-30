@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title> {% block title %}{% endblock %}</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -32,6 +36,8 @@
             border-radius:50%;
         }
 
+
+
     </style>
 
 
@@ -39,12 +45,12 @@
         /* Apply text decoration none to .description class */
        .description {
           text-decoration: none;
-        }
+       }
 
         /* Add hover effect with bottom border for .description class */
-        .description .view-description:hover{
+       .description .view-description:hover{
           font-size:22px; /* You can adjust the color as needed */
-        }
+       }
 
     </style>
 
@@ -70,7 +76,6 @@
 
 
     <!--    /* Navbar css */ -->
-
     <style>
         .gradient-custom {
           /* fallback for old browsers */
@@ -82,6 +87,7 @@
           /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
           background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
         }
+
 
     </style>
 
@@ -125,6 +131,7 @@
             right: 300px;
         }
 
+
     </style>
 
 
@@ -143,6 +150,7 @@
           border-radius: 5px;
           margin-top:120px;
         }
+
 
     </style>
 
@@ -193,22 +201,25 @@
                 {% if profile_image.profile_picture %}
                 <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
                    id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="media/{{profile_image.profile_picture}}" class="rounded-circle" height="25"
+                    <img src="media/{{profile_image.profile_picture}}" class="rounded-circle" height="25" width="25"
                          alt="PROFILE"/>
                 </a>
                 {% else %}
                 <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
                    id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="{% static 'images/ict.png' %}" class="rounded-circle" height="25"
+                    <img src="{% static 'images/ict.jpeg' %}" class="rounded-circle" height="25" width="25"
                          alt="PROFILE"/>
                 </a>
                 {% endif %}
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
                     <li>
-                        <a class="dropdown-item" href="{% url 'viewprofile' %}">My profile</a>
+                        <a class="dropdown-item" href="{% url 'viewprofile' %}"><i class="fa-solid fa-circle-user mx-2"
+                                                                                   style="color: #005af5;"></i>Student
+                            profile</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}"><i
+                                class="fa-solid fa-right-from-bracket mx-2" style="color: #ff0000;"></i>Logout</a>
                     </li>
                 </ul>
             </div>

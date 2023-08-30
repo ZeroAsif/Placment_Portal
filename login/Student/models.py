@@ -22,7 +22,7 @@ class TimeStampedModel(models.Model):
         return super(TimeStampedModel, self).save(*args, **kwargs)
 
 
-# we are stor Student Personal Information here.
+# we are store Student Personal Information here.
 class PersonalInfo(TimeStampedModel):
     student = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
@@ -104,7 +104,7 @@ class Experience(TimeStampedModel):
         ('full_time', "Full Time")
     ]
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job_type = models.CharField(max_length=20, blank=True, null=True, choices=choices, default='full_type')
+    job_type = models.CharField(max_length=20, blank=True, null=True, choices=choices, default='full_time')
     company_name = models.CharField(max_length=100, blank=True)
     designation = models.CharField(max_length=100, blank=True)
     description = models.CharField(max_length=100, blank=True)
@@ -151,7 +151,7 @@ class Certificate(TimeStampedModel):
 # we are store Student Resume here
 class Resume(TimeStampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    resume_file = models.FileField(upload_to='media/resume/')
+    resume_file = models.FileField(upload_to='resume/')
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -186,7 +186,8 @@ class AdditionalSkill(TimeStampedModel):
     def _str_(self):
         return self.title
 
-# # we are store Student Application here.
+
+#  we are store Student Application here.
 class Job_application(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)

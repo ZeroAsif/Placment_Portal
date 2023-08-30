@@ -15,7 +15,7 @@
                         <h3 class="mb-3">{{job_description.job_title}}</h3>
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{job_description.location}}</span>
                         <span class="text-truncate me-3"><i class="fa-regular fa-building text-primary me-2"></i>{{job_description.company_name}}</span>
-                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
+                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{job_description.salary_range}}</span>
                     </div>
                 </div>
 
@@ -43,10 +43,11 @@
                 <div class="bg-light rounded p-5 mb-4 wow slideInUp" data-wow-delay="0.1s">
                     <h4 class="mb-4">Job Summery</h4>
                     {% load humanize %}
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Published On: {{job_description.created_at|naturaltime}}</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature: Full Time</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary: $123 - $456</p>
-                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location: {{job_description.location}}</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Published On : {{job_description.created_at|naturaltime}}</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Job Nature : Full Time</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Salary : {{job_description.salary_range}}</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Location : {{job_description.location}}</p>
+                    <p><i class="fa fa-angle-right text-primary me-2"></i>Hiring_Status : {{job_description.hiring_status}}</p>
                 </div>
             </div>
         </div>

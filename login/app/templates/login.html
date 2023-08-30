@@ -118,17 +118,21 @@ body {
 
 
 
+
+
     </style>
 </head>
 <body>
-    {% if messages %}
-    {% for message in messages %}
-    <div class="container alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>{{message}}</strong> 
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="container alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{message}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
 {% endif %}
+
 <div class="wrapper">
     <div class="logo">
         <img src="{% static 'images/ict.jpeg' %}" alt="">
@@ -140,7 +144,7 @@ body {
         <div class="p-10 m-10">
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
-                <input type="text" name="username" id="username" placeholder="Username" autocomplete="off" value="">
+                <input type="text" name="username" id="username" placeholder="Username" autocomplete="off" value="@">
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>

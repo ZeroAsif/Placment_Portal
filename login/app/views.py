@@ -88,8 +88,8 @@ def Jobposting(request):
             messages.success(request,"Company Added Successfully    ")
             return redirect('admins')
     except:
-            messages.error(request,"Please Fill Correct Information")
-            return redirect('admins')
+        messages.error(request,"Please Fill Correct Information")
+        return redirect('admins')
 
 
 

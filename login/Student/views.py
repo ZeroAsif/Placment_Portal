@@ -1,13 +1,53 @@
+import os
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from app.models import JobPosting
 from django.shortcuts import render, redirect
-from .models import PersonalInfo, Job_application, User, Resume
+from .models import *
+from django.shortcuts import get_object_or_404, HttpResponse
+from django.contrib import messages
+from datetime import datetime
+from django.db import IntegrityError
+from django.contrib.auth.models import User
+from xhtml2pdf import pisa
+from django.template.loader import render_to_string
 import uuid
-from django.shortcuts import get_object_or_404,HttpResponse
 
 
 # Create your views here.
+
+
+def Check_User_Email(request):
+    if request.method == 'GET':
+        email = request.GET['email_id']
+        if email:
+            check_email = PersonalInfo.objects.filter(email=email)
+            if len(check_email) == 1:
+                return HttpResponse("Exists")
+            else:
+                return HttpResponse("Not Exists")
+
+
+def Check_Student_ID(request):
+    if request.method == 'GET':
+        std_id = request.GET['student_college_id']
+        if std_id:
+            check_std_id = PersonalInfo.objects.filter(student_college_id=std_id)
+            if len(check_std_id) == 1:
+                return HttpResponse("Exists")
+            else:
+                return HttpResponse("Not Exists")
+
+
+def Check_Phone(request):
+    if request.method == 'GET':
+        phone = request.GET['phone']
+        if phone:
+            check_phone = PersonalInfo.objects.filter(phone_number=phone)
+            if len(check_phone) == 1:
+                return HttpResponse("Exists")
+            else:
+                return HttpResponse("Not Exists")
 
 
 # User Home_page
@@ -36,11 +76,21 @@ def HomePage(request):
 def ViewProfile(request):
     try:
         user = request.user.id
-        personal_info = PersonalInfo.objects.get(student_id=user)
-        # resume = Resume.objects.get(user_id=user)
+        personal_info = PersonalInfo.objects.filter(student__id=user)
+        cv = Resume.objects.filter(user__id=user)
+        experience = Experience.objects.filter(user__id=user).order_by("-id")
+        education = Education.objects.filter(user__id=user).order_by("-id")
+        certification = Certificate.objects.filter(user__id=user).order_by("-id")
+        project = Project.objects.filter(user__id=user).order_by("-id")
+        additional_skill = AdditionalSkill.objects.filter(user__id=user).order_by("-id")
         context = {
-            "personal_info": personal_info,
-            # "resume": resume,
+            'personal_infos': personal_info,
+            'cvs': cv,
+            'experience': experience,
+            'education': education,
+            'certification': certification,
+            'project': project,
+            'additional_skill': additional_skill
         }
         return render(request, 'user_templates/viewprofile.html', context)
     except:
@@ -60,6 +110,7 @@ def ViewProfile(request):
 #             filtered_data = job_data.filter(name=name)
 
 
+# Student show Interest View Here.
 def job_application(request, job_id):
     job_posting = JobPosting.objects.get(id=job_id)
 
@@ -70,6 +121,7 @@ def job_application(request, job_id):
         existing_application.save()
     else:
         new_application = Job_application(user=request.user, job_posting=job_posting, interested=True)
+        messages.success(request, 'Applied Successfully')
         new_application.save()
     return redirect('home')
 
@@ -87,31 +139,50 @@ def Job_Description(request, id):
 
 
 # Here we are storing the data of Student of Personal Info using POST method
-
 def create_personal_info(request):
     if request.method == 'POST':
-        personal_info_data = {
-            'student': request.user,
-            'email': request.POST.get('email'),
-            'first_name': request.POST.get('first_name'),
-            'middle_name': request.POST.get('middle_name'),
-            'last_name': request.POST.get('last_name'),
-            'date_of_birth': request.POST.get('date_of_birth'),
-            'phone_number': request.POST.get('phone_number'),
-            'address': request.POST.get('address'),
-            'zip_code': request.POST.get('zip_code'),
-            'objectives': request.POST.get('objectives'),
-            'profile_picture': request.FILES.get('profile_picture'),
-            'student_college_id': request.POST.get('student_id'),
-        }
-        p_obj = PersonalInfo.objects.create(**personal_info_data)
-        return redirect('viewprofile')
-    return render("request", 'user_templates/viewprofile.html')
+        student = request.user
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        middle_name = request.POST.get('middle_name')
+        last_name = request.POST.get('last_name')
+        date_of_birth_str = request.POST.get('date_of_birth')
+        date_of_birth = datetime.strptime(date_of_birth_str, '%Y-%m-%d').date()
+        phone_number = request.POST.get('phone_number')
+        address = request.POST.get('address')
+        zip_code_str = request.POST.get('zip_code')
+        try:
+            zip_code = int(zip_code_str)
+        except:
+            zip_code = None
+        objectives = request.POST.get('objectives')
+        profile_picture = request.FILES.get('profile_picture')
+        student_college_id = request.POST.get('student_id')
+
+        try:
+            p_obj = PersonalInfo(student=student, email=email, first_name=first_name, middle_name=middle_name,
+                                 last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
+                                 address=address, zip_code=zip_code, objectives=objectives,
+                                 profile_picture=profile_picture, student_college_id=student_college_id)
+            p_obj.save()
+            messages.success(request, 'Personal-information add successfully')
+            return redirect('viewprofile')
+        except IntegrityError as e:
+            error_message = str(e).lower().strip()
+            if 'unique constraint' in error_message and 'student_id' in error_message:
+                messages.error(request,"You have already added your personal information. Use the update feature to make changes.")
+            elif 'unique constraint' in error_message and 'student_college_id' in error_message:
+                messages.error(request, 'Student ID already exist. Please choose different ones.')
+            elif 'unique constraint' in error_message and 'phone_number' in error_message:
+                messages.error(request, 'Phone Number already exist. Please choose different ones.')
+            elif 'unique constraint' in error_message and 'email' in error_message:
+                messages.error(request, 'Email ID already exist. Please choose different ones.')
+            return redirect('viewprofile')
+    messages.error(request, "You have already added your personal information. Use the update feature to make changes.")
+    return render(request, 'user_templates/viewprofile.html')
 
 
-"""Here we are updating the data of Student of Personal Info using Update method"""
-
-
+# Here we are updating the data of Student of Personal Info using Update method
 def update_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     if request.method == 'POST':
@@ -127,13 +198,13 @@ def update_personal_info(request, personal_info_id):
         personal_info.profile_picture = request.FILES.get('profile_picture')
         personal_info.student_college_id = request.POST.get('student_college_id')
         personal_info.save()
+        messages.success(request, 'Personal-info update successfully')
         return redirect('profile')  # Redirect to the profile page or wherever you'd like
+    messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'update_personal_info.html', {'personal_info': personal_info})
 
 
-"""Here we are deleting the data of Student of Personal Info using Delete method"""
-
-
+# Here we are deleting the data of Student of Personal Info using Delete method
 def delete_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     if request.method == 'POST':
@@ -142,107 +213,161 @@ def delete_personal_info(request, personal_info_id):
     return render(request, 'delete_personal_info.html', {'personal_info': personal_info})
 
 
-def create_student_skills(request):
+# Upload Resume View Here.
+def Upload_Resume(request):
+    user = request.user
+
+    try:
+        existing_resume = Resume.objects.get(user=user)
+    except Resume.DoesNotExist:
+        existing_resume = None
+
     if request.method == 'POST':
-        skill_data = {
-            'user': request.user,
-            'skill_name': request.POST.get('skill_name'),
-            'id': uuid.uuid4()
-        }
-        StudentSkill.objects.create(**skill_data)
-        return redirect('profile')
-    return render(request, 'create_student_skill.html')
+        # Get the uploaded resume file from the form
+        resume = request.FILES['cv']
+
+        # If an existing resume exists, delete it
+        if existing_resume:
+            path_to_delete = existing_resume.resume_file.path
+            os.remove(path_to_delete)
+            existing_resume.delete()
+
+        # Create a new Resume object and save it
+        new_resume = Resume(user=user, resume_file=resume)
+        new_resume.save()
+        messages.success(request, 'Upload Resume successfully!')
+        return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
+    return render(request, 'user_templates/viewprofile.html')
 
 
-def update_student_skills(request, student_skill_id):
-    student_skill = StudentSkill.objects.get(id=student_skill_id)
+def Delete_Resume(request,id):
+    try:
+        delete_resume = Resume.objects.get(user__id=id)
+        resume_path = delete_resume.resume_file.path
+        os.remove(resume_path)
+        delete_resume.delete()
+        messages.success(request, "Resume delete successfully!")
+        return redirect('viewprofile')
+    except:
+        messages.error(request, "Something went wrong! Please contact Admin")
+        return redirect('viewprofile')
+
+
+def Experience_Information(request):
     if request.method == 'POST':
-        student_skill.skill_name = request.POST.get('skill_name')
-        student_skill.save()
-        return redirect('student_skill')
-    return render(request, 'update_student_skills.html')
+        user = request.user
+        job_type = request.POST.get('employment_type')
+        company_name = request.POST.get('company_name')
+        m_salary = request.POST.get('m_salary')
+        location = request.POST.get('location')
+        working_from = request.POST.get('working_from')
+        working_till = request.POST.get('working_till')
+        designation = request.POST.get('designation')
+        role_responsibility = request.POST.get('rr')
+
+        experience = Experience(user=user, job_type=job_type, company_name=company_name, monthly_salary=m_salary,
+                                designation=designation, location=location, working_till=working_till,
+                                working_from=working_from, description=role_responsibility)
+        experience.save()
+        messages.success(request, 'Experience-information add successfully!')
+        return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
+    return render(request, 'user_templates/viewprofile.html')
 
 
-def delete_student_skill(request, student_skill_id):
-    student_skill = StudentSkill.objects.get(id=student_skill_id)
-    if request.method == 'DLETE':
-        student_skill.delete()
-        return redirect('student skill')
-    return render(request, 'delete_student_skill')
-
-
-def create_language_skill(request):
+def Education_Information(request):
     if request.method == 'POST':
-        try:
-            language_skills = {
-                'student': request.user,
-                'language_name': request.POST.get('language_name'),
-                'id': uuid.uuid4()
-            }
-            LanguageSkill.objects.create(**language_skills)
-            return redirect('profile')  # Redirect to the profile page or wherever you'd like
+        user = request.user
+        institution_name = request.POST.get('i_name')
+        field_of_study = request.POST.get('fos')
+        start_date = request.POST.get('sd')
+        end_date = request.POST.get('ed')
+        department = request.POST.get('dn')
+        cgpa = request.POST.get('cgpa')
+        description = request.POST.get('des')
 
-        except Exception as e:
-            error_message = f"An error occurred: {e}"
-            # Handle the error or log it as needed
+        education = Education(user=user, institution_name=institution_name, field_of_study=field_of_study, cgpa=cgpa,
+                              start_date=start_date, end_date=end_date, description=description, department=department)
+        education.save()
+        messages.success(request, 'Education-information add successfully')
+        return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
+    return render(request, 'user_templates/viewprofile.html')
 
-    return render(request, 'create_language_skill.html')
 
-
-def update_language_skill(request, language_skill_id):
-    language_skills = LanguageSkill.objects.get(id=language_skill_id)
+def Certification_Information(request):
     if request.method == 'POST':
-        try:
-            LanguageSkill.language_name = request.POST.get('language_name')
-            LanguageSkill.save()
-            return redirect('profile')  # Redirect to the profile page or wherever you'd like
+        user = request.user
+        certification_title = request.POST.get('certification_name')
+        issue_organization = request.POST.get('issue-organization')
+        issue_date = request.POST.get('i_d')
+        certification_link = request.POST.get('c_l')
+        description = request.POST.get('desc')
 
-        except Exception as e:
-            error_message = f"An error occurred: {e}"
-            # Handle the error or log it as needed
-
-    return render(request, 'update_language_skill.html', {'language_skill': language_skills})
-
-
-def delete_language_skill(request, language_skill_id):
-    language_skills = LanguageSkill.objects.get(id=language_skill_id)
-    if request.method == 'Delete':
-        try:
-            language_skills.delete()
-            return redirect('')
-        except Exception as e:
-            error_message = f"An error occured:{e}"
-    return render(request, '', {'language_skills': language_skills})
+        certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
+                                    issue_date=issue_date, certificate_link=certification_link, description=description)
+        certification.save()
+        messages.success(request, 'Certification-information add successfully')
+        return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
+    return render(request, 'user_templates/viewprofile.html')
 
 
-# def Upload_Resume(request):
-#     user_id = User.objects.get(id=request.user.id)
-#     if request.method == 'POST':
-#         resume = request.POST.get('resume')
-#         obj = Resume(user=user_id, resume_file=resume)
-#         obj.save()
-#         return redirect('viewprofile')
-#     return render(request, 'user_templates/viewprofile.html')
+def Projects_Information(request):
+    if request.method == 'POST':
+        user = request.user
+        project_title = request.POST.get("title")
+        guide_name = request.POST.get("guide_name")
+        start_date = request.POST.get("std")
+        end_date = request.POST.get("ede")
+        description = request.POST.get("desc")
+
+        project = Project(user=user, title=project_title, advisor_name=guide_name, start_date=start_date,
+                          end_date=end_date, description=description)
+        project.save()
+        messages.success(request, 'Project-information add successfully')
+        return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
+    return render(request, 'user_templates/viewprofile.html')
+
+
+def Additional_Skill(request):
+    if request.method == 'POST':
+        user = request.user
+        hobbies_name = request.POST.get('ij')
+        language = request.POST.get('lan')
+        skill_name = request.POST.get('s_name')
+
+        additional_skill = AdditionalSkill(user=user, hobbies_name=hobbies_name, language_name=language, skill_name=skill_name)
+        additional_skill.save()
+        messages.success(request, 'Additional-skill add successfully')
+        return redirect('viewprofile')
+    messages.error(request, 'Something went wrong! Please contact Admin')
+    return render(request, 'user_templates/viewprofile.html')
+
+
+def Download_Resume(request,id):
+    try:
+        document = get_object_or_404(Resume, user__id=id)
+        response = HttpResponse(document.resume_file.read(), content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{document.resume_file.name}"'
+        return response
+        messages.success(request,'Download-resume Successfully')
+    except:
+        messages.error(request, 'Something went wrong! Please contact Admin')
+
+
+# def job_search(request):
+#     query = request.GET.get('company-name')
+#     location = request.GET.get('location')
 #
+#     jobs = JobPosting.objects.all()
 #
-# def Download_Resume(request,id):
-#         document = get_object_or_404(Resume, id=id)
-#         response = HttpResponse(document.file, content_type='application/pdf')
-#         response['Content-Disposition'] = f'attachment; filename="{document.file.name}"'
-#         return response
-
-
-# job search
-def Job_Search(request):
-    designation = request.GET.get('company-name')
-    location = request.GET.get('employment-type')
-
-    jobs = JobPosting.objects.all()
-
-    if designation:
-        jobs = jobs.filter(job_title__icontains=designation)
-
-    if location:
-        jobs = jobs.filter(location__icontains=location)
-
-    return render(request, 'user_templates/home.html', {'jobs':jobs})
+#     if query:
+#         jobs = jobs.filter(job_title__icontains=query)
+#     if location:
+#         jobs = jobs.filter(location=location)
+#
+#     context = {'show_job': jobs}
+#     return render(request, 'user_templates/home.html', context)

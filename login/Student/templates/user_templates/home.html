@@ -6,13 +6,18 @@
 
 <!--  Profile Card  -->
 <div class="card shadow-sm bg-white rounded" style="width: 15rem;">
+    {% if profile_image.profile_picture %}
     <img id="images" src="media/{{profile_image.profile_picture}}"
          class="card-img-top" alt="...">
+    {% else %}
+    <img id="images" src="{% static 'images/ict.jpeg' %}"
+         class="card-img-top" alt="...">
+    {% endif %}
     <div class="card-body">
-        <h5 class="card-title">Card title</h5>
+        <h5 class="card-title">{{profile_image.first_name}}</h5>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
             content.</p>
-        <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary btn-sm">ViewProfile</a>
+        <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary btn-sm"><i class="fa-regular fa-eye mx-1"></i>ViewProfile</a>
     </div>
 </div>
 
@@ -21,7 +26,7 @@
 <div class="row justify-content-end mx-1">
     <div class="col-xl-10">
         <div class="container mt-3 p-4 border rounded">
-            <form method="GET" action="job-search">
+            <form>
                 <div class="d-flex align-items-end">
                     <div class="col-5">
                         <div class="form-outline">
@@ -40,7 +45,7 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <button type="submit" class="btn btn-outline-primary btn-md mx-2">Search</button>
+                        <button type="button" class="btn btn-outline-primary btn-md mx-2">Search</button>
                     </div>
                 </div>
             </form>
@@ -70,15 +75,17 @@
                                     <span class="text-truncate me-3"><i
                                             class="fa-regular fa-building text-primary me-2"></i>{{show_jobs.company_name}}</span>
                                     <span class="text-truncate me-0"><i
-                                            class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
+                                            class="far fa-money-bill-alt text-primary me-2"></i>{{show_jobs.salary_range}}</span>
+                                    <span class="text-truncate me-0"><i class="fa fa-bullhorn text-primary mx-3 me-2"
+                                                                        aria-hidden="true"></i>{{show_jobs.hiring_status}}</span>
                                 </div>
                             </div>
                             <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                 <div class="d-flex mb-3">
                                     {% if user.is_authenticated %}
-                                    <!-- Custom template tag to check if user is interested -->
                                     {% if show_jobs.id in applied_jobs_ids %}
-                                    <span class="btn btn-success disabled"><i class="fa-solid fa-check"></i>Applied</span>
+                                    <span class="btn btn-success disabled"><i
+                                            class="fa-solid fa-check"></i>Applied</span>
                                     {% else %}
                                     <a class="btn btn-success" href="{% url 'interest' show_jobs.id %}">Interest</a>
                                     {% endif %}
@@ -98,5 +105,13 @@
     </div>
 </div>
 
+
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+{% for flash in messages %}
+    alertify.set('notifier','position', 'top-right');
+    alertify.success('{{flash}}');
+{% endfor %}
+</script>
 
 {% endblock %}
