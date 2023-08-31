@@ -144,27 +144,14 @@ def update_job_posting(request, job_id):
 
 
 
-
-
-
-
-
-# pdf post
-
-
-
-
-
-
-
-
-
-
-
 # table to excel format 
 
-class ExportExcelView(View):
-    def get(self, request, *args, **kwargs):
+
+def ExportExcel(request, job_id):
+    if request.method == 'POST':
+        print('inside post export')
+    if request.method == 'GET':
+        print(job_id,'iside a excel')
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="data_export.xls"'
 
@@ -172,15 +159,23 @@ class ExportExcelView(View):
         ws = wb.add_sheet('Data Export')
 
         # Write headers
-        headers = ['#', 'Name', 'Email', 'Phone Number', 'Resume', 'Country']
+        headers = ['Sr.No', 'Name', 'Email', 'Phone Number', 'College ID']
         for col_num, header_title in enumerate(headers):
             ws.write(0, col_num, header_title)
 
+        student_data = Job_application.objects.filter(job_posting__id=job_id ,interested=True)
         # Fetch data from your model or construct a list of dictionaries containing the data
-        data = [
-            {'#': '1', 'Name': 'Asif Khan', 'Email': 'pasif@gmail.com', 'Phone Number': 'Portland', 'Resume': '97219', 'Country': 'USA'},
-            # Add other rows here
-        ]
+        data = []
+        for s_d in student_data:
+
+            data .append(             
+                {'Sr.No': '1', 
+                 'Name': s_d.user.personalinfo.first_name, 
+                 'Email':  s_d.user.personalinfo.email, 
+                 'Phone Number':  s_d.user.personalinfo.phone_number, 
+                 '	College ID':s_d.user.personalinfo.student_college_id},
+            )
+            print(data)
 
         # Write data rows
         for row_num, row_data in enumerate(data, start=1):

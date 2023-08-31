@@ -14,7 +14,7 @@ urlpatterns = [
      path('addjob/',Jobposting,name='addjob'),
      path('delete/<int:job_id>/', delete_job_posting, name='delete_job'),
      path('update/<int:job_id>/', update_job_posting, name='update_job'),
-     path('export_excel/', ExportExcelView.as_view(), name='export_excel'),
+     path('<int:job_id>/', ExportExcel, name='export_excels'),
     
 
 ]
