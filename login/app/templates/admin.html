@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-        {% comment %} excel {% endcomment %}
+    {% comment %} excel {% endcomment %}
 
 
-       
+
     <title>Admin Interface</title>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
     <script src="{% static 'js/admin.js' %}" defer></script>
@@ -29,7 +29,7 @@
             <li><a href="#job-listing">Job Listing</a></li>
             <li><a href="#users">Intrested student</a></li>
             <li><a href="#analytics">Update Status </a></li>
-            <li><a href="{% url 'logout' %} " id="logout">LogOut</a></li>
+            <li><a href="{% url 'logout' %}" id="logout">LogOut</a></li>
 
 
         </ul>
@@ -148,7 +148,7 @@
                             <td>{{jp.company_name}}</td>
                             <td>{{jp.location}}</td>
 
-                            
+
 
                             <td>{{jp.salary_range}}</td>
                             {% comment %} <td>{{jp.pdf_file}}</td> {% endcomment %}
@@ -191,7 +191,7 @@
                                             <input type="text" id="updateJobLocation" name="location" class="form-input"
                                                 value="{{ jp.location }}" required>
                                         </div>
-{% comment %} 
+                                        {% comment %}
                                         <div class="form-group">
                                             <label for="updateJobDescription" class="form-label">Job Description</label>
                                             <textarea id="updateJobDescription" name="description" class="form-input"
@@ -209,8 +209,8 @@
                                             <input type="text" id="salary_range" name="salary_range" class="form-input"
                                                 value="{{ jp.salary_range }}" required>
                                         </div>
-                                        
-                                        
+
+
                                         <div class="form-group">
                                             <label for="updateJobRequirements" class="form-label">JD File</label>
                                             <input type="file" id="pdf_file" name="pdf_file" class="form-input"
@@ -219,19 +219,19 @@
 
 
 
-                 
+
                                         <div class="form-group">
                                             <label class="form-label">Hiring Status</label>
                                             {% for choice in jp.HIRING_STATUS_CHOICES %}
-                                                <div class="form-check">
+                                            <div class="form-check">
                                                     <input type="radio" class="form-check-input" id="updateHiringStatus{{ choice.0|title }}" name="hiring_status" value="{{ choice.0 }}"
                                                         {% if jp.hiring_status == choice.0 %}checked{% endif %}>
-                                                    <label class="form-check-label" for="updateHiringStatus{{ choice.0|title }}">{{ choice.1 }}</label>
-                                                </div>
+                                                <label class="form-check-label" for="updateHiringStatus{{ choice.0|title }}">{{ choice.1 }}</label>
+                                            </div>
                                             {% endfor %}
                                         </div>
-                                        
-                               
+
+
 
 
                                         {% comment %} update modal end here {% endcomment %}
@@ -264,7 +264,7 @@
 
         <!-- job listing accordion yaha hai -->
 
-        
+
         <div id="job-listing" class="section mt-3">
             {% comment %} <div class="input-box">
                 <i class="uil uil-search"></i>
@@ -282,7 +282,7 @@
                             {{data.jdata.company_name}}
                         </button>
                     </h2>
-                    
+
                     <div id="collapseOne-{{ data.jdata.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample-{{ data.jdata.id }}">
                         <div class="accordion-body">
                             <div class="container-xl">
@@ -300,7 +300,7 @@
                                             </div>
                                         </div>
                                         {% comment %} <button id="exportButton" class="btn btn-primary">Download to Excel</button> {% endcomment %}
-                                        
+
                                         <table class="table table-striped table-hover table-bordered" id="dataTable">
                                             <thead>
                                                 <tr>
@@ -313,63 +313,52 @@
                                                     <th>Resume</th>
                                                     <th>Actions</th>
                                                 </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for student in data.sdata%}
-                                                    <tr>
-                                                        <td>{{forloop.counter}}</td>
+                                            </thead>
+                                            <tbody>
+                                                {% for student in data.sdata%}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
                                                         <td>{{student.user.personalinfo.first_name }} {{ student.user.personalinfo.last_name }}</td>
-                                                        <td>{{ student.user.email}}</td>
-                                                        <td>{{ student.user.personalinfo.phone_number}}</td>
-                                                        <td>{{ student.user.personalinfo.student_college_id}}</td>
-                                                        <td>{{student.user.personalinfo.address}}</td>
-                                                        <td>
-                                                            {% if student.user.resume_set.exists %}
-                                                                {{ student.user.resume_set.first.resume_file.name|slice:'-1' }}
-                                                            {% else %}
-                                                                Resume Not Available
-                                                            {% endif %}
-                                                        </td>
-                                                        <td>
-                                                            <a href="{% if student.user.resume_set.exists %}{{ student.user.resume_set.first.resume_file.url }}{% endif %}" 
-                                                               {% if not student.user.resume_set.exists %}class="disabled"{% endif %}
-                                                               download title="Download Resume" data-toggle="tooltip">
-                                                                <i class="material-icons">cloud_download</i>
-                                                            </a>
-                                                            <a href="{% if student.user.resume_set.exists %}{{ student.user.resume_set.first.resume_file.url }}{% endif %}" 
-                                                               {% if not student.user.resume_set.exists %}class="disabled"{% endif %}
-                                                               title="View Resume" data-toggle="tooltip">
-                                                                <i class="material-icons">visibility</i>
-                                                            </a>
-                                                        </td>
-                                                    </tr>
-                                                    {% endfor %}
-                                                
-                                                
-                                            </tbody>
-                                            <a href="{% url 'export_excel' %}" class="btn btn-primary">Export to Excel</a>
-                                            
+                                                    <td>{{ student.user.email}}</td>
+                                                    <td>{{ student.user.personalinfo.phone_number}}</td>
+                                                    <td>{{ student.user.personalinfo.student_college_id}}</td>
+                                                    <td>{{student.user.personalinfo.address}}</td>
+                                                    <td>
+                                                        {% if student.user.resume.resume_file %}
+                                                        <a>
+                                                            {{student.user.personalinfo.first_name }} {{student.user.personalinfo.last_name }}
+                                                        </a>
+                                                        {% else %}
+                                                        Resume Not Available
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if student.user.resume.resume_file %}{{ student.user.resume.resume_file.url }}{% endif %}"
+                                                            {% if not student.user.resume.resume_file %}class="disabled"
+                                                            {% endif %} download title="Download Resume" data-toggle="tooltip">
+                                                            <i class="material-icons">cloud_download</i>
+                                                        </a>
+                                                        <a href="{% if student.user.resume.resume_file %}{{ student.user.resume.resume_file.url }}{% endif %}"
+                                                            {% if not student.user.resume.resume_file %}class="disabled"
+                                                            {% endif %} title="View Resume" data-toggle="tooltip">
+                                                            <i class="material-icons">visibility</i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
 
-                                            
+
+                                            </tbody>
+                                            <a href="{% url  'export_excels' data.jdata.id %}" class="btn btn-primary">Export to Excel</a>
+
+
+
 
                                         </table>
-                                        
-                                        <div class="clearfix">
-                                            <div class="hint-text">Showing <b>5</b> out of <b>25</b> entries</div>
-                                            <ul class="pagination">
-                                                <li class="page-item disabled"><a href="#"><i class="fa fa-angle-double-left"></i></a></li>
-                                                <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                                <li class="page-item
-                                                "><a href="#" class="page-link">2</a></li>
-                                                <li class="page-item active"><a href="#" class="page-link">3</a></li>
-                                                <li class="page-item"><a href="#" class="page-link">4</a></li>
-                                                <li class="page-item"><a href="#" class="page-link">5</a></li>
-                                                <li class="page-item"><a href="#" class="page-link"><i class="fa fa-angle-double-right"></i></a></li>
-                                            </ul>
-                                        </div>
+
                                     </div>
-                                </div>  
-                            </div>   
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -391,7 +380,7 @@
 
     </div>
 
-   
+
 
 
 
@@ -399,36 +388,36 @@
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        {% comment %} excel {% endcomment %}
-        
-        <script>
-            $(document).ready(function() {
-                $("#searchInput").on("keyup", function() {
-                    var value = $(this).val().toLowerCase();
-                    $("#dataTable tbody tr").filter(function() {
-                        var row = $(this);
-                        var columns = row.find("td");
-                        var found = false;
-                        
-                        columns.each(function() {
-                            var columnText = $(this).text().toLowerCase();
-                            if (columnText.indexOf(value) > -1) {
-                                found = true;
-                                return false; // Exit loop if match found in this column
-                            }
-                        });
-                        
-                        row.toggle(found);
+    {% comment %} excel {% endcomment %}
+
+    <script>
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#dataTable tbody tr").filter(function () {
+                    var row = $(this);
+                    var columns = row.find("td");
+                    var found = false;
+
+                    columns.each(function () {
+                        var columnText = $(this).text().toLowerCase();
+                        if (columnText.indexOf(value) > -1) {
+                            found = true;
+                            return false; // Exit loop if match found in this column
+                        }
                     });
+
+                    row.toggle(found);
                 });
             });
-            </script>
-            
-            
-            
-      
+        });
+    </script>
+
+
+
+
 </body>
 
 </html>

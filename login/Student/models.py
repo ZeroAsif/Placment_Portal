@@ -28,6 +28,7 @@ class PersonalInfo(TimeStampedModel):
     first_name = models.CharField(max_length=50, blank=True, null=True)
     middle_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
+    email = models.EmailField(max_length=254)
     date_of_birth = models.DateField(blank=True, null=True)
     phone_number = models.CharField(max_length=10, validators=[MinLengthValidator(limit_value=10)], unique=True)
     address = models.TextField(blank=True, null=True, max_length=1000)
