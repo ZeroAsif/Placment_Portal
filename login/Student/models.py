@@ -199,3 +199,4 @@ class Job_application(TimeStampedModel):
     def get_interested_display(self):
         return dict(self.INTERESTED_CHOICES)[self.interested]
 
+

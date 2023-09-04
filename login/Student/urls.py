@@ -23,6 +23,7 @@ urlpatterns = [
     path("check-user-email", Check_User_Email, name='check-user-email'),
     path("check-student-id", Check_Student_ID, name='check-student-id'),
     path("check-phone", Check_Phone, name='check-phone'),
+    path("new-password", New_password, name='New-password'),
     # path('job-search', job_search, name='job-search'),
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 

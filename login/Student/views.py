@@ -9,9 +9,12 @@ from django.contrib import messages
 from datetime import datetime
 from django.db import IntegrityError
 from django.contrib.auth.models import User
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 import uuid
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash, authenticate
+
 
 
 # Create your views here.
@@ -371,3 +374,39 @@ def Download_Resume(request,id):
 #
 #     context = {'show_job': jobs}
 #     return render(request, 'user_templates/home.html', context)
+
+
+@login_required
+def New_password(request):
+    if request.method == 'POST':
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = request.user
+
+        try:
+            # Check if the old password is correct
+            if authenticate(username=user.username, password=old_password):
+                # Check if the new password and confirm password match
+                if new_password == confirm_password:
+                    # Set the new password
+                    user.set_password(new_password)
+                    user.save()
+
+                    # Update the session to prevent the user from being logged out
+                    update_session_auth_hash(request, user)
+
+                    messages.success(request, 'Password changed successfully.')
+                    return redirect('home')
+                else:
+                    messages.error(request,'New password and confirm password do not match.')
+                    return redirect('home')
+
+            else:
+                raise ValueError('Incorrect old password.')
+
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+
+    return render(request, 'user_templates/new_password.html')
