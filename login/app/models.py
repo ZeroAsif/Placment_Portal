@@ -11,6 +11,7 @@ class JobPosting(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
     HIRING_STATUS_CHOICES = [
         ('hiring', 'Hiring'),
         ('hiring_closed', 'Hiring Closed'),
@@ -19,8 +20,17 @@ class JobPosting(models.Model):
     salary_range = models.CharField(max_length=50)
 
     pdf_file = models.FileField(upload_to='pdfs/', null=True, blank=True)
+   
+    
 
 
+
+class SelectedStudent(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # ... Your existing fields ...
+    company_name = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
+    selected = models.BooleanField(default=False)  
+    message = models.CharField(max_length=255, blank=True, null=True, default="")
 
     def __str__(self):
         return f"{self.job_title} at {self.company_name}"
@@ -36,3 +46,4 @@ class reset_password(models.Model):
 
     def __str__(self):
         return self.user.email
+

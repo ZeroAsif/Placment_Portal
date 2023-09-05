@@ -1,3 +1,5 @@
+
+from .models import SelectedStudent
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
 from django.views import View
@@ -8,12 +10,9 @@ from django.contrib.auth.decorators import login_required
 from django. contrib import messages
 from .models import JobPosting
 from  Student.models import Job_application
-# import xlwt
+from django.core.paginator import Paginator
 from Student.models import *
 from django.core.exceptions import ObjectDoesNotExist
-from .helper import send_forget_password_mail
-from .models import *
-
 
 
 # Create your views here.
@@ -56,7 +55,6 @@ def LoginPage(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request, email=email, password=password)
-        print(user, 'llllllllllllllllll')
         if user is not None:
             if user.is_staff:
                 login(request, user)
@@ -75,21 +73,35 @@ def LoginPage(request):
 
 
 
-def AdminPage(request):
 
-        try:
-            job_posting = JobPosting.objects.all().order_by("-created_at")
-            context = []
-            sdata = []
-            for job in job_posting:
-                jdata = job
-                sdata = Job_application.objects.filter(job_posting= job,interested=True)
-                context.append({'jdata':jdata,'sdata':sdata})
-        except ObjectDoesNotExist:
-            job_posting=[]
-            context=[]
-            sdata = []
-        return render(request,'admin.html',{'job_posting':job_posting, 'student_data':sdata,'context':context})
+
+
+
+def AdminPage(request):
+    try:
+        job_posting = JobPosting.objects.all().order_by("-created_at")
+        context = []
+        s_data = []
+        for job in job_posting:
+            jdata = job
+            sdata = Job_application.objects.filter(job_posting=job, interested=True)
+            s_data.append(sdata)
+            context.append({'jdata': jdata, 'sdata': sdata})
+
+
+        # Pagination
+        paginator = Paginator(job_posting, 5)
+        page_numbers = request.GET.get('page')
+        job_posting = paginator.get_page(page_numbers)
+
+      
+
+    
+    except ObjectDoesNotExist:
+        job_posting = []
+        context = []
+
+    return render(request, 'admin.html', {'job_posting': job_posting, 'sdata': s_data, 'context': context,  })
 
 
 def LogoutPage(request):
@@ -133,10 +145,13 @@ def delete_job_posting(request, job_id):
     return redirect('admins')  # Redirect to the job list page after deletion
 
 
-def job_list_view(request):
-    job_posting = JobPosting.objects.all()  # Retrieve job postings from your model
-    context = {'job_posting': job_posting}
-    return render(request, 'admins.html', context)
+# def job_list_view(request):
+#     job_posting = JobPosting.objects.all()  # Retrieve job postings from your model
+#     paginator = Paginator(job_posting, 5)
+#     page_number = request.GET.get('page')
+#     job_posting = paginator.get_page(page_number)
+#     context = {'job_posting': job_posting}
+#     return render(request, 'admins.html', context)
 
 
 
@@ -166,10 +181,6 @@ def update_job_posting(request, job_id):
 
 
 
-
-# table to excel format
-
-
 def ExportExcel(request, job_id):
     if request.method == 'POST':
         print('inside post export')
@@ -191,11 +202,12 @@ def ExportExcel(request, job_id):
         data = []
         for s_d in student_data:
 
-            data .append(
-                {'Sr.No': '1',
-                 'Name': s_d.user.personalinfo.first_name,
-                 'Email':  s_d.user.personalinfo.email,
-                 'Phone Number':  s_d.user.personalinfo.phone_number,
+
+            data .append(             
+                {'Sr.No': s_d.user.personalinfo.student_id, 
+                 'Name': s_d.user.personalinfo.first_name, 
+                 'Email':  s_d.user.personalinfo.email, 
+                 'Phone Number':  s_d.user.personalinfo.phone_number, 
                  '	College ID':s_d.user.personalinfo.student_college_id},
             )
             print(data)
@@ -282,4 +294,56 @@ def ForgetPassword(request):
     return render(request , 'forget-password.html')
 
 
+
+
+
+
+# def toggle_selected(request, student_id):
+#     try:
+#         student = Student.objects.get(id=student_id)
+#         student.selected = not student.selected
+#         student.save()
+#         return redirect('your_student_list_view')  # Replace 'your_student_list_view' with the actual URL name of your student list view
+#     except Student.DoesNotExist:
+#         return redirect('your_student_list_view')  # Redirect to the student list view in case of an error
+    
+
+
+
+# def save_selected_students(request):
+#     id = request.POST.get('selected_students')
+#     job_id = request.POST.get('job_students')
+#     user_obj = User.objects.get(id =id)
+#     job_obj = JobPosting.objects.get(id = job_id)
+#     obj = SelectedStudent.objects.create(user=user_obj,company_name=job_obj,selected=True)
+#     obj.save()
+#     return redirect('admins')
+    
+def save_selected_students(request):
+    selected_student_id = request.POST.get('selected_students')
+    job_id = request.POST.get('job_students')
+    
+    try:
+        user_obj = User.objects.get(id=selected_student_id)
+        job_obj = JobPosting.objects.get(id=job_id)
+
+        # Check if the student is already selected
+        if SelectedStudent.objects.filter(user=user_obj, company_name=job_obj).exists():
+            messages.error(request,"Successfully selected student")
+            return render (request,'admin.html')
+
+        # Create a new SelectedStudent object with the "You Are Selected" message
+        obj = SelectedStudent.objects.create(
+            user=user_obj,
+            company_name=job_obj,
+            selected=True,
+            message="You Are Selected"
+        )
+        obj.save()
+
+        return HttpResponse("You Are Selected")
+    except User.DoesNotExist:
+        return HttpResponse("Selected student not found.")
+    except JobPosting.DoesNotExist:
+        return HttpResponse("Job posting not found.")
 

@@ -410,3 +410,12 @@ def New_password(request):
             messages.error(request, f'An error occurred: {str(e)}')
 
     return render(request, 'user_templates/new_password.html')
+
+# selected student show here
+
+from django.shortcuts import render
+from app.models import SelectedStudent
+
+def status_page(request):
+    selected_students = SelectedStudent.objects.filter(selected=True)
+    return render(request, 'user_templates/status.html', {'selected_students': selected_students})

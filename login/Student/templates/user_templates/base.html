@@ -1,94 +1,88 @@
 <!doctype html>
 {% load static %}
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title> {% block title %}{% endblock %}</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
     <!-- Default theme -->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
     <style>
-        body{
-            overflow-x:hidden;
+        body {
+            overflow-x: hidden;
         }
 
-        .line_mid{
-            border-left : 1px solid black;
-            position:relative;
-            right:100px;
-            bottom:2px;
-            width:1px;
+        .line_mid {
+            border-left: 1px solid black;
+            position: relative;
+            right: 100px;
+            bottom: 2px;
+            width: 1px;
         }
 
-        #images{
-            width:150px;
-            height:150px;
-            border-radius:50%;
+        #images {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
         }
-
-
-
     </style>
 
 
     <style>
         /* Apply text decoration none to .description class */
-       .description {
-          text-decoration: none;
-       }
+        .description {
+            text-decoration: none;
+        }
 
         /* Add hover effect with bottom border for .description class */
-       .description .view-description:hover{
-          font-size:22px; /* You can adjust the color as needed */
-       }
-
+        .description .view-description:hover {
+            font-size: 22px;
+            /* You can adjust the color as needed */
+        }
     </style>
 
 
     <!--    User  Profile Card css -->
     <style>
-        .card-img-top{
+        .card-img-top {
             width: 60%;
             border-radius: 50%;
             margin: 0 auto;
         }
 
-        .card{
+        .card {
             position: fixed;
             padding: 1em .5em;
             margin: 1em;
             text-align: center;
 
         }
-
-
     </style>
 
 
     <!--    /* Navbar css */ -->
     <style>
         .gradient-custom {
-          /* fallback for old browsers */
-          background: #6a11cb;
+            /* fallback for old browsers */
+            background: #6a11cb;
 
-          /* Chrome 10-25, Safari 5.1-6 */
-          background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
 
-          /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-          background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(106, 17, 203, 0.9), rgba(37, 117, 252, 0.9));
         }
-
-
     </style>
 
 
@@ -99,26 +93,31 @@
             top: 100px;
             right: 300px;
         }
+
         .edit1 {
             position: absolute;
             top: 370px;
             right: 300px;
         }
+
         .edit2 {
             position: absolute;
             top: 640px;
             right: 300px;
         }
+
         .edit3 {
             position: absolute;
             top: 911px;
             right: 300px;
         }
+
         .edit4 {
             position: absolute;
             top: 1182px;
             right: 300px;
         }
+
         .edit5 {
             position: absolute;
             top: 1455px;
@@ -130,67 +129,251 @@
             top: 1730px;
             right: 300px;
         }
-
-
     </style>
 
 
     <!--      Resume File Upload Section Css-->
     <style>
         .drop_box {
-          margin: 10px 0;
-          padding: 30px;
-          display: flex;
-          width:100%;
-          height:100px;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          border: 3px dotted #a3a3a3;
-          border-radius: 5px;
-          margin-top:120px;
+            margin: 10px 0;
+            padding: 30px;
+            display: flex;
+            width: 100%;
+            height: 100px;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border: 3px dotted #a3a3a3;
+            border-radius: 5px;
+            margin-top: 120px;
+        }
+    </style>
+
+
+    {% comment %} navbar header css {% endcomment %}
+
+    <style>
+        .head_container {
+            background-image: url(https://www.ictmumbai.edu.in/img/header-bg.jpg);
+            display: flex;
+            justify-content: space-evenly;
+            background-size: cover;
         }
 
+        .content_sec {
+            display: flex;
+            /* Display the brandname and brand_detail in a row */
+            flex-direction: column;
+            /* Stack the brandname and brand_detail in a column for smaller screens */
+            align-items: center;
+            /* Center align content horizontally */
+            font-family: sans-serif;
+            text-align: center;
+            padding: 20px;
+            color: black;
+            /* Make text black */
+        }
 
+        .brandname {
+            font-size: 28px;
+            margin-top: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: black;
+            /* Make text black */
+            margin-bottom: 10px;
+        }
+
+        .subbrand ul {
+            display: flex;
+            justify-content: space-evenly;
+            list-style: none;
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .subbrand li {
+            margin: 0 5px;
+            /* Add margin between li elements */
+        }
+
+        .brand_detail {
+            display: flex;
+            flex-wrap: wrap;
+            /* Allow items to wrap on smaller screens */
+            justify-content: space-evenly;
+            list-style: none;
+            font-size: 13px;
+            margin: 10px 0;
+        }
+
+        .para {
+            margin: 4px 0;
+            font-size: 14px;
+        }
+
+        .span_1 {
+            margin: 10px 18px 14px;
+
+        }
+
+        .span_2 {
+            margin: 16px 12px 2px 12px;
+
+        }
+
+        .brand_detail span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #002147;
+            border-radius: 50%;
+
+        }
+
+        .lowmargin {
+            margin: 4px 0;
+            line-height: 30px;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .head_container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .brandname {
+                font-size: 24px;
+                color: black;
+                /* Reset font color for responsiveness */
+            }
+
+            .brand_detail span {
+                display: none;
+                /* Hide span tags in responsiveness */
+            }
+
+            .subbrand ul,
+            .brand_detail {
+                flex-direction: column;
+                /* Stack li and p elements */
+                align-items: center;
+            }
+
+            .subbrand li,
+            .para {
+                margin: 5px 0;
+                /* Add margin for spacing in responsive view */
+            }
+        }
+    </style>
+
+
+    {% comment %} footer css {% endcomment %}
+
+    <style>
+        /* styles.css */
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .footer {
+            background: #505050 url('https://www.ictmumbai.edu.in/img/footer-bg.png');
+            background-size: cover;
+            padding: 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .left img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .right {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .contact-us {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-left: 50px;
+        }
+        
+        .small-image img {
+            max-width: 100%;
+            height: auto;
+            width: 100px;
+            padding-bottom: 32px;
+        }
+        
+        footer h3, footer p {
+            line-height: 1.5;
+            color: white;
+        }
+        
+
+.lower-footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 2px 0;
+    position: relative;
+}
+
+
+@media screen and (max-width: 767px) {
+    .footer {
+        padding-bottom: 60px; /* Create space for the lower footer */
+    }
+    .lower-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 0;
+    }
+}
+
+        
+        @media screen and (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .left {
+                flex: 1;
+                margin-right: 20px;
+            }
+        
+            .contact-us {
+                flex: 1;
+                text-align: left;
+                margin-top: 0;
+            }
+        }
+        
     </style>
 
 </head>
+
 <body>
 
-
-<!-- Navbar -->
-<nav class="navbar  sticky-top navbar-expand-lg navbar-dark bg-light gradient-custom">
-    <!-- Container wrapper -->
-    <div class="container-fluid">
-        <!-- Toggle button -->
-        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-            <i class="fas fa-bars"></i>
-        </button>
-
-        <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Navbar brand -->
-            <a class="navbar-brand navbar-nav mt-2 mt-lg-0" href="#">
-                <h4 class="pt-1 mb-1">ICT</h4>
-            </a>
-            <!-- Left links -->
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Team</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Projects</a>
-                </li>
-            </ul>
-            <!-- Left links -->
+    <div class="head_container">
+        <div class="image_sect">
+            <img src="https://www.ictmumbai.edu.in/img/ICT-mumbai-logo.png" alt="" width="160px" height="160px">
         </div>
         <!-- Collapsible wrapper -->
 
@@ -225,22 +408,147 @@
                         <a class="dropdown-item" href="{% url 'logout' %}"><i
                                 class="fa-solid fa-right-from-bracket mx-2" style="color: #ff0000;"></i>Logout</a>
                     </li>
+        <div class="content_sec">
+            <div class="brandname">INSTITUTE OF CHEMICAL TECHNOLOGY, MUMBAI</div>
+            <div class="subbrand">
+                <ul>
+                    <li>Mumbai</li>
+                    <li class="bold_bullet">&#x2022;</li>
+                    <li>IOC Bhubaneswar</li>
+                    <li class="bold_bullet">&#x2022;</li>
+                    <li>Marathwada Jalna</li>
                 </ul>
             </div>
+            <div class="brand_detail">
+                <p class="para">Category I Deemed to be University (MHRD/UGC)</p>
+                <span class="span_1"></span>
+                <p class="para">Elite Status and Centre Excellence, Govt. of Maharashtra</p>
+                <span class="span_1"></span>
+                <p class="para">Public Funded University</p>
+            </div>
+            <div class="brand_detail lowmargin">
+                <p class="para">NAAC A++ CGPA 3.77/4.00</p>
+                <span class="span_2">
+                </span>
+                <p class="para">NBA Accredited Programmes</p>
+            </div>
         </div>
-        <!-- Right elements -->
     </div>
-    <!-- Container wrapper -->
-</nav>
-<!-- Navbar -->
 
 
-{% block body %}{% endblock %}
+    <!-- Navbar -->
+    <nav class="navbar  sticky-top navbar-expand-lg navbar-dark bg-light gradient-custom">
+        <!-- Container wrapper -->
+        <div class="container-fluid">
+            <!-- Toggle button -->
+            <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Collapsible wrapper -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <!-- Navbar brand -->
+                <a class="navbar-brand navbar-nav mt-2 mt-lg-0" href="#">
+                    <h4 class="pt-1 mb-1">ICT</h4>
+                </a>
+                <!-- Left links -->
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Projects</a>
+                    </li> 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'status_page' %}">Status</a>
+                    </li>
+                </ul>
+                <!-- Left links -->
+            </div>
+            <!-- Collapsible wrapper -->
+
+            <!-- Right elements -->
+            <div class="d-flex align-items-center">
+                <!-- Avatar -->
+                <div class="dropdown">
+                    {% if profile_image.profile_picture %}
+                    <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+                        id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="media/{{profile_image.profile_picture}}" class="rounded-circle" height="25" width="25"
+                            alt="PROFILE" />
+                    </a>
+                    {% else %}
+                    <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"
+                        id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{% static 'images/ict.jpeg' %}" class="rounded-circle" height="25" width="25"
+                            alt="PROFILE" />
+                    </a>
+                    {% endif %}
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'viewprofile' %}"><i
+                                    class="fa-solid fa-circle-user mx-2" style="color: #005af5;"></i>Student
+                                profile</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'logout' %}"><i
+                                    class="fa-solid fa-right-from-bracket mx-2" style="color: #ff0000;"></i>Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Right elements -->
+        </div>
+        <!-- Container wrapper -->
+    </nav>
+    <!-- Navbar -->
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    
+
+
+
+    {% block body %}{% endblock %}
+
+
+    <footer class="footer my-5 mb-0" >
+        <div class="footer-content">
+            <div class="left">
+                <img src="https://www.ictmumbai.edu.in/img/ict-footer-final.png" alt="Large Image">
+            </div>
+            
+                <div class="contact-us">
+                    <h3>© INSTITUTE OF CHEMICAL TECHNOLOGY</h3>
+                    <p>Nathalal Parekh Marg, Matunga,</p>
+                    <p>Mumbai - 400019, India</p>
+                    <p>Ph : +91-22-33611111/2222</p>
+                </div>
+
+                <div class="small-image">
+                    <img src="https://www.ictmumbai.edu.in/img/ICT-mumbai-logo.png" alt="Small Image">
+            
+            </div>
+        </div>
+    </footer>
+
+
+    <footer class="lower-footer">
+        <p>&copy; All Rights Reserved. INSTITUTE OF CHEMICAL TECHNOLOGY, MUMBAI - 2018</p>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"></script>
 
 </body>
+
 </html>

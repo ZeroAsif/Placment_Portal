@@ -18,6 +18,7 @@ urlpatterns = [
     path("additional-skill", Additional_Skill, name='additional-skill'),
     path("delete-resume/<int:id>", Delete_Resume, name='delete-resume'),
     path("download-resume/<int:id>", Download_Resume, name='download-resume'),
+    path('status/', status_page, name='status_page'),
 
     # this path check validator user email & student_college_id
     path("check-user-email", Check_User_Email, name='check-user-email'),

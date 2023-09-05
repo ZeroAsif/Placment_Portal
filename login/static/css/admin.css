@@ -841,3 +841,109 @@ table.table td i {
   margin-top: 6px;
   font-size: 95%;
 }    
+
+
+/* Add this CSS to your stylesheet to style selected students */
+.selected-student {
+  background-color: #f0f8ff; /* Example background color for selected students */
+  /* Add any other styles you want for selected students */
+}
+
+
+
+
+/* admin Footer css */
+
+        /* styles.css */
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .footer {
+            background: #505050 url('https://www.ictmumbai.edu.in/img/footer-bg.png');
+            background-size: cover;
+            padding: 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .left img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .right {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .contact-us {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-left: 50px;
+        }
+        
+        .small-image img {
+            max-width: 100%;
+            height: auto;
+            width: 100px;
+            padding-bottom: 32px;
+        }
+        
+        footer h3, footer p {
+            line-height: 1.5;
+            color: white;
+        }
+        
+
+.lower-footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 2px 0;
+    position: relative;
+}
+
+
+@media screen and (max-width: 767px) {
+    .footer {
+        padding-bottom: 60px; /* Create space for the lower footer */
+    }
+    .lower-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 0;
+    }
+}
+
+        
+        @media screen and (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .left {
+                flex: 1;
+                margin-right: 20px;
+            }
+        
+            .contact-us {
+                flex: 1;
+                text-align: left;
+                margin-top: 0;
+            }
+        }
+        
+  

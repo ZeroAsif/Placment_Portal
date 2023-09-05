@@ -17,6 +17,7 @@ urlpatterns = [
      path('forget-password/' , ForgetPassword , name="forget_password"),
      path('change-password/<token>/' , ChangePassword , name="change_password"),
      path('<int:job_id>/', ExportExcel, name='export_excels'),
+     path('save_selected_students/',save_selected_students,name='save_selected_students'),
 
 ]
 
