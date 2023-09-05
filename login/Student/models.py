@@ -25,6 +25,7 @@ class TimeStampedModel(models.Model):
 # we are store Student Personal Information here.
 class PersonalInfo(TimeStampedModel):
     student = models.OneToOneField(User, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     middle_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
@@ -33,8 +34,8 @@ class PersonalInfo(TimeStampedModel):
     address = models.TextField(blank=True, null=True, max_length=1000)
     zip_code = models.IntegerField(blank=True, null=True)
     objectives = models.TextField(blank=True, null=True, max_length=1000)
-    profile_picture = models.ImageField(upload_to='profile_pic/', blank=True, null=True)
     student_college_id = models.CharField(max_length=30, blank=True, null=True, unique=True)
+    linkdin_url = models.CharField(max_length=300, blank=True, null=True, unique=True)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -49,12 +50,27 @@ class PersonalInfo(TimeStampedModel):
         return f"{self.First_name} {self.Last_name}"
 
 
+class UserProfile(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='profile_pic/', blank=True, null=True)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        verbose_name='ID',
+        help_text='Unique identifier for the record',
+        db_index=True,
+    )
+
+
 # we are store Student Education here
 class Education(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     institution_name = models.CharField(max_length=100, blank=True)
+    board_name = models.CharField(max_length=100, blank=True, null=True)
     field_of_study = models.CharField(max_length=25, blank=True, null=True)
-    cgpa = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
+    cgpa_percentage = models.CharField(max_length=25, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     description = models.TextField(blank=True)
@@ -79,7 +95,6 @@ class Project(TimeStampedModel):
     title = models.CharField(max_length=100, blank=True, null=True)
     advisor_name = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField()
-    technologies_used = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     id = models.UUIDField(
@@ -105,12 +120,11 @@ class Experience(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_type = models.CharField(max_length=20, blank=True, null=True, choices=choices, default='full_time')
     company_name = models.CharField(max_length=100, blank=True)
-    designation = models.CharField(max_length=100, blank=True)
+    designation = models.CharField(max_length=100, blank=True, null=True)
     description = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
-    working_from = models.DateField(blank=True, null=True)
-    working_till = models.DateField(blank=True, null=True)
-    monthly_salary = models.IntegerField(blank=True, null=True)
+    working_from = models.CharField(max_length=30, blank=True, null=True)
+    working_till = models.CharField(max_length=30, blank=True, null=True)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -129,6 +143,7 @@ class Experience(TimeStampedModel):
 class Certificate(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True, null=True)
+    document_prove = models.FileField(upload_to="document_prove", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
     issuing_organisation = models.CharField(max_length=200, blank=True, null=True)
     issue_date = models.DateField(blank=True, null=True)
@@ -199,3 +214,56 @@ class Job_application(TimeStampedModel):
     def get_interested_display(self):
         return dict(self.INTERESTED_CHOICES)[self.interested]
 
+
+class ExtraCurriculumAndAward(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    award = models.CharField(max_length=100, blank=True, null=True)
+    curriculum = models.CharField(max_length=100, blank=True, null=True)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        verbose_name='ID',
+        help_text='Unique identifier for the record',
+        db_index=True,
+    )
+
+    def _str_(self):
+        return self.description
+
+
+class SemesterCollege(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    institute_name = models.CharField(max_length=200, blank=True, null=True)
+    semester = models.CharField(max_length=200, blank=True, null=True)
+    year = models.CharField(max_length=200, blank=True, null=True)
+    sgpa = models.CharField(max_length=200, blank=True, null=True)
+    cgpa = models.CharField(max_length=200, blank=True, null=True)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        verbose_name='ID',
+        help_text='Unique identifier for the record',
+        db_index=True,
+    )
+
+
+class Research(TimeStampedModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    description = models.TextField()
+    title = models.CharField(max_length=100, blank=True, null=True)
+    supervisor = models.CharField(max_length=100, blank=True, null=True)
+    technologies_used = models.CharField(max_length=200, blank=True, null=True)
+    start_date = models.CharField(max_length=30, blank=True, null=True)
+    end_date = models.CharField(max_length=30, blank=True, null=True)
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        unique=True,
+        verbose_name='ID',
+        help_text='Unique identifier for the record',
+        db_index=True)

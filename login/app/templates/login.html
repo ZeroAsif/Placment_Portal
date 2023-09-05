@@ -24,6 +24,9 @@
 
 body {
     background: #ecf0f3;
+    background-image: url("{% static 'images/background.jpg' %}");
+    background-size: auto;
+    background-repeat: no-repeat;
 }
 
 .wrapper {
@@ -126,7 +129,7 @@ body {
 
 {% if messages %}
 {% for message in messages %}
-<div class="container alert alert-danger alert-dismissible fade show" role="alert">
+<div class="container alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
     <strong>{{message}}</strong>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 </div>
@@ -138,17 +141,17 @@ body {
         <img src="{% static 'images/ict.jpeg' %}" alt="">
 
     </div>
-    <form method="post">
+    <form method="post" autocomplete="off">
         {% csrf_token %}
         <div class="text-center  name">LogIn</div>
         <div class="p-10 m-10">
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
-                <input type="text" name="username" id="username" placeholder="Username" autocomplete="off" value="@">
+                <input type="text" name="username" id="username" placeholder="Username" value="">
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
-                <input type="password" name="password" id="pwd" placeholder="Password" autocomplete="off" value="">
+                <input type="password" name="password" id="pwd" placeholder="Password" value="">
             </div>
             <button class="btn mt-3">Login</button>
         </div>

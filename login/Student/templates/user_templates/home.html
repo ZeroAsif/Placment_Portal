@@ -5,18 +5,21 @@
 {% block body %}
 
 <!--  Profile Card  -->
-<div class="card shadow-sm bg-white rounded" style="width: 15rem;">
-    {% if profile_image.profile_picture %}
-    <img id="images" src="media/{{profile_image.profile_picture}}"
-         class="card-img-top" alt="...">
+<div class="card shadow bg-white rounded" style="width: 15rem;">
+    {% if profile_image %}
+    {% for pi in profile_image %}
+    <img id="images" src="media/{{pi.profile_picture}}" class="card-img-top" alt="...">
+    {% endfor %}
     {% else %}
-    <img id="images" src="{% static 'images/ict.jpeg' %}"
-         class="card-img-top" alt="...">
+    <img id="images" src="{% static 'images/ict.jpeg' %}" class="card-img-top" alt="...">
     {% endif %}
     <div class="card-body">
-        <h5 class="card-title">{{profile_image.first_name}}</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+        <h5 class="card-title">{{user.username}}</h5>
+        {% if check_additional %}
+        {% for skill in check_additional %}
+        <p class="card-text">{{skill.skill_name}}</p>
+        {% endfor %}
+        {% endif %}
         <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary btn-sm"><i class="fa-regular fa-eye mx-1"></i>ViewProfile</a>
     </div>
 </div>
@@ -25,7 +28,7 @@
 <!-- Search Bar Section -->
 <div class="row justify-content-end mx-1">
     <div class="col-xl-10">
-        <div class="container mt-3 p-4 border rounded">
+        <div class="container mt-3 p-4 border rounded shadow">
             <form>
                 <div class="d-flex align-items-end">
                     <div class="col-5">
@@ -58,7 +61,7 @@
 <div class="row justify-content-end mx-1">
     <div class="col-xl-10">
         <h1 class="text-center my-2">Latest Jobs</h1>
-        <div class="container mt-3 p-3 border rounded overflow-auto" style="height: 450px;">
+        <div class="container mt-3 p-3 border rounded overflow-auto shadow" style="height: 450px;">
             <div class="tab-content">
                 <div id="tab-1" class="tab-pane fade show p-0 active">
                     {% for show_jobs in show_job %}

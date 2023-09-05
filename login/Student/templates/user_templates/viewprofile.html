@@ -5,26 +5,25 @@
 {% block body %}
 
 <!--  personal-info section -->
-<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
-        {% if personal_infos %}
-        {% for profile_image in personal_infos %}
-        {% if profile_image.profile_picture %}
         <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
-            <img id="images" src="media/{{profile_image.profile_picture}}"
-                 class="img-fluid  mx-4">
+            {% if profile_image %}
+            {% for pm in profile_image %}
+            <img id="images" src="media/{{pm.profile_picture}}" class="img-fluid mx-4 rounded-circle">
+            {% endfor %}
+            {% else %}
+            <img id="image" src="{% static 'images/ict.jpeg' %}" class="img-fluid  mx-4">
+            {% endif %}
+            <form action="{% url 'upload-image' %}" method="POST" id="upload-form" enctype="multipart/form-data">{% csrf_token %}
+                <input type="file" id="file" name="file" accept="image/png, image/jpeg"
+                       onchange="document.getElementById('upload-form').submit();">
+                <label for="file" id="upload_btn"><i class="fa fa-camera"></i></label>
+            </form>
         </div>
-        {% endif %}
-        {% endfor %}
-        {% else %}
-        <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
-            <img id="images" src="{% static 'images/ict.jpeg' %}"
-                 class="img-fluid  mx-4">
-        </div>
-        {% endif %}
         <div class="col-md-9 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Personal-Information</h2>
+                <h2 class="me-3"><i>Personal&#8209;Information</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#personalModal">
                     <i class="fa-solid fa-pencil"></i>
@@ -34,29 +33,34 @@
             {% for personal_info in personal_infos %}
             <div class="my-3 d-flex justify-content-start flex-wrap">
                 <div class="col-md-4">
-                    <p>{{ personal_info.first_name }}-{{ personal_info.last_name }}
+                    {% if personal_info.middle_name %}
+                    <p>&#10146; <i>{{ personal_info.first_name }}&minus;{{ personal_info.middle_name }}&minus;{{ personal_info.last_name }}</i>
                         <a data-bs-toggle="modal" data-bs-target="#update-personalModal">
                             <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i>
                         </a>
                     </p>
-                    {% if personal_info.middle_name %}
-                    <p>{{ personal_info.middle_name }}</p>
                     {% else %}
+                    <p>&#10146; <i>{{personal_info.first_name }}&minus;{{ personal_info.last_name }}</i><a data-bs-toggle="modal"
+                                                                                           data-bs-target="#update-personalModal"><i
+                            class="fa-regular fa-pen-to-square fa-beat mx-2" style="color: #000000;"></i></a></p>
                     {% endif %}
-                    <p>{{ personal_info.date_of_birth }}</p>
-                    <p>{{ personal_info.student_college_id }}</p>
+                    <p>&#10146; <i>{{ personal_info.date_of_birth }}</i></p>
+                    <p>&#10146; <i>{{ personal_info.student_college_id }}</i></p>
                 </div>
                 <div class="col-md-4">
-                    <p>{{ personal_info.phone_number }}</p>
-                    <p>{{ personal_info.email }}</p>
-                    <p>{{ personal_info.zip_code }}</p>
+                    <p>&#10146; <i>{{ personal_info.phone_number }}</i></p>
+                    <p>&#10146; <i>{{ personal_info.email }}</i></p>
+                    <p>&#10146; <i>{{ personal_info.zip_code }}</i></p>
                 </div>
                 <div class="col-md-4">
                     <p style="word-wrap: break-word; overflow-wrap: break-word;">
-                        {{ personal_info.objectives }}
+                        &#10146; <i>{{ personal_info.linkdin_url }}</i>
                     </p>
                     <p style="word-wrap: break-word; overflow-wrap: break-word;">
-                        {{ personal_info.address }}
+                        &#10146; <i>{{ personal_info.objectives }}</i>
+                    </p>
+                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                        &#10146; <i>{{ personal_info.address }}</i>
                     </p>
                 </div>
             </div>
@@ -66,17 +70,17 @@
 </div>
 
 <!-- resume upload section -->
-<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
         <div class="col-md-5 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Resume</h2>
+                <h2 class="me-3"><i>Resume</i></h2>
             </div>
         </div>
         <hr>
         <div class="container col-md-10">
+            {% if cvs %}
             {% for cv in cvs %}
-            {% if cv %}
             <div class="d-flex justify-content-center align-items-center">
                 {{cv.resume_file}}
                 <a href="{% url 'download-resume' cv.user_id %}">
@@ -84,24 +88,24 @@
                             class="fa-solid fa-download fa-bounce"></i>
                     </button>
                 </a>
-                <a href="delete-resume/{{cv.user_id}}">
+                <a href="delete-resume/{{cv.id}}">
                     <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
                             class="fa-regular fa-trash-can fa-bounce"></i>
                     </button>
                 </a>
             </div>
-            {% else %}
-            <p class="text-center">Resume is the most important document recruiters look for. Recruiters generally do
-                not look at profiles without resumes.</p>
-            {% endif %}
             {% endfor %}
+            {% else %}
+            <p class="text-center"><i>Resume is the most important document recruiters look for. Recruiters generally do
+                not look at profiles without resumes.</i></p>
+            {% endif %}
         </div>
         <div class="container my-3 p-2">
             <div class="" style="border:dotted 2px; border-radius:20px;">
                 <form class="p-4" action="upload-resume" method="POST" enctype="multipart/form-data"> {% csrf_token %}
                     <input class="form-control" accept=".pdf,.doc,.docx" name="cv" type="file" required>
                     <div class="d-flex my-2 justify-content-center">
-                        Supported Formats: doc, docx, pdf
+                        Supported Formats &#58; docx, pdf
                     </div>
                     <div class="d-flex justify-content-center">
                         <button class="btn btn-outline-primary btn-sm" type="submit"><i
@@ -115,158 +119,314 @@
 </div>
 
 <!-- Experience Section-->
-<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Experience</h2>
+                <h2 class="me-3"><i>Experience</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#experienceModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
-            <hr>
-            {% for ex in experience %}
+        </div>
+        <hr>
+        {% for ex in experience %}
+        <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>company_name : {{ex.company_name}}<a data-bs-toggle="modal"
-                                                            data-bs-target="#update-experienceModal{{forloop.counter}}">
+                    <p>&#10146; <i><b>Company &#818; Name</b></i> &#58; <i>{{ex.company_name}}</i><a data-bs-toggle="modal"
+                                                           data-bs-target="#update-experienceModal{{forloop.counter}}">
                         <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a></p>
                     {% if ex.designation %}
-                    <p>Designation : {{ex.designation}}</p>
+                    <p>&#10146; <i><b>Designation</b></i> &#58; <i>{{ex.designation}}</i></p>
                     {% else %}
                     {% endif %}
-                    <p>Location : {{ex.location}}</p>
-                    <p>Start_date : {{ex.working_from}}</p>
-                    <p>End_date : {{ex.working_till}}</p>
-                    <p>Salary : {{ex.monthly_salary}}</p>
+                    <p>&#10146; <i><b>JobType</b></i> &#58; <i>{{ex.job_type}}</i></p>
+                    <p>&#10146; <i><b>Location</b></i> &#58; <i>{{ex.location}}</i></p>
+                    <p>&#10146; <i><b>Start &#818; Date</b></i> &#58; <i>{{ex.working_from}}</i></p>
+                    <p>&#10146; <i><b>End &#818; Date</b></i> &#58; <i>{{ex.working_till}}</i></p>
 
-                    <p>description : {{ex.description}}</p>
+                    <p>&#10146; <i><b>Description</b></i> &#58; <i>{{ex.description}}</i></p>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 </div>
 
 <!-- Education Section-->
-<div class="container border rounded my-3 p-3" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Education</h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
-                        data-bs-target="#educationModal">
-                    <i class="fa-solid fa-pencil"></i>
-                </button>
-            </div>
-            <hr>
-            {% for ed in education %}
-            <div class="my-3 d-flex border rounded">
-                <div class="col p-2">
-                    <p>institution_name : {{ed.institution_name}}<a data-bs-toggle="modal"
-                                                                    data-bs-target="#update-educationModal{{forloop.counter}}">
-                        <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a>
-                    </p>
-                    <p>field_of_study : {{ed.field_of_study}}</p>
-                    <p>cgpa : {{ed.cgpa}}</p>
-                    <p>Start_date : {{ed.start_date}}</p>
-                    <p>End_date : {{ed.end_date}}</p>
-                    <p>description : {{ed.description}}</p>
+                <h2 class="me-3"><i>UnderGraduation &#47; PostGraduation</i></h2>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                        <i class="fa-solid fa-pencil"></i>
+                    </button>
+                    <div class="dropdown-menu">
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#previous-educationModal">
+                            Under&minus;Graduation
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="btn btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#post-educationModal">
+                            Post&minus;Graduation
+                        </button>
+                    </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        <hr>
+        {% for ed in education %}
+        <div class="container col-md-12">
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    {% if ed.institution_name %}
+                    <p>&#10146; <b><i>Institution &#818; Name</i></b> &#58; <i>{{ed.institution_name}}</i><a data-bs-toggle="modal"
+                                                                                               data-bs-target="#update-educationModal{{forloop.counter}}">
+                        <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a>
+                    </p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.board_name %}
+                    <p>&#10146; <b><i>Board &#818; Name</i></b> &#58; <i>{{ed.board_name}}</i></p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.field_of_study %}
+                    <p>&#10146; <b><i>Field &#818; Of &#818; Study</i></b> &#58; <i>{{ed.field_of_study}}</i></p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.cgpa_percentage %}
+                    <p>&#10146; <b><i>CGPA &#47; Percentage &#58;</i></b> <i>{{ed.cgpa_percentage}}</i></p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.start_date %}
+                    <p>&#10146; <b><i>Start &#818; Date</i></b> &#58; <i>{{ed.start_date}}</i></p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.end_date %}
+                    <p>&#10146; <b><i>End &#818; Date</i></b> &#58; <i>{{ed.end_date}}</i></p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.description %}
+                    <p>&#10146; <b><i>Description</i></b> &#58; <i>{{ed.description}}</i></p>
+                    {% else %}
+                    {% endif %}
+
+                    {% if ed.department %}
+                    <p>&#10146; <b><i>Department</i></b> &#58; <i>{{ed.department}}</i></p>
+                    {% else %}
+                    {% endif %}
+                    <div class="d-flex justify-content-end">
+                        {% load humanize %}
+                        <p>Created On &#58; <b>{{ed.created_at|naturaltime}}</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
 <!-- Certification Section-->
-<div class="container border rounded my-3 p-3" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Certification</h2>
+                <h2 class="me-3"><i>Certification/Documents</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#certificationModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
-            <hr>
-            {% for cr in certification %}
+        </div>
+        <hr>
+        {% for cr in certification %}
+        <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>certification_name : {{cr.title}}<a data-bs-toggle="modal"
+                    <p>&#10146; <b><i>Certification &#818; Name</i></b> &#58; <i>{{cr.title}}</i><a data-bs-toggle="modal"
                                                            data-bs-target="#update-certificationModal{{forloop.counter}}">
                         <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a>
-                    <p>issuing_organisation : {{cr.issuing_organisation}}</p>
-                    <p>certificate_link : {{cr.certificate_link}}</p>
-                    <p>Issue_date : {{cr.issue_date}}</p>
-                    <p>description : {{cr.description}}</p>
+                    <p>&#10146; <b><i>Issuing &#818; Organisation</i></b> &#58; <i>{{cr.issuing_organisation}}</i></p>
+                    <p>&#10146; <b><i>Certificate &#818; Link</i></b> &#58; <i>{{cr.certificate_link}}</i></p>
+                    <p>&#10146; <b><i>Issue &#818; Date</i></b> &#58; <i>{{cr.issue_date}}</i></p>
+                    <p>&#10146; <b><i>Description</i></b> &#58; <i>{{cr.description}}</i></p>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 </div>
 
 <!-- project Section-->
-<div class="container border rounded my-3 p-3" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Project</h2>
+                <h2 class="me-3"><i>Project</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#projectModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
-            <hr>
-            {% for pr in project %}
+        </div>
+        <hr>
+        {% for pr in project %}
+        <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>Project_title : {{pr.title}}<a data-bs-toggle="modal"
+                    <p>&#10146; <i><b>Project &#818; Title</b></i> &#58; <i>{{pr.title}}</i><a data-bs-toggle="modal"
                                                       data-bs-target="#update-projectModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
-                    <p>Guide_name : {{pr.advisor_name}}</p>
-                    <p>Start_date : {{pr.start_date}}</p>
-                    <p>End_date : {{pr.end_date}}</p>
-                    <p>description : {{pr.description}}</p>
+                    <p>&#10146; <i><b>Guide &#818; name</b></i> &#58; <i>{{pr.advisor_name}}</i></p>
+                    <p>&#10146; <i><b>Start &#818; date</b></i> &#58; <i>{{pr.start_date}}</i></p>
+                    <p>&#10146; <i><b>End &#818; date</b></i> &#58; <i>{{pr.end_date}}</i></p>
+                    <p>&#10146; <i><b>description</b></i> &#58; <i>{{pr.description}}</i></p>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 </div>
 
 <!-- Additional Section-->
-<div class="container border rounded my-3 p-3" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
         <div class="col-md-12 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">Additional Skill</h2>
+                <h2 class="me-3"><i>Additional Skill</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#additionalModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
-            <hr>
-            {% for additional in additional_skill %}
+        </div>
+        <hr>
+        {% for additional in additional_skill %}
+        <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>hobbies_name : {{additional.hobbies_name}}<a data-bs-toggle="modal"
+                    <p>&#10146; <i><b>Hobbies &#818; Name</b></i> &#58; <i>{{additional.hobbies_name}}</i><a data-bs-toggle="modal"
                                                                     data-bs-target="#update-additionalModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
-                    <p>language_name : {{additional.language_name}}</p>
-                    <p>skill_name : {{additional.skill_name}}</p>
+                    <p>&#10146; <i><b>Language &#818; Name</b></i> &#58; <i>{{additional.language_name}}</i></p>
+                    <p>&#10146; <i><b>Skill &#818; Name</b></i> &#58; <i>{{additional.skill_name}}</i></p>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Semester Section-->
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3"><i>SemesterCollege</i></h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#semester-collegeModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        {% for semester in semester_college %}
+        <div class="container col-md-12">
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>&#10146; <i><b>Institute &#818; Name</b></i> &#58; <i>{{semester.institute_name}}</i><a data-bs-toggle="modal"
+                                                                    data-bs-target="#update-semesterModal{{forloop.counter}}"><i
+                            class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
+                    <p>&#10146; <i><b>Semester</b></i> &#58; <i>{{semester.semester}}</i></p>
+                    <p>&#10146; <i><b>Year</b></i> &#58; <i>{{semester.year}}</i></p>
+                    <p>&#10146; <i><b>SGPA</b></i> &#58; <i>{{semester.sgpa}}</i></p>
+                    <p>&#10146; <i><b>CGPA</b></i> &#58; <i>{{semester.cgpa}}</i></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 </div>
 
 
-<!-- Modal Section -->
+<!-- Research Section -->
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3"><i>Research</i></h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#researchModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        {% for researches in research %}
+        <div class="container col-md-12">
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>&#10146; <i><b>Title</b></i> &#58; <i>{{researches.title}}</i><a data-bs-toggle="modal"
+                                                                    data-bs-target="#update-researchModal{{forloop.counter}}"><i
+                            class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
+                    <p>&#10146; <i><b>Supervisor</b></i> &#58; <i>{{researches.supervisor}}</i></p>
+                    <p>&#10146; <i><b>Technologies_Used</b></i> &#58; <i>{{researches.technologies_used}}</i></p>
+                    <p>&#10146; <i><b>Start_Date</b></i> &#58; <i>{{researches.start_date}}</i></p>
+                    <p>&#10146; <i><b>End_Date</b></i> &#58; <i>{{researches.end_date}}</i></p>
+                    <p>&#10146; <i><b>Description</b></i> &#58; <i>{{researches.description}}</i></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<!-- extra-curriculum Section -->
+<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+    <div class="row">
+        <div class="col-md-12 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3"><i>Extra-Curriculum</i></h2>
+                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                        data-bs-target="#extra-curriculumModal">
+                    <i class="fa-solid fa-pencil"></i>
+                </button>
+            </div>
+        </div>
+        <hr>
+        {% for extra_curriculum in extra_curriculum %}
+        <div class="container col-md-12">
+            <div class="my-3 d-flex border rounded">
+                <div class="col p-2">
+                    <p>&#10146; <i><b>Award</b></i> &#58; <i>{{extra_curriculum.award}}</i><a data-bs-toggle="modal"
+                                                                    data-bs-target="#update-extra-curriculumModal{{forloop.counter}}"><i
+                            class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
+                    <p>&#10146; <i><b>Supervisor</b></i> &#58; <i>{{extra_curriculum.curriculum}}</i></p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+                                                     <!-- Modal Section -->
+
 
 <!-- Personal Form Modal -->
 <div class="modal fade" id="personalModal" tabindex="-1" aria-labelledby="personalModalLabel" aria-hidden="true">
@@ -281,20 +441,20 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">First name*</label>
+                                <label class="form-label" for="">First name&#42;</label>
                                 <input type="text" id="first-name" name="first_name" class="form-control"
                                        aria-valuetext="enter firstname" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Middle name(optional)</label>
+                                <label class="form-label" for="">Middle name &#40; optional &#41;</label>
                                 <input type="text" id="mdn" name="middle_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Last name*</label>
+                                <label class="form-label" for="">Last name&#42;</label>
                                 <input type="text" id="last_name" name="last_name" class="form-control" required/>
                             </div>
                         </div>
@@ -302,47 +462,53 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label class="form-label" for="">Email*<small class="mx-2" id="result"></small></label>
-                                <input type="email" id="email" name="email" class="form-control" onkeyup="check_email()" required/>
+                                <label class="form-label" for="">Email&#42;<small class="mx-2" id="result"></small></label>
+                                <input type="email" id="email" name="email" class="form-control" onkeyup="check_email()"
+                                       required/>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-outline">
-                                <label class="form-label" for="">Phone*<small class="mx-2" id="p_result"></small></label>
-                                <input type="text" id="phone_number" name="phone_number" class="form-control" onkeyup="check_phone()" required/>
+                                <label class="form-label" for="">Phone&#42;<small class="mx-2"
+                                                                              id="p_result"></small></label>
+                                <input type="text" id="phone_number" name="phone_number" class="form-control"
+                                       onkeyup="check_phone()" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="form-outline">
-                                <label class="form-label" for="">Date of birth*</label>
+                                <label class="form-label" for="">Date of birth&#42;</label>
                                 <input type="date" id="dob" name="date_of_birth" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="" class="form-label">Post_Code*</label>
+                            <label for="" class="form-label">Post_Code&#42;</label>
                             <input type="text" class="form-control" id="postcode" name="zip_code" required/>
                         </div>
                         <div class="col-md-4">
-                            <label for="" class="form-label">Student_id*<small mx-2 id="s_result"></small></label>
-                            <input type="text" class="form-control" id="student_id" name="student_id" onkeyup="check_student_id()" required/>
+                            <label for="" class="form-label">Student_id&#42;<small mx-2 id="s_result"></small></label>
+                            <input type="text" class="form-control" id="student_id" name="student_id"
+                                   onkeyup="check_student_id()" required/>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">profile_picture*</label>
-                        <input class="form-control" type="file" name="profile_picture" id="formFile"
-                               accept="image/*" required>
+                    <div class="row">
+                        <div class="col-12">
+                        <label for="linkedin" class="form-label">LinkedIn_URL&#42;</label>
+                        <input type="url" class="form-control" name="linkedin" id="linkedin"
+                               placeholder="LinKedIn Url" required/>
                     </div>
                     <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Address*</label>
+                        <label for="inputAddress2" class="form-label">Address&#42;</label>
                         <input type="text" class="form-control" name="address" id="inputAddress2"
                                placeholder="Apartment, studio, or floor" required/>
                     </div>
-                    <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Objective*</label>
+                    <div class="col-12">
+                        <label for="exampleFormControlTextarea1" class="form-label">Objective&#42;</label>
                         <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1" rows="3"
                                   required></textarea>
+                    </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -367,10 +533,10 @@
                 <form action="experience" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
-                            <select id="employmentType" name="employment_type" class="form-select"
+                            <select name="employment_type" class="form-select"
                                     aria-label="Default select example" required>
-                                <option value="1" selected>Full-time</option>
-                                <option value="2">Internship</option>
+                                <option value="full_time" selected>Full-time</option>
+                                <option value="internship">Internship</option>
                             </select>
                         </div>
                     </div>
@@ -379,12 +545,6 @@
                             <div class="form-outline">
                                 <label class="form-label" for="">Company name</label>
                                 <input type="text" name="company_name" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Monthly salary</label>
-                                <input type="number" name="m_salary" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
@@ -398,17 +558,17 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Working from</label>
-                                <input type="date" name="working_from" class="form-control"/>
+                                <input type="month" name="working_from" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Working till</label>
-                                <input type="date" name="working_till" class="form-control"/>
+                                <input type="month" name="working_till" class="form-control"/>
                             </div>
                         </div>
                     </div>
-                    <div class="col" id="designationField">
+                    <div class="col">
                         <div class="form-outline">
                             <label class="form-label" for="">Designation</label>
                             <input type="text" name="designation" class="form-control"/>
@@ -429,27 +589,78 @@
 </div>
 
 
-<!-- Education From Modal  -->
-<div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+<!-- UnderGraduation Education From Modal  -->
+<div class="modal fade" id="previous-educationModal" tabindex="-1" aria-labelledby="previous-educationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="educationModalLabel">Education</h5>
+                <h5 class="modal-title" id="previous-educationModalLabel">UnderGraduation</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="education" method="POST"> {% csrf_token %}
+                <h1 class="modal-title fs-5 mb-2 d-flex justify-content-center align-items-center"
+                    style="background-color:lightgray;">SSC</h1>
+                <form action="previous-education" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">institution name</label>
-                                <input type="text" name="i_name" class="form-control"/>
+                                <label class="form-label" for="">School Name</label>
+                                <input type="text" name="institute_name_ssc" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Field of study</label>
-                                <input type="text" name="fos" class="form-control"/>
+                                <label class="form-label" for="">Board Name</label>
+                                <input type="text" name="board_name_scc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start Date</label>
+                                <input type="date" name="start_date_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date</label>
+                                <input type="date" name="end_date_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage</label>
+                                <input type="text" name="percentage_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" name="description_ssc" rows="3"></textarea>
+                    </div>
+
+                    <h1 class="modal-title fs-5 mb-2 my-3 d-flex justify-content-center align-items-center"
+                        style="background-color:lightgray;">HSC</h1>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">College Name</label>
+                                <input type="text" name="institute_name_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Field Of Study</label>
+                                <input type="text" name="field_of_study_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Board Name</label>
+                                <input type="text" name="board_name_hsc" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -457,32 +668,189 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Start date</label>
-                                <input type="date" name="sd" class="form-control"/>
+                                <input type="date" name="start_date_hsc" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">End date</label>
-                                <input type="date" name="ed" class="form-control"/>
+                                <input type="date" name="end_date_hsc" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
-                            <label class="form-label" for="">Department</label>
-                            <input type="text" name="dn" class="form-control"/>
-                        </div>
-                        <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">CGPA</label>
-                                <input type="number" name="cgpa" class="form-control"/>
+                                <label class="form-label" for="">Percentage</label>
+                                <input type="text" name="percentage_hsc" class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="des" rows="3"></textarea>
+                        <textarea class="form-control" name="description_hsc" rows="3"></textarea>
                     </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- PostGraduation Education From Modal  -->
+<div class="modal fade" id="post-educationModal" tabindex="-1" aria-labelledby="post-educationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="post-educationModalLabel">PostGraduation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h1 class="modal-title fs-5 mb-2 d-flex justify-content-center align-items-center"
+                    style="background-color:lightgray;">SSC</h1>
+                <form action="post-education" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">School Name</label>
+                                <input type="text" name="institute_name_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Board Name</label>
+                                <input type="text" name="board_name_scc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start Date</label>
+                                <input type="date" name="start_date_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date</label>
+                                <input type="date" name="end_date_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage</label>
+                                <input type="text" name="percentage_ssc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" name="description_ssc" rows="3"></textarea>
+                    </div>
+
+                    <h1 class="modal-title fs-5 mb-2 my-3 d-flex justify-content-center align-items-center"
+                        style="background-color:lightgray;">HSC</h1>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">College Name</label>
+                                <input type="text" name="institute_name_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Field Of Study</label>
+                                <input type="text" name="field_of_study_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Board Name</label>
+                                <input type="text" name="board_name_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start Date</label>
+                                <input type="date" name="start_date_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date</label>
+                                <input type="date" name="end_date_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage</label>
+                                <input type="text" name="percentage_hsc" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" name="description_hsc" rows="3"></textarea>
+                    </div>
+
+
+                    <h1 class="modal-title fs-5 mb-2 my-2 d-flex justify-content-center align-items-center"
+                        style="background-color:lightgray;">B.Tech/M.Tech</h1>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline">
+                                    <label class="form-label" for="">Institution Name</label>
+                                    <input type="text" name="institute_name_degree" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <label class="form-label" for="">Field Of Study</label>
+                                    <input type="text" name="field_of_study_degree" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <div class="form-outline">
+                                    <label class="form-label" for="">Start Date</label>
+                                    <input type="date" name="start_date_degree" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <label class="form-label" for="">End Date</label>
+                                    <input type="date" name="end_date_degree" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <label class="form-label" for="">Department</label>
+                                <input type="text" name="department_degree" class="form-control"/>
+                            </div>
+                            <div class="col">
+                                <div class="form-outline">
+                                    <label class="form-label" for="">CGPA</label>
+                                    <input type="text" name="percentage_degree" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                            <textarea class="form-control" name="description_degree" rows="3"></textarea>
+                        </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -500,11 +868,11 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="certificationModalLabel">Certifications</h5>
+                <h5 class="modal-title" id="certificationModalLabel">Certifications/Documents</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="certification" method="POST"> {% csrf_token %}
+                <form action="certification" method="POST" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
@@ -536,6 +904,12 @@
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
                         <textarea class="form-control" name="desc" rows="3"></textarea>
+                    </div>
+                    <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Upload Document/Supported_file(pdf)</label>
+                                <input type="file" name="upload_document" accept=".pdf" class="form-control" multiple/>
+                            </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -646,6 +1020,150 @@
 </div>
 
 
+<!-- Semester College Form Modal -->
+<div class="modal fade" id="semester-collegeModal" tabindex="-1" aria-labelledby="semester-collegeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="semester-collegeModalLabel">SemesterCollege</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="semester-college" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Institute Name</label>
+                                <input type="text" name="institute_name" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Semester</label>
+                                <input type="text" name="semester" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Year</label>
+                                <input type="month" name="year" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">SGPA</label>
+                                <input type="txet" name="sgpa" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">CGPA</label>
+                        <input type="text" name="cgpa" class="form-control" />
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!-- Research Form Modal -->
+<div class="modal fade" id="researchModal" tabindex="-1" aria-labelledby="researchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="researchModalLabel">Research</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="research" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">title</label>
+                                <input type="text" name="title" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">supervisor</label>
+                                <input type="text" name="supervisor" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">start date</label>
+                                <input type="month" name="start_date" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">end_date</label>
+                                <input type="month" name="end_date" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">technologies_used</label>
+                        <input type="text" name="tech" class="form-control" />
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">description</label>
+                        <textarea class="form-control" name="description" rows="3" required></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Extra curriculum Form Modal -->
+<div class="modal fade" id="extra-curriculumModal" tabindex="-1" aria-labelledby="extra-curriculumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="extra-curriculumModalLabel">Research</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="extra-curriculum" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">award</label>
+                                <input type="text" name="award" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">curriculum</label>
+                                <input type="text" name="curriculum" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-outline-primary">Add</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+
 <!-- Update Modal Section -->
 
 
@@ -660,26 +1178,27 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" method="POST" enctype="multipart/form-data"> {% csrf_token %}
+                <form action="update-personal-info/{{update_personal.id}}" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">First name*</label>
-                                <input type="text" value="{{update_personal.first_name}}" name="first_name"
+                                <label class="form-label" for="f_name">First name*</label>
+                                <input type="text" id="f_name" value="{{update_personal.first_name}}" name="first_name"
                                        class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Middle name</label>
-                                <input type="text" value="{{update_personal.middle_name}}" name="middle_name"
+                                <label class="form-label" for="m_name">Middle name</label>
+                                <input type="text" id="m_name" value="{{update_personal.middle_name}}"
+                                       name="middle_name"
                                        class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Last name*</label>
-                                <input type="text" value="{{update_personal.last_name}}" name="last_name"
+                                <label class="form-label" for="l_name">Last name*</label>
+                                <input type="text" id="l_name" value="{{update_personal.last_name}}" name="last_name"
                                        class="form-control" required/>
                             </div>
                         </div>
@@ -709,21 +1228,19 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="inputZip" class="form-label">Post_Code*</label>
+                            <label for="" class="form-label">Post_Code*</label>
                             <input type="text" class="form-control" value="{{update_personal.zip_code}}" name="zip_code"
                                    required/>
                         </div>
                         <div class="col-md-4">
                             <label for="" class="form-label">Student_id*</label>
                             <input type="text" class="form-control" value="{{update_personal.student_college_id}}"
-                                   name="student_id" required/>
+                                   name="student_college_id" required/>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="formFile" class="form-label">profile_picture*</label>
-                        <input class="form-control" type="file" name="profile_picture"
-                               value="{{update_personal.profile_picture.name}}"
-                               accept="image/*" required>
+                    <div class="col-12">
+                            <label for="" class="form-label">LinKedIn URL*</label>
+                            <input type="url" class="form-control" value="{{update_personal.linkdin_url}}" name="linkedin_url" required/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address*</label>
@@ -737,7 +1254,9 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                <a href="delete-personal-info/{{update_personal.id}}">
+                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                </a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             </div>
             </form>
@@ -759,13 +1278,21 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="experience" method="POST"> {% csrf_token %}
+                <form action="update-experience/{{update_experience.id}}" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
-                            <select id="employmentType" name="employment_type" class="form-select"
+                            <select name="employment_type" class="form-select"
                                     aria-label="Default select example" required>
-                                <option value="1" selected>Full-time</option>
-                                <option value="2">Internship</option>
+                                {% if update_experience.job_type == 'full_time' %}
+                                    <option value="{{update_experience.job_type}}" selected>Full-time</option>
+                                {% else %}
+                                    <option value="full_time">Full-time</option>
+                                {% endif %}
+                                {% if update_experience.job_type == 'internship' %}
+                                    <option value="{{update_experience.job_type}}" selected>Internship</option>
+                                {% else %}
+                                    <option value="internship">Internship</option>
+                                {% endif %}
                             </select>
                         </div>
                     </div>
@@ -777,13 +1304,7 @@
                                        class="form-control"/>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Monthly salary</label>
-                                <input type="number" value="{{update_experience.company_name}}" name="m_salary"
-                                       class="form-control"/>
-                            </div>
-                        </div>
+
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">location</label>
@@ -796,32 +1317,39 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Working from</label>
-                                <input type="date" value="{{update_experience.company_name}}" name="working_from"
+                                <input type="month" value="{{update_experience.working_from}}"
+                                       name="working_from"
                                        class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Working till</label>
-                                <input type="date" value="{{update_experience.company_name}}" name="working_till"
+                                <input type="month" value="{{update_experience.working_till}}"
+                                       name="working_till"
                                        class="form-control"/>
                             </div>
                         </div>
                     </div>
-                    <div class="col" id="designationField">
+                    <div class="col">
+                        {% if update_experience.designation %}
                         <div class="form-outline">
                             <label class="form-label" for="">Designation</label>
-                            <input type="text" value="{{update_experience.company_name}}" name="designation"
+                            <input type="text" value="{{update_experience.designation}}" name="designation"
                                    class="form-control"/>
                         </div>
+                        {% else %}
+                        {% endif %}
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Role & Responsibility</label>
-                        <textarea class="form-control" value="{{update_experience.}}" name="rr" rows="3"></textarea>
+                        <textarea class="form-control" value="{{update_experience.description}}" name="rr" rows="3">{{update_experience.description}}</textarea>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                <a href="delete-experience/{{update_experience.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             </div>
         </div>
@@ -842,58 +1370,82 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="education" method="POST"> {% csrf_token %}
+                <form action="update-under-graduation/{{update_education.id}}" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
+                            {% if update_education.institution_name %}
                             <div class="form-outline">
                                 <label class="form-label" for="">institution name</label>
                                 <input type="text" value="{{update_education.institution_name}}" name="i_name"
                                        class="form-control"/>
                             </div>
+                            {% else %}
+                            {% endif %}
                         </div>
                         <div class="col">
+                            {% if update_education.field_of_study %}
                             <div class="form-outline">
                                 <label class="form-label" for="">Field of study</label>
                                 <input type="text" value="{{update_education.field_of_study}}" name="fos"
                                        class="form-control"/>
                             </div>
+                            {% else %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
+                            {% if update_education.start_date %}
                             <div class="form-outline">
                                 <label class="form-label" for="">Start date</label>
                                 <input type="date" value="{{update_education.start_date|date:'Y-m-d'}}" name="sd"
                                        class="form-control"/>
                             </div>
+                            {% else %}
+                            {% endif %}
                         </div>
                         <div class="col">
+                            {% if update_education.end_date %}
                             <div class="form-outline">
                                 <label class="form-label" for="">End date</label>
                                 <input type="date" value="{{update_education.end_date|date:'Y-m-d'}}" name="ed"
                                        class="form-control"/>
                             </div>
+                            {% else %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row mb-4">
+                        {% if update_education.department %}
                         <div class="col">
                             <label class="form-label" for="">Department</label>
-                            <input type="text" name="dn" class="form-control"/>
+                            <input type="text" value="{{update_education.department}}" name="dn" class="form-control"/>
                         </div>
+                        {% else %}
+                        {% endif %}
                         <div class="col">
+                            {% if update_education.cgpa_percentage %}
                             <div class="form-outline">
-                                <label class="form-label" for="">CGPA</label>
-                                <input type="number" name="cgpa" class="form-control"/>
+                                <label class="form-label" for="">CGPA/Percentage</label>
+                                <input type="text" value="{{update_education.cgpa_percentage}}" name="cgpa"
+                                       class="form-control"/>
                             </div>
+                            {% else %}
+                            {% endif %}
                         </div>
                     </div>
                     <div class="col">
+                        {% if update_education.description %}
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="des" rows="3"></textarea>
+                        <textarea class="form-control" name="des" rows="3">{{update_education.description}}</textarea>
+                        {% else %}
+                        {% endif %}
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                <a href="delete-under-graduation/{{update_education.id}}">
+                    <button type="button" class="btn btn-outline-danger">Delete</button>
+                </a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             </div>
         </div>
@@ -915,7 +1467,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="certification" method="POST"> {% csrf_token %}
+                <form action="update-certification-detail/{{update_certification.id}}" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
@@ -927,7 +1479,8 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">issue-organization</label>
-                                <input type="text" name="issue-organization" class="form-control"/>
+                                <input type="text" value="{{update_certification.issuing_organisation}}"
+                                       name="issue-organization" class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -935,7 +1488,8 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Issue Date</label>
-                                <input type="date" name="i_d" class="form-control"/>
+                                <input type="date" value="{{update_certification.issue_date|date:'Y-m-d'}}" name="i_d"
+                                       class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
@@ -948,11 +1502,14 @@
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="desc" rows="3"></textarea>
+                        <textarea class="form-control" value="{{update_certification.description}}" name="desc"
+                                  rows="3">{{update_certification.description}}</textarea>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                <a href="delete-certification/{{update_certification.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             </div>
         </div>
@@ -973,7 +1530,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="projects" method="POST"> {% csrf_token %}
+                <form action="update-project-detail/{{update_project.id}}" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
@@ -984,7 +1541,8 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Guide name</label>
-                                <input type="text" name="guide_name" class="form-control"/>
+                                <input type="text" value="{{update_project.advisor_name}}" name="guide_name"
+                                       class="form-control"/>
                             </div>
                         </div>
                     </div>
@@ -992,23 +1550,27 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Start date</label>
-                                <input type="date" name="std" class="form-control"/>
+                                <input type="date" value="{{update_project.start_date|date:'Y-m-d'}}" name="std"
+                                       class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">End date</label>
-                                <input type="date" name="ede" class="form-control"/>
+                                <input type="date" value="{{update_project.end_date|date:'Y-m-d'}}" name="ede"
+                                       class="form-control"/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="desc" rows="3"></textarea>
+                        <textarea class="form-control" value="{{update_project.description}}" name="desc" rows="3">{{update_project.description}}</textarea>
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                <a href="delete-project/{{update_project.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             </div>
         </div>
@@ -1020,7 +1582,7 @@
 
 <!-- Update Additional Form Modal -->
 {% for update_additional in additional_skill %}
-<div class="modal fade" id="update-additionalModal{{forloop.counter}}" tabindex="-1"
+<div class="modal fade" id="update-additionalModal{{forloop.counter}}" tabindex="-1"z
      aria-labelledby="update-additionalModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -1029,7 +1591,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="additional-skill" method="POST"> {% csrf_token %}
+                <form action="update-additional-skill/{{update_additional.id}}" method="POST"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
@@ -1059,7 +1621,176 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                <a href="delete-additional-skill/{{update_additional.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
+                <button type="submit" class="btn btn-outline-success">Update</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+
+<!-- Update Semester College Form Modal -->
+{% for update_semester_college in semester_college %}
+<div class="modal fade" id="update-semesterModal{{forloop.counter}}" tabindex="-1"
+     aria-labelledby="update-semesterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update-semesterModalLabel">Update Semester College</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="update-semester-college/{{update_semester_college.id}}" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Institute Name</label>
+                                <input type="text" value="{{update_semester_college.institute_name}}" name="institute_name" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Semester</label>
+                                <input type="text" value="{{update_semester_college.semester}}" name="semester"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Year</label>
+                                <input type="month" value="{{update_semester_college.year}}" name="sgpa"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">SGPA</label>
+                                <input type="text" value="{{update_semester_college.sgpa}}" name="cgpa"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">CGPA</label>
+                        <input type="text" class="form-control" value="{{update_semester_college.cgpa}}" name="year">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <a href="delete-semester-college/{{update_semester_college.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
+                <button type="submit" class="btn btn-outline-success">Update</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+
+<!-- Update Research College Form Modal -->
+{% for research in research %}
+<div class="modal fade" id="update-researchModal{{forloop.counter}}" tabindex="-1"
+     aria-labelledby="update-researchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update-researchModalLabel">Update Semester College</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="update_research/{{research.id}}" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Institute Name</label>
+                                <input type="text" value="{{research.title}}" name="title" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Supervisor</label>
+                                <input type="text" value="{{research.supervisor}}" name="supervisor"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start Date</label>
+                                <input type="month" value="{{research.start_date}}" name="start_date"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date</label>
+                                <input type="month" value="{{research.end_date}}" name="end_date"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Technologies_Used</label>
+                        <input type="text" class="form-control" value="{{research.technologies_used}}" name="tech">
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">description</label>
+                        <textarea class="form-control" value="{{research.description}}" name="description" rows="3" required>{{research.description}}</textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <a href="delete-research/{{research.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
+                <button type="submit" class="btn btn-outline-success">Update</button>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+{% endfor %}
+
+
+<!-- Update Research College Form Modal -->
+{% for ec in extra_curriculum %}
+<div class="modal fade" id="update-extra-curriculumModal{{forloop.counter}}" tabindex="-1"
+     aria-labelledby="update-extra-curriculumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="update-extra-curriculumModalLabel">Update Semester College</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="update-extra-curriculum/{{ec.id}}" method="POST"> {% csrf_token %}
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Award</label>
+                                <input type="text" value="{{ec.award}}" name="award" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Curriculum</label>
+                                <input type="text" value="{{ec.curriculum}}" name="curriculum"
+                                       class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <a href="delete-extra-curriculum/{{ec.id}}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Delete</button>
+                </a>
                 <button type="submit" class="btn btn-outline-success">Update</button>
             </div>
         </div>
@@ -1087,30 +1818,12 @@
 </script>
 
 
-                        <!--  This Script section check full-time & internship  -->
-<script>
-    const employmentTypeSelect = document.getElementById('employmentType');
-    const designationField = document.getElementById('designationField');
-
-    employmentTypeSelect.addEventListener('change', () => {
-        if (employmentTypeSelect.id === '2') { // If "Internship" is selected
-            designationField.style.display = 'none'; // Hide the designation field
-        } else {
-            designationField.style.display = 'block'; // Show the designation field
-        }
-    });
 
 
-
-
-</script>
-
-
-
-                                    <!--  This Script check user email-id  -->
+<!--  This Script check user email-id  -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     function check_email(){
         let email = document.getElementById("email").value;
@@ -1171,7 +1884,6 @@
         })
     }
 </script>
-
 
 
 {% endblock %}

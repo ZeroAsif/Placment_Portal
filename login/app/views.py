@@ -1,14 +1,12 @@
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
 from django.views import View
-from Student.views import job_application
+from Student.models import Job_application
 from .models import JobPosting
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django. contrib import messages
 from .models import JobPosting
-from  Student.models import Job_application
-import xlwt
 from Student.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -57,18 +55,31 @@ def LoginPage(request):
 
 
 def AdminPage(request):
+    try:
+        job_posting = JobPosting.objects.all().order_by("-created_at")
+        context = []
+        sdata = []  # Initialize sdata before the loop
+        for job in job_posting:
+            jdata = job
+            sdata = Job_application.objects.filter(job_posting=job, interested=True)
+            context.append({'jdata': jdata, 'sdata': sdata})
+    except ObjectDoesNotExist:
+        job_posting = []
+        context = []
+        sdata = []  # Initialize sdata in case of exception
+    return render(request, 'admin.html', {'job_posting': job_posting, 'student_data': sdata, 'context': context})
 
-        try:
-            job_posting = JobPosting.objects.all().order_by("-created_at")
-            context = []
-            for job in job_posting:
-                jdata = job
-                sdata = Job_application.objects.filter(job_posting= job,interested=True)
-                context.append({'jdata':jdata,'sdata':sdata})
-        except ObjectDoesNotExist:
-            job_posting=[]
-            context=[]
-        return render(request,'admin.html',{'job_posting':job_posting, 'student_data':sdata,'context':context})
+        # try:
+        #     job_posting = JobPosting.objects.all().order_by("-created_at")
+        #     context = []
+        #     for job in job_posting:
+        #         jdata = job
+        #         sdata = Job_application.objects.filter(job_posting= job,interested=True)
+        #         context.append({'jdata': jdata, 'sdata': sdata})
+        # except ObjectDoesNotExist:
+        #     job_posting=[]
+        #     context=[]
+        # return render(request,'admin.html',{'job_posting':job_posting, 'student_data':sdata,'context':context})
        
 
 def LogoutPage(request):
