@@ -5,11 +5,11 @@
 {% block body %}
 
 <!--  Profile Card  -->
-<div class="card shadow bg-white rounded" style="width: 15rem;">
-    {% if profile_image %}
-    {% for pi in profile_image %}
-    <img id="images" src="media/{{pi.profile_picture}}" class="card-img-top" alt="...">
-    {% endfor %}
+
+{% comment %} <div class="card shadow-sm bg-white rounded" style="width: 15rem;">
+    {% if profile_image.profile_picture %}
+    <img id="images" src="media/{{profile_image.profile_picture}}"
+         class="card-img-top" alt="...">
     {% else %}
     <img id="images" src="{% static 'images/ict.jpeg' %}" class="card-img-top" alt="...">
     {% endif %}
@@ -22,13 +22,76 @@
         {% endif %}
         <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary btn-sm"><i class="fa-regular fa-eye mx-1"></i>ViewProfile</a>
     </div>
+</div> {% endcomment %}
+<div class="container border rounded my-3 p-3 " style="width: 75rem;">
+    <div class="row">
+        {% if personal_infos %}
+        {% for profile_image in personal_infos %}
+        {% if profile_image.profile_picture %}
+        <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
+            <img id="images" src="media/{{profile_image.profile_picture}}"
+                 class="img-fluid  mx-4">
+        </div>
+        <button class="btn btn-outline-primary">
+            EditProfile
+        </button>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
+            <img id="images" src="{% static 'images/ict.jpeg' %}"
+                 class="img-fluid  mx-4">
+
+        </div>
+
+        {% endif %}
+        <div class="col-md-9 mx-3">
+            <div class="d-flex align-items-center">
+                <h2 class="me-3">{{ user.personalinfo.first_name }}
+                    <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary">Edit Profile</a>
+                </h2>
+
+            </div>
+            <hr>
+            {% for personal_info in personal_infos %}
+            <div class="my-3 d-flex justify-content-start flex-wrap">
+                <div class="col-md-4">
+                    <p>{{ personal_info.first_name }}-{{ personal_info.last_name }}
+                        <a data-bs-toggle="modal" data-bs-target="#update-personalModal">
+                            <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i>
+                        </a>
+                    </p>
+                    {% if personal_info.middle_name %}
+                    <p>{{ personal_info.middle_name }}</p>
+                    {% else %}
+                    {% endif %}
+                    <p>{{ personal_info.date_of_birth }}</p>
+                    <p>{{ personal_info.student_college_id }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p>{{ personal_info.phone_number }}</p>
+                    <p>{{ personal_info.email }}</p>
+                    <p>{{ personal_info.zip_code }}</p>
+                </div>
+                <div class="col-md-4">
+                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                        {{ personal_info.objectives }}
+                    </p>
+                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                        {{ personal_info.address }}
+                    </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
 </div>
 
 
 <!-- Search Bar Section -->
-<div class="row justify-content-end mx-1">
-    <div class="col-xl-10">
-        <div class="container mt-3 p-4 border rounded shadow">
+<div class="row mx-1">
+    <div class="col-xl-12">
+        <div class="container mt-3 p-4 border rounded">
             <form>
                 <div class="d-flex align-items-end">
                     <div class="col-5">
@@ -58,8 +121,8 @@
 
 
 <!-- latest jobs-->
-<div class="row justify-content-end mx-1">
-    <div class="col-xl-10">
+<div class="row mx-1">
+    <div class="col-xl-12">
         <h1 class="text-center my-2">Latest Jobs</h1>
         <div class="container mt-3 p-3 border rounded overflow-auto shadow" style="height: 450px;">
             <div class="tab-content">

@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,6 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'app',
     'Student',
+    'auth_app',
+
 ]
 
 MIDDLEWARE = [
@@ -124,7 +128,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS =[
     os.path.join(BASE_DIR, 'static'),
 ]
-STATIC_ROOT = BASE_DIR / "staticfiles" 
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 MEDIA_URL='/media/'
@@ -139,7 +143,18 @@ MESSAGE_TAGS = {
     messages.ERROR: "danger",
 }
 
+AUTHENTICATION_BACKENDS = [
+    'auth_app.customemailbackend.CustomEmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+# ]
 
 # DATE_INPUT_FORMATS = ('%d-%m-%Y','%Y-%m-%d')
 
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'shaikhsaud8286@gmail.com'
+EMAIL_HOST_PASSWORD = 'lrar pptl bctn ntcy'

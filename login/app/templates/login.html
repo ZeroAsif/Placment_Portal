@@ -147,7 +147,7 @@ body {
         <div class="p-10 m-10">
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
-                <input type="text" name="username" id="username" placeholder="Username" value="">
+                <input type="email" name="email" id="email" placeholder="Email" autocomplete="off" value="">
             </div>
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
@@ -156,8 +156,10 @@ body {
             <button class="btn mt-3">Login</button>
         </div>
         <div class="text-center fs-6">
-            <a href="{% url 'signup' %}">Create a account</a>
+            <a href="{% url 'signup' %}">Create a account</a></br>
+            <a href="{% url 'forget_password'%}">Forget Password</a>
         </div>
+
     </form>
 </div>
 

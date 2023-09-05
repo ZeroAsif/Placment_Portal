@@ -475,14 +475,14 @@
                                        onkeyup="check_phone()" required/>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="form-outline">
                                 <label class="form-label" for="">Date of birth&#42;</label>
                                 <input type="date" id="dob" name="date_of_birth" class="form-control" required/>
                             </div>
                         </div>
+                    </div>
+                    <div class="row mb-4">
                         <div class="col-md-4">
                             <label for="" class="form-label">Post_Code&#42;</label>
                             <input type="text" class="form-control" id="postcode" name="zip_code" required/>
@@ -499,6 +499,7 @@
                         <input type="url" class="form-control" name="linkedin" id="linkedin"
                                placeholder="LinKedIn Url" required/>
                     </div>
+                </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address&#42;</label>
                         <input type="text" class="form-control" name="address" id="inputAddress2"
@@ -1197,43 +1198,36 @@
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="l_name">Last name*</label>
-                                <input type="text" id="l_name" value="{{update_personal.last_name}}" name="last_name"
+                                <label class="form-label" for="">Last name</label>
+                                <input type="text" value="{{update_personal.last_name}}" name="last_name"
                                        class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-6">
+
                             <div class="form-outline">
-                                <label class="form-label" for="">Email*</label>
-                                <input type="email" value="{{update_personal.email}}" name="email"
-                                       class="form-control" required/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Phone*</label>
+                                <label class="form-label" for="">Phone</label>
                                 <input type="text" value="{{update_personal.phone_number}}" name="phone_number"
                                        class="form-control" required/>
                             </div>
-                        </div>
+
                     </div>
-                    <div class="row mb-4">
+                    ]
                         <div class="col-md-4">
                             <div class="form-outline">
-                                <label class="form-label" for="">Date of birth*</label>
+                                <label class="form-label" for="">Date of birth</label>
                                 <input type="date" value="{{ update_personal.date_of_birth|date:'Y-m-d' }}"
                                        name="date_of_birth" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <label for="" class="form-label">Post_Code*</label>
+                            <label for="inputZip" class="form-label">Post_Code</label>
                             <input type="text" class="form-control" value="{{update_personal.zip_code}}" name="zip_code"
                                    required/>
                         </div>
                         <div class="col-md-4">
-                            <label for="" class="form-label">Student_id*</label>
+                            <label for="" class="form-label">Student_id</label>
                             <input type="text" class="form-control" value="{{update_personal.student_college_id}}"
                                    name="student_college_id" required/>
                         </div>
@@ -1243,12 +1237,12 @@
                             <input type="url" class="form-control" value="{{update_personal.linkdin_url}}" name="linkedin_url" required/>
                     </div>
                     <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Address*</label>
+                        <label for="inputAddress2" class="form-label">Address</label>
                         <input type="text" class="form-control" name="address" value="{{update_personal.address}}"
                                placeholder="Apartment, studio, or floor" required/>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Objective*</label>
+                        <label for="exampleFormControlTextarea1" class="form-label">Objective</label>
                         <textarea class="form-control" name="objectives" value="{{update_personal.objectives}}" rows="3"
                                   required>{{update_personal.objectives}}</textarea>
                     </div>
