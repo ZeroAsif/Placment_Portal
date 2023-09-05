@@ -9,7 +9,11 @@
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-    {% comment %} excel {% endcomment %}
+
+
+
+
+
 
 
 
@@ -18,10 +22,118 @@
     <script src="{% static 'js/admin.js' %}" defer></script>
 
 
+    <style>
+        /* styles.css */
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .footer {
+            background: #505050 url('https://www.ictmumbai.edu.in/img/footer-bg.png');
+            background-size: cover;
+            padding: 20px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .left img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .right {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .contact-us {
+            text-align: center;
+            margin-bottom: 20px;
+            margin-left: 50px;
+        }
+        
+        .small-image img {
+            max-width: 100%;
+            height: auto;
+            width: 100px;
+            padding-bottom: 32px;
+        }
+        
+        footer h3, footer p {
+            line-height: 1.5;
+            color: white;
+        }
+        
+
+.lower-footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 2px 0;
+    position: relative;
+}
+
+
+@media screen and (max-width: 767px) {
+    .footer {
+        padding-bottom: 60px; /* Create space for the lower footer */
+    }
+    .lower-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px 0;
+    }
+}
+
+        
+        @media screen and (min-width: 768px) {
+            .footer-content {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+        
+            .left {
+                flex: 1;
+                margin-right: 20px;
+            }
+        
+            .contact-us {
+                flex: 1;
+                text-align: left;
+                margin-top: 0;
+            }
+        }
+        
+    </style>
+
+
+
+
 
 </head>
 
 <body>
+{% if messages %}
+{% for message in messages %}
+<div class="container alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{message}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+
+
     <div class="sidebar" id="sidebar">
         <!-- ... Sidebar Links ... -->
         <ul>
@@ -29,9 +141,7 @@
             <li><a href="#job-listing">Job Listing</a></li>
             <li><a href="#users">Intrested student</a></li>
             <li><a href="#analytics">Update Status </a></li>
-            <li><a href="{% url 'logout' %}" id="logout">LogOut</a></li>
-
-
+            <li><a href="{% url 'logout' %} " id="logout">LogOut</a></li>
         </ul>
 
     </div>
@@ -133,7 +243,6 @@
                         <th>Company Name</th>
                         <th>Job Location</th>
                         <th>salary_range</th>
-                        {% comment %} <th>JD File</th> {% endcomment %}
                         <th>Status</th>
                         <th>Update</th>
                         <th>Delete</th>
@@ -147,25 +256,16 @@
                             <td>{{jp.job_title}}</td>
                             <td>{{jp.company_name}}</td>
                             <td>{{jp.location}}</td>
-
-
-
                             <td>{{jp.salary_range}}</td>
-                            {% comment %} <td>{{jp.pdf_file}}</td> {% endcomment %}
-
-                            <td id="statusCell_{{ jp.id }}">
-                                {{ jp.get_hiring_status_display }}
-                            </td>
-
-
+                            <td id="statusCell_{{ jp.id }}">{{ jp.get_hiring_status_display }}</td>
                             <td>
                                 <button type="button" class="btn btn-info " id="updateJobButton{{ jp.id }}"
                                     onclick="showUpdateModal({{ jp.id }})">Update</button>
-
                             </td>
 
 
                             {% comment %} update modal here {% endcomment %}
+
                             <div class="modal" id="updateJobModal{{ jp.id }}">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -252,9 +352,28 @@
                         </tr>
                         <!-- Add more table rows here -->
                     </tbody>
+                   
                 </div>
                 {% endfor %}
             </table>
+            {% comment %} JOB Positing Pagination {% endcomment %}
+            <div class="pagination">
+                <span class="step-links">
+                    {% if job_posting.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ job_posting.previous_page_number }}">previous</a>
+                    {% endif %}
+            
+                    <span class="current">
+                        Page {{ job_posting.number }} of {{ job_posting.paginator.num_pages }}.
+                    </span>
+            
+                    {% if job_posting.has_next %}
+                        <a href="?page={{ job_posting.next_page_number }}">Next</a>
+                        <a href="?page={{ job_posting.paginator.num_pages }}">Page &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
 
 
         </div>
@@ -266,13 +385,14 @@
 
 
         <div id="job-listing" class="section mt-3">
-            {% comment %} <div class="input-box">
+             {% comment %} <div class="input-box">
                 <i class="uil uil-search"></i>
                 <input type="text"  placeholder="Search here..." />
                 <button class="button" onclick="searchTable()">Search</button>
-            </div> {% endcomment %}
+            </div>  {% endcomment %}
 
             {% comment %} {% if job_posting %} {% endcomment %}
+            
             {% for data in context %}
             <div class="accordion mt-3" id="accordionExample-{{ data.jdata.id }}">
                 <div class="accordion-item">
@@ -292,16 +412,14 @@
                                             <div class="row">
                                                 <div class="col-sm-8"><h2>Customer <b>Details</b></h2></div>
                                                 <div class="col-sm-4">
-                                                    <div class="search-box">
-                                                        <i class="material-icons">&#xE8B6;</i>
-                                                        <input type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
-                                                    </div>
+                                                <div class="search-box">
+                                                    <i class="material-icons">&#xE8B6;</i>
+                                                    <input type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+                                                </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        {% comment %} <button id="exportButton" class="btn btn-primary">Download to Excel</button> {% endcomment %}
-
-                                        <table class="table table-striped table-hover table-bordered" id="dataTable">
+                                      <table class="table table-striped table-hover table-bordered" id="dataTable">
                                             <thead>
                                                 <tr>
                                                     <th>Sr.No</th>
@@ -312,13 +430,15 @@
                                                     <th>Address</th>
                                                     <th>Resume</th>
                                                     <th>Actions</th>
+                                                   
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                
                                                 {% for student in data.sdata%}
                                                 <tr>
                                                     <td>{{forloop.counter}}</td>
-                                                        <td>{{student.user.personalinfo.first_name }} {{ student.user.personalinfo.last_name }}</td>
+                                                    <td>{{student.user.personalinfo.first_name }} {{ student.user.personalinfo.last_name }}</td>
                                                     <td>{{ student.user.email}}</td>
                                                     <td>{{ student.user.personalinfo.phone_number}}</td>
                                                     <td>{{ student.user.personalinfo.student_college_id}}</td>
@@ -334,28 +454,33 @@
                                                     </td>
                                                     <td>
                                                         <a href="{% if student.user.resume.resume_file %}{{ student.user.resume.resume_file.url }}{% endif %}"
-                                                            {% if not student.user.resume.resume_file %}class="disabled"
-                                                            {% endif %} download title="Download Resume" data-toggle="tooltip">
-                                                            <i class="material-icons">cloud_download</i>
-                                                        </a>
-                                                        <a href="{% if student.user.resume.resume_file %}{{ student.user.resume.resume_file.url }}{% endif %}"
-                                                            {% if not student.user.resume.resume_file %}class="disabled"
-                                                            {% endif %} title="View Resume" data-toggle="tooltip">
-                                                            <i class="material-icons">visibility</i>
-                                                        </a>
-                                                    </td>
+                                                        {% if not student.user.resume.resume_file %}class="disabled"
+                                                        {% endif %} download title="Download Resume" data-toggle="tooltip">
+                                                        <i class="material-icons">cloud_download</i>
+                                                    </a>
+                                                    <a href="{% if student.user.resume.resume_file %}{{ student.user.resume.resume_file.url }}{% endif %}"
+                                                    {% if not student.user.resume.resume_file %}class="disabled"
+                                                    {% endif %} title="View Resume" data-toggle="tooltip">
+                                                    <i class="material-icons">visibility</i>
+                                                </a>
+                                                <form id="selected" method="post" action="{% url 'save_selected_students' %}">{% csrf_token %}
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="job_students" type="hidden"  value="{{ data.jdata.id }}">
+                                                        <input class="form-check-input" name="selected_students" type="checkbox" onchange="document.getElementById('selected').submit();" id="customSwitch" value="{{ student.user.id }}">
+                                                        <label class="form-check-label" for="customSwitch">Selected</label>
+                                                    </div>
+
+                                                </form>
+                                            </td>
+                                            
                                                 </tr>
+                                             
                                                 {% endfor %}
 
 
                                             </tbody>
-                                            <a href="{% url  'export_excels' data.jdata.id %}" class="btn btn-primary">Export to Excel</a>
-
-
-
-
                                         </table>
-
+                                        <a href="{% url 'export_excels' data.jdata.id %}" class="btn btn-primary">Export to Excel</a>
                                     </div>
                                 </div>
                             </div>
@@ -364,6 +489,7 @@
                 </div>
             </div>
             {% endfor %}
+            
         </div>
 
 
@@ -377,8 +503,10 @@
             <p>View and analyze data and insights.</p>
         </div>
 
-
     </div>
+
+
+    
 
 
 
@@ -390,18 +518,17 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    {% comment %} excel {% endcomment %}
-
+     
     <script>
-        $(document).ready(function () {
-            $("#searchInput").on("keyup", function () {
+        $(document).ready(function() {
+            $("#searchInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
-                $("#dataTable tbody tr").filter(function () {
+                $("#dataTable tbody tr").filter(function() {
                     var row = $(this);
                     var columns = row.find("td");
                     var found = false;
 
-                    columns.each(function () {
+                    columns.each(function() {
                         var columnText = $(this).text().toLowerCase();
                         if (columnText.indexOf(value) > -1) {
                             found = true;
@@ -413,10 +540,9 @@
                 });
             });
         });
-    </script>
-
-
-
+ </script>
+            
+            
 
 </body>
 

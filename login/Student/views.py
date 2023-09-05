@@ -371,3 +371,14 @@ def Download_Resume(request,id):
 #
 #     context = {'show_job': jobs}
 #     return render(request, 'user_templates/home.html', context)
+
+
+
+# selected student show here
+
+from django.shortcuts import render
+from app.models import SelectedStudent
+
+def status_page(request):
+    selected_students = SelectedStudent.objects.filter(selected=True)
+    return render(request, 'user_templates/status.html', {'selected_students': selected_students})

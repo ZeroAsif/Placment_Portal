@@ -15,6 +15,7 @@ urlpatterns = [
      path('delete/<int:job_id>/', delete_job_posting, name='delete_job'),
      path('update/<int:job_id>/', update_job_posting, name='update_job'),
      path('<int:job_id>/', ExportExcel, name='export_excels'),
+     path('save_selected_students/',save_selected_students,name='save_selected_students'),
     
 
 ]
