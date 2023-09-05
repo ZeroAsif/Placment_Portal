@@ -13,68 +13,76 @@ from Student.models import *
 from django.core.exceptions import ObjectDoesNotExist
 from .helper import send_forget_password_mail
 from .models import *
+import uuid
 
 
 
-# Create your views here.
+""" Sigup Function are here """
 def SignupPage(request):
-    if request.method == 'POST':
-        uname = request.POST.get('username')
-        email = request.POST.get('email','')
-        pass1 = request.POST.get('password1')
-        pass2 = request.POST.get('password2')
+    try:
+        if request.method == 'POST':
+            uname = request.POST.get('username')
+            email = request.POST.get('email', '')
+            pass1 = request.POST.get('password1')
+            pass2 = request.POST.get('password2')
 
-        if not email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-            messages.error(request, 'Email domain must be pg.ictmumbai.edu.in/ug.ictmumbai.edu.in')
-            return redirect('signup')
+            if not email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
+                messages.error(request, 'Email domain must be pg.ictmumbai.edu.in/ug.ictmumbai.edu.in')
+                return redirect('signup')
 
-        if not email:
-            messages.error(request, 'Email prefix is required')
-            return redirect('signup')
+            if not email:
+                messages.error(request, 'Email prefix is required')
+                return redirect('signup')
 
-        if len(pass1) < 8:
-            messages.error(request, 'Password must be at least 8 characters long')
-            return redirect('signup')
+            if len(pass1) < 8:
+                messages.error(request, 'Password must be at least 8 characters long')
+                return redirect('signup')
 
-        if pass1 != pass2:
-            messages.error(request, 'Passwords do not match')
-            return redirect('signup')
+            if pass1 != pass2:
+                messages.error(request, 'Passwords do not match')
+                return redirect('signup')
 
-        if uname and email and pass1:
-            my_user = User.objects.create_user(username=uname, email=email, password=pass1)
-            my_user.save()
-            return redirect('login')
-        else:
-            messages.error(request, 'Please enter all required fields')
-
-    return render(request, 'signup.html')
-
-
-
-def LoginPage(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-        print(user, 'llllllllllllllllll')
-        if user is not None:
-            if user.is_staff:
-                login(request, user)
-                if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                    return redirect('admins')
-                else:
-                    messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
+            if uname and email and pass1:
+                my_user = User.objects.create_user(username=uname, email=email, password=pass1)
+                my_user.save()
+                return redirect('login')
             else:
-                login(request, user)
-                return redirect('home')
-        else:
-            messages.error(request, 'Invalid email or password')
+                messages.error(request, 'Please enter all required fields')
+        return render(request, 'signup.html')
 
-    return render(request, 'login.html')
+    except Exception as e:
+        # Handle other exceptions here, e.g., log the error or provide an error message
+        messages.error(request, 'Something wet wrong please try again')
+        return redirect('signup')
 
 
+""" Login Function are here """
+def LoginPage(request):
+    try:
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            user = authenticate(request, email=email, password=password)
+            print(user, 'llllllllllllllllll')
+            if user is not None:
+                if user.is_staff:
+                    login(request, user)
+                    if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
+                        return redirect('admins')
+                    else:
+                        messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
+                else:
+                    login(request, user)
+                    return redirect('home')
+            else:
+                messages.error(request, 'Invalid email or password')
+        return render(request, 'login.html')
+    except:
+        messages.error(request, 'Something went wrong please try again')
+        return redirect('login')
 
 
+""" Show the admin page"""
 def AdminPage(request):
 
         try:
@@ -97,8 +105,8 @@ def LogoutPage(request):
     messages.success(request, 'You have logout')
     return redirect('login')
 
-# ADD COMPANY HERE
 
+""" Jobposting function are here """
 def Jobposting(request):
     try:
         if request.method == 'POST':
@@ -250,8 +258,7 @@ def ChangePassword(request , token):
 
 """ Change password are create here"""
 
-import uuid
-import uuid
+
 
 def ForgetPassword(request):
     try:

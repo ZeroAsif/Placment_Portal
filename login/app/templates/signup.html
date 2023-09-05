@@ -115,20 +115,24 @@ body {
         padding: 40px 15px 15px 15px;
     }
 }
+
+
+
+
 </style>
   </head>
   <body>
     {% if messages %}
     {% for message in messages %}
     <div class="container alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>{{message}}</strong> 
+        <strong>{{message}}</strong>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
     {% endfor %}
 {% endif %}
     <div class="wrapper">
         <div class="logo">
-            <img src="{% static 'images/ict.jpeg ' %}" alt=""> 
+            <img src="{% static 'images/ict.jpeg ' %}" alt="">
         </div>
         <form method="post" action="{% url 'signup' %}" >{% csrf_token %}
             <div class="text-center  name">SignUp</div>
@@ -145,12 +149,14 @@ body {
 
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
-                <input type="password" placeholder="Password" id="password1" name="password1" autocomplete="off" value="">
+                <input type="password" placeholder="Password-must be 8 CHAR" id="password1" name="password1" autocomplete="off" value=""
+
+                 class="narrow-password">
             </div>
 
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
-                <input type="password" placeholder="Confirm Password" id="password2" name="password2" autocomplete="off" value="">
+                <input type="password" placeholder="Password-must be 8 CHAR" id="password2" name="password2" autocomplete="off" value="">
             </div>
 
             <button class="btn mt-3">SIGNUP</button>
@@ -159,7 +165,7 @@ body {
         <div class="text-center fs-6">
             <a href="{% url 'login' %}" >i already have account</a>
         </div>
-        
+
     </div>
         <!-- <input type="button" value=""> -->
         <!-- <div class="social">
@@ -168,7 +174,7 @@ body {
         </div> -->
     </form>
 
-    
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
   </body>
 </html>
