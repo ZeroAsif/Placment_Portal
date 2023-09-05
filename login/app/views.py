@@ -13,70 +13,80 @@ from  Student.models import Job_application
 from django.core.paginator import Paginator
 from Student.models import *
 from django.core.exceptions import ObjectDoesNotExist
+from .helper import send_forget_password_mail
+from .models import *
+import uuid
 
 
-# Create your views here.
+""" Sigup Function are here """
+@login_required(login_url='login')
 def SignupPage(request):
-    if request.method == 'POST':
-        uname = request.POST.get('username')
-        email = request.POST.get('email','')
-        pass1 = request.POST.get('password1')
-        pass2 = request.POST.get('password2')
+    try:
+        if request.method == 'POST':
+            uname = request.POST.get('username')
+            email = request.POST.get('email', '')
+            pass1 = request.POST.get('password1')
+            pass2 = request.POST.get('password2')
 
-        if not email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-            messages.error(request, 'Email domain must be pg.ictmumbai.edu.in/ug.ictmumbai.edu.in')
-            return redirect('signup')
+            if not email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
+                messages.error(request, 'Email domain must be pg.ictmumbai.edu.in/ug.ictmumbai.edu.in')
+                return redirect('signup')
 
-        if not email:
-            messages.error(request, 'Email prefix is required')
-            return redirect('signup')
+            if not email:
+                messages.error(request, 'Email prefix is required')
+                return redirect('signup')
 
-        if len(pass1) < 8:
-            messages.error(request, 'Password must be at least 8 characters long')
-            return redirect('signup')
+            if len(pass1) < 8:
+                messages.error(request, 'Password must be at least 8 characters long')
+                return redirect('signup')
 
-        if pass1 != pass2:
-            messages.error(request, 'Passwords do not match')
-            return redirect('signup')
-
-        if uname and email and pass1:
-            my_user = User.objects.create_user(username=uname, email=email, password=pass1)
-            my_user.save()
-            return redirect('login')
-        else:
-            messages.error(request, 'Please enter all required fields')
-
-    return render(request, 'signup.html')
-
-
-
-def LoginPage(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
-        password = request.POST.get('password')
-        user = authenticate(request, email=email, password=password)
-        if user is not None:
-            if user.is_staff:
-                login(request, user)
-                if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                    return redirect('admins')
-                else:
-                    messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
+            if pass1 != pass2:
+                messages.error(request, 'Passwords do not match')
+                return redirect('signup')
+            
+            if uname and email and pass1:
+                my_user = User.objects.create_user(username=uname, email=email, password=pass1)
+                my_user.save()
+                return redirect('login')
             else:
-                login(request, user)
-                return redirect('home')
-        else:
-            messages.error(request, 'Invalid email or password')
+                messages.error(request, 'Please enter all required fields')
+        return render(request, 'signup.html')
 
-    return render(request, 'login.html')
-
-
-
+    except Exception as e:
+        # Handle other exceptions here, e.g., log the error or provide an error message
+        messages.error(request, 'Something wet wrong please try again')
+        return redirect('signup')
 
 
+""" Login Function are here """
+@login_required(login_url='login')
+def LoginPage(request):
+    try:
+        if request.method == 'POST':
+            email = request.POST.get('email')
+            password = request.POST.get('password')
+            user = authenticate(request, email=email, password=password)
+            print(user, 'llllllllllllllllll')
+            if user is not None:
+                if user.is_staff:
+                    login(request, user)
+                    if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
+                        return redirect('admins')
+                    else:
+                        messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
+                else:
+                    login(request, user)
+                    return redirect('home')
+            else:
+                messages.error(request, 'Invalid email or password')
+        return render(request, 'login.html')
+    except:
+        messages.error(request, 'Something went wrong please try again')
+        return redirect('login')
 
 
-
+""" Show the admin page"""
+@login_required(login_url='login')
 def AdminPage(request):
     try:
         job_posting = JobPosting.objects.all().order_by("-created_at")
@@ -104,13 +114,16 @@ def AdminPage(request):
     return render(request, 'admin.html', {'job_posting': job_posting, 'sdata': s_data, 'context': context,  })
 
 
+""" Logout are defined here"""
+@login_required(login_url='login')
 def LogoutPage(request):
     logout(request)
     messages.success(request, 'You have logout')
     return redirect('login')
 
-# ADD COMPANY HERE
 
+""" Jobposting function are here """
+@login_required(login_url='login')
 def Jobposting(request):
     try:
         if request.method == 'POST':
@@ -134,7 +147,8 @@ def Jobposting(request):
 
 
 
-# delete button functin here
+""" delete button functin here """
+@login_required(login_url='login')
 def delete_job_posting(request, job_id):
     try:
         job = JobPosting.objects.get(id=job_id)
@@ -145,17 +159,16 @@ def delete_job_posting(request, job_id):
     return redirect('admins')  # Redirect to the job list page after deletion
 
 
-# def job_list_view(request):
-#     job_posting = JobPosting.objects.all()  # Retrieve job postings from your model
-#     paginator = Paginator(job_posting, 5)
-#     page_number = request.GET.get('page')
-#     job_posting = paginator.get_page(page_number)
-#     context = {'job_posting': job_posting}
-#     return render(request, 'admins.html', context)
+""" JOB List views are here """
+@login_required(login_url='login')
+def job_list_view(request):
+    job_posting = JobPosting.objects.all()  # Retrieve job postings from your model
+    context = {'job_posting': job_posting}
+    return render(request, 'admins.html', context)
 
 
-
-# update button function here
+""" update button function here """
+@login_required(login_url='login')
 def update_job_posting(request, job_id):
     if request.method == 'POST':
         try:
@@ -180,7 +193,8 @@ def update_job_posting(request, job_id):
     return redirect('admins')  # Redirect to the job list page after update
 
 
-
+""" Export Excel are defined are here"""
+@login_required(login_url='login')
 def ExportExcel(request, job_id):
     if request.method == 'POST':
         print('inside post export')
@@ -220,11 +234,10 @@ def ExportExcel(request, job_id):
         wb.save(response)
         return response
 
-
+""" Change password are define here """
+@login_required(login_url='login')
 def ChangePassword(request , token):
     context = {}
-
-
     try:
         profile_obj = reset_password.objects.filter(forgot_password_token = token).first()
 
@@ -237,21 +250,13 @@ def ChangePassword(request , token):
             if user_id is  None:
                 messages.success(request, 'No user id found.')
                 return redirect(f'change-password{token}')
-
-
             if  new_password != confirm_password:
                 messages.success(request, 'both should  be equal.')
                 return redirect(f'change-password{token}')
-
-
             user_obj = User.objects.get(id = user_id)
             user_obj.set_password(new_password)
             user_obj.save()
             return redirect('/login/')
-
-
-
-
 
     except Exception as e:
         print(e)
@@ -261,10 +266,7 @@ def ChangePassword(request , token):
 
 
 """ Change password are create here"""
-
-import uuid
-import uuid
-
+@login_required(login_url='login')
 def ForgetPassword(request):
     try:
         if request.method == 'POST':
