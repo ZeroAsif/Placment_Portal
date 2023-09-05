@@ -18,6 +18,7 @@ import uuid
 
 
 """ Sigup Function are here """
+@login_required(login_url='login')
 def SignupPage(request):
     try:
         if request.method == 'POST':
@@ -57,6 +58,7 @@ def SignupPage(request):
 
 
 """ Login Function are here """
+@login_required(login_url='login')
 def LoginPage(request):
     try:
         if request.method == 'POST':
@@ -83,6 +85,7 @@ def LoginPage(request):
 
 
 """ Show the admin page"""
+@login_required(login_url='login')
 def AdminPage(request):
 
         try:
@@ -100,6 +103,8 @@ def AdminPage(request):
         return render(request,'admin.html',{'job_posting':job_posting, 'student_data':sdata,'context':context})
 
 
+""" Logout are defined here"""
+@login_required(login_url='login')
 def LogoutPage(request):
     logout(request)
     messages.success(request, 'You have logout')
@@ -107,6 +112,7 @@ def LogoutPage(request):
 
 
 """ Jobposting function are here """
+@login_required(login_url='login')
 def Jobposting(request):
     try:
         if request.method == 'POST':
@@ -130,7 +136,8 @@ def Jobposting(request):
 
 
 
-# delete button functin here
+""" delete button functin here """
+@login_required(login_url='login')
 def delete_job_posting(request, job_id):
     try:
         job = JobPosting.objects.get(id=job_id)
@@ -141,6 +148,8 @@ def delete_job_posting(request, job_id):
     return redirect('admins')  # Redirect to the job list page after deletion
 
 
+""" JOB List views are here """
+@login_required(login_url='login')
 def job_list_view(request):
     job_posting = JobPosting.objects.all()  # Retrieve job postings from your model
     context = {'job_posting': job_posting}
@@ -148,7 +157,8 @@ def job_list_view(request):
 
 
 
-# update button function here
+""" update button function here """
+@login_required(login_url='login')
 def update_job_posting(request, job_id):
     if request.method == 'POST':
         try:
@@ -175,9 +185,10 @@ def update_job_posting(request, job_id):
 
 
 
-# table to excel format
 
 
+""" Export Excel are defined are here"""
+@login_required(login_url='login')
 def ExportExcel(request, job_id):
     if request.method == 'POST':
         print('inside post export')
@@ -216,11 +227,10 @@ def ExportExcel(request, job_id):
         wb.save(response)
         return response
 
-
+""" Change password are define here """
+@login_required(login_url='login')
 def ChangePassword(request , token):
     context = {}
-
-
     try:
         profile_obj = reset_password.objects.filter(forgot_password_token = token).first()
 
@@ -233,21 +243,13 @@ def ChangePassword(request , token):
             if user_id is  None:
                 messages.success(request, 'No user id found.')
                 return redirect(f'change-password{token}')
-
-
             if  new_password != confirm_password:
                 messages.success(request, 'both should  be equal.')
                 return redirect(f'change-password{token}')
-
-
             user_obj = User.objects.get(id = user_id)
             user_obj.set_password(new_password)
             user_obj.save()
             return redirect('/login/')
-
-
-
-
 
     except Exception as e:
         print(e)
@@ -257,9 +259,7 @@ def ChangePassword(request , token):
 
 
 """ Change password are create here"""
-
-
-
+@login_required(login_url='login')
 def ForgetPassword(request):
     try:
         if request.method == 'POST':

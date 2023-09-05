@@ -116,6 +116,7 @@ def ViewProfile(request):
 
 
 """Student show Interest View Here."""
+@login_required(login_url='login')
 def job_application(request, job_id):
     try:
         job_posting = JobPosting.objects.get(id=job_id)
@@ -136,7 +137,8 @@ def job_application(request, job_id):
         return redirect('home')
 
 
-# Job Description Views Here.
+"""  Job Description Views Here ."""
+@login_required(login_url='login')
 def Job_Description(request, id):
     try:
         job_description = JobPosting.objects.get(id=id)
@@ -153,7 +155,8 @@ def Job_Description(request, id):
         return render(request, "user_templates/error.html", context)
 
 
-# Here we are storing the data of Student of Personal Info using POST method
+"""  Here we are storing the data of Student of Personal Info using POST method """
+@login_required(login_url='login')
 def create_personal_info(request):
     if request.method == 'POST':
         student = request.user
@@ -194,7 +197,8 @@ def create_personal_info(request):
     return render(request, 'user_templates/viewprofile.html')
 
 
-# Here we are updating the data of Student of Personal Info using Update method
+"""Here we are updating the data of Student of Personal Info using Update method"""
+@login_required(login_url='login')
 def update_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     try:
@@ -220,6 +224,7 @@ def update_personal_info(request, personal_info_id):
 
 
 """ Here we are deleting the data of Student of Personal Info using Delete method """
+@login_required(login_url='login')
 def delete_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     try:
@@ -233,6 +238,7 @@ def delete_personal_info(request, personal_info_id):
 
 
 """ Upload Resume View Here """
+@login_required(login_url='login')
 def Upload_Resume(request):
     user = request.user
 
@@ -261,6 +267,7 @@ def Upload_Resume(request):
 
 
 """  Delete Resume fuction here """
+@login_required(login_url='login')
 def Delete_Resume(request,id):
     try:
         delete_resume = Resume.objects.get(user__id=id)
@@ -275,6 +282,7 @@ def Delete_Resume(request,id):
 
 
 """ Experience Fuction handle here """
+@login_required(login_url='login')
 def Experience_Information(request):
     try:
         if request.method == 'POST':
@@ -302,6 +310,7 @@ def Experience_Information(request):
 
 
 """  Education Function are here """
+@login_required(login_url='login')
 def Education_Information(request):
     try:
         if request.method == 'POST':
@@ -325,7 +334,9 @@ def Education_Information(request):
         messages.error(request, 'Something went wrong')
         return redirect('viewprofile')
 
-""" Certificate Fucntion are here"""
+
+""" Certificate Fucntion are here """
+@login_required(login_url='login')
 def Certification_Information(request):
     try:
         if request.method == 'POST':
@@ -347,6 +358,9 @@ def Certification_Information(request):
         messages.error(request, 'Something went wrong please try again')
         return redirect('viewprofile')
 
+
+""" Project Function are here """
+@login_required(login_url='login')
 def Projects_Information(request):
     try:
         if request.method == 'POST':
@@ -368,7 +382,9 @@ def Projects_Information(request):
         messages.error(request, 'Something went wrong Please try again')
         return redirect('viewprofile')
 
+
 """ Additional function are here """
+@login_required(login_url='login')
 def Additional_Skill(request):
     try:
         if request.method == 'POST':
@@ -388,6 +404,7 @@ def Additional_Skill(request):
 
 
 """ Download resume function here """
+@login_required(login_url='login')
 def Download_Resume(request,id):
     try:
         document = get_object_or_404(Resume, user__id=id)
@@ -414,7 +431,7 @@ def Download_Resume(request,id):
 #     return render(request, 'user_templates/home.html', context)
 
 
-@login_required
+@login_required(login_url='login')
 def New_password(request):
     if request.method == 'POST':
         old_password = request.POST['old_password']
