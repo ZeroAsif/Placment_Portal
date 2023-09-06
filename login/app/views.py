@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django. contrib import messages
 from .models import JobPosting
 from  Student.models import Job_application
-import xlwt
+# import xlwt
 from Student.models import *
 from django.core.exceptions import ObjectDoesNotExist
 
@@ -44,7 +44,7 @@ def LoginPage(request):
         if user is not None and user.is_staff == False:
             login(request,user)
             return redirect('home')
-        
+
         elif user is not None and user.is_staff == True:
             login(request, user)
             return redirect('admins')
@@ -69,7 +69,7 @@ def AdminPage(request):
             job_posting=[]
             context=[]
         return render(request,'admin.html',{'job_posting':job_posting, 'student_data':sdata,'context':context})
-       
+
 
 def LogoutPage(request):
     logout(request)
@@ -87,7 +87,7 @@ def Jobposting(request):
             salary_range = request.POST.get('salary_range','')
             pdf_file = request.FILES.get('pdf_file')
 
-            
+
 
             obj = JobPosting(job_title = j_title, company_name = c_name, location = location, description = description, requirements = requirements, salary_range = salary_range,pdf_file=pdf_file)
             obj.save()
@@ -127,7 +127,7 @@ def update_job_posting(request, job_id):
             job.location = request.POST.get('location')
             job.salary_range = request.POST.get('salary_range')
             job.pdf_file = request.FILES.get('pdf_file')
-            
+
             # ... update other fields
 
             # hiring status based on the checkbox value
@@ -144,7 +144,7 @@ def update_job_posting(request, job_id):
 
 
 
-# table to excel format 
+# table to excel format
 
 
 def ExportExcel(request, job_id):
@@ -168,11 +168,11 @@ def ExportExcel(request, job_id):
         data = []
         for s_d in student_data:
 
-            data .append(             
-                {'Sr.No': '1', 
-                 'Name': s_d.user.personalinfo.first_name, 
-                 'Email':  s_d.user.personalinfo.email, 
-                 'Phone Number':  s_d.user.personalinfo.phone_number, 
+            data .append(
+                {'Sr.No': '1',
+                 'Name': s_d.user.personalinfo.first_name,
+                 'Email':  s_d.user.personalinfo.email,
+                 'Phone Number':  s_d.user.personalinfo.phone_number,
                  '	College ID':s_d.user.personalinfo.student_college_id},
             )
             print(data)

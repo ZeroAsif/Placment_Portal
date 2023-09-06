@@ -9,7 +9,7 @@ from django.contrib import messages
 from datetime import datetime
 from django.db import IntegrityError
 from django.contrib.auth.models import User
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 import uuid
 
