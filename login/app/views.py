@@ -60,28 +60,21 @@ def SignupPage(request):
 """ Login Function are here """
 @login_required(login_url='login')
 def LoginPage(request):
-    try:
-        if request.method == 'POST':
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            user = authenticate(request, email=email, password=password)
-            print(user, 'llllllllllllllllll')
-            if user is not None:
-                if user.is_staff:
-                    login(request, user)
-                    if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                        return redirect('admins')
-                    else:
-                        messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
-                else:
-                    login(request, user)
-                    return redirect('home')
-            else:
-                messages.error(request, 'Invalid email or password')
-        return render(request, 'login.html')
-    except:
-        messages.error(request, 'Something went wrong please try again')
-        return redirect('login')
+    if request.method=='POST':
+        email=request.POST.get('email')
+        pass1=request.POST.get('password')
+        user=authenticate(request,email=email,password=pass1)
+        if user is not None and user.is_staff == False:
+            login(request,user)
+            return redirect('home')
+
+        elif user is not None and user.is_staff == True:
+            login(request, user)
+            return redirect('admins')
+
+        else:
+            messages.error(request,"passwords or username is Wrong ")
+    return render (request,'login.html')
 
 
 """ Show the admin page"""
@@ -185,6 +178,7 @@ def update_job_posting(request, job_id):
 
 
 
+# table to excel format
 
 
 """ Export Excel are defined are here"""
