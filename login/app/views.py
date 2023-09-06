@@ -12,6 +12,7 @@ from .models import JobPosting
 from  Student.models import Job_application
 from django.core.paginator import Paginator
 from Student.models import *
+import xlwt
 from django.core.exceptions import ObjectDoesNotExist
 from .helper import send_forget_password_mail
 from .models import *
@@ -61,57 +62,50 @@ def SignupPage(request):
 """ Login Function are here """
 @login_required(login_url='login')
 def LoginPage(request):
-    try:
-        if request.method == 'POST':
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            user = authenticate(request, email=email, password=password)
-            print(user, 'llllllllllllllllll')
-            if user is not None:
-                if user.is_staff:
-                    login(request, user)
-                    if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                        return redirect('admins')
-                    else:
-                        messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
-                else:
-                    login(request, user)
-                    return redirect('home')
-            else:
-                messages.error(request, 'Invalid email or password')
-        return render(request, 'login.html')
-    except:
-        messages.error(request, 'Something went wrong please try again')
-        return redirect('login')
+    if request.method=='POST':
+        username=request.POST.get('username')
+        pass1=request.POST.get('password')
+        user=authenticate(request,username=username,password=pass1)
+
+        if user is not None and user.is_staff == False:
+            login(request,user)
+            return redirect('home')
+
+        elif user is not None and user.is_staff == True:
+            login(request, user)
+            return redirect('admins')
+
+        else:
+            messages.error(request,"passwords or username is Wrong ")
+    return render (request,'login.html')
+
 
 
 """ Show the admin page"""
 @login_required(login_url='login')
 def AdminPage(request):
-    try:
-        job_posting = JobPosting.objects.all().order_by("-created_at")
-        context = []
-        s_data = []
-        for job in job_posting:
-            jdata = job
-            sdata = Job_application.objects.filter(job_posting=job, interested=True)
-            s_data.append(sdata)
-            context.append({'jdata': jdata, 'sdata': sdata})
+        try:
+            job_posting = JobPosting.objects.all().order_by("-created_at")
+            context = []
+            for job in job_posting:
+                jdata = job
+                sdata = Job_application.objects.filter(job_posting= job,interested=True)
+                context.append({'jdata':jdata,'sdata':sdata})
+        
 
-
-        # Pagination
-        paginator = Paginator(job_posting, 5)
-        page_numbers = request.GET.get('page')
-        job_posting = paginator.get_page(page_numbers)
+            # Pagination
+            paginator = Paginator(job_posting, 5)
+            page_numbers = request.GET.get('page')
+            job_posting = paginator.get_page(page_numbers)
 
       
 
     
-    except ObjectDoesNotExist:
-        job_posting = []
-        context = []
+        except ObjectDoesNotExist:
+            job_posting = []
+            context = []
 
-    return render(request, 'admin.html', {'job_posting': job_posting, 'sdata': s_data, 'context': context,  })
+        return render(request, 'admin.html', {'job_posting': job_posting, 'context': context,  })
 
 
 """ Logout are defined here"""
@@ -195,6 +189,9 @@ def update_job_posting(request, job_id):
 
 """ Export Excel are defined are here"""
 @login_required(login_url='login')
+
+# table to excel format
+
 def ExportExcel(request, job_id):
     if request.method == 'POST':
         print('inside post export')
@@ -215,7 +212,6 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
-
 
             data .append(             
                 {'Sr.No': s_d.user.personalinfo.student_id, 
