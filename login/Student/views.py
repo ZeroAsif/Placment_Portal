@@ -142,7 +142,7 @@ def Job_Description(request, id):
 def create_personal_info(request):
     if request.method == 'POST':
         student = request.user
-        email = request.POST.get('email')
+        # email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         middle_name = request.POST.get('middle_name')
         last_name = request.POST.get('last_name')
@@ -160,7 +160,7 @@ def create_personal_info(request):
         student_college_id = request.POST.get('student_id')
 
         try:
-            p_obj = PersonalInfo(student=student, email=email, first_name=first_name, middle_name=middle_name,
+            p_obj = PersonalInfo(student=student,  first_name=first_name, middle_name=middle_name,
                                  last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
                                  address=address, zip_code=zip_code, objectives=objectives,
                                  profile_picture=profile_picture, student_college_id=student_college_id)
@@ -175,8 +175,6 @@ def create_personal_info(request):
                 messages.error(request, 'Student ID already exist. Please choose different ones.')
             elif 'unique constraint' in error_message and 'phone_number' in error_message:
                 messages.error(request, 'Phone Number already exist. Please choose different ones.')
-            elif 'unique constraint' in error_message and 'email' in error_message:
-                messages.error(request, 'Email ID already exist. Please choose different ones.')
             return redirect('viewprofile')
     messages.error(request, "You have already added your personal information. Use the update feature to make changes.")
     return render(request, 'user_templates/viewprofile.html')
@@ -186,7 +184,6 @@ def create_personal_info(request):
 def update_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     if request.method == 'POST':
-        personal_info.email = request.POST.get('email')
         personal_info.first_name = request.POST.get('first_name')
         personal_info.middle_name = request.POST.get('middle_name')
         personal_info.last_name = request.POST.get('last_name')
