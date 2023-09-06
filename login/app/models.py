@@ -21,9 +21,6 @@ class JobPosting(models.Model):
 
     pdf_file = models.FileField(upload_to='pdfs/', null=True, blank=True)
    
-    
-
-
 
 class SelectedStudent(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

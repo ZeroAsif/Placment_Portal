@@ -1,25 +1,19 @@
-
-from .models import SelectedStudent
 from django.shortcuts import render,HttpResponse,redirect
 from django.contrib.auth.models import User
-from django.views import View
-from Student.models import Job_application
-from .models import JobPosting
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django. contrib import messages
 from .models import JobPosting
-from  Student.models import Job_application
 from django.core.paginator import Paginator
-from Student.models import *
+from Student.models import Job_application
 from django.core.exceptions import ObjectDoesNotExist
 from .helper import send_forget_password_mail
 from .models import *
 import uuid
 
-
 """ Sigup Function are here """
-@login_required(login_url='login')
+
+
 def SignupPage(request):
     try:
         if request.method == 'POST':
@@ -29,7 +23,7 @@ def SignupPage(request):
             pass2 = request.POST.get('password2')
 
             if not email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                messages.error(request, 'Email domain must be pg.ictmumbai.edu.in/ug.ictmumbai.edu.in')
+                messages.error(request, 'Must Be ICT Email ID')
                 return redirect('signup')
 
             if not email:
@@ -59,14 +53,15 @@ def SignupPage(request):
 
 
 """ Login Function are here """
-@login_required(login_url='login')
+
+
+# @login_required(login_url='login')
 def LoginPage(request):
     try:
         if request.method == 'POST':
             email = request.POST.get('email')
             password = request.POST.get('password')
             user = authenticate(request, email=email, password=password)
-            print(user, 'llllllllllllllllll')
             if user is not None:
                 if user.is_staff:
                     login(request, user)
@@ -82,10 +77,12 @@ def LoginPage(request):
         return render(request, 'login.html')
     except:
         messages.error(request, 'Something went wrong please try again')
-        return redirect('login')
+        return redirect('log in')
 
 
 """ Show the admin page"""
+
+
 @login_required(login_url='login')
 def AdminPage(request):
     try:
@@ -103,9 +100,7 @@ def AdminPage(request):
         page_numbers = request.GET.get('page')
         job_posting = paginator.get_page(page_numbers)
 
-      
 
-    
     except ObjectDoesNotExist:
         job_posting = []
         context = []
@@ -134,11 +129,9 @@ def Jobposting(request):
             salary_range = request.POST.get('salary_range','')
             pdf_file = request.FILES.get('pdf_file')
 
-
-
             obj = JobPosting(job_title = j_title, company_name = c_name, location = location, description = description, requirements = requirements, salary_range = salary_range,pdf_file=pdf_file)
             obj.save()
-            messages.success(request,"Company Added Successfully    ")
+            messages.success(request,"Company Added Successfully")
             return redirect('admins')
     except:
         messages.error(request,"Please Fill Correct Information")
@@ -167,6 +160,8 @@ def job_list_view(request):
 
 
 """ update button function here """
+
+
 @login_required(login_url='login')
 def update_job_posting(request, job_id):
     if request.method == 'POST':
@@ -183,11 +178,12 @@ def update_job_posting(request, job_id):
             # hiring status based on the checkbox value
             hiring_status = request.POST.get('hiring_status')
             job.hiring_status = hiring_status
-
-
             job.save()
+            messages.success(request, "Update Successfully")
+            return redirect('admins')
         except JobPosting.DoesNotExist:
-            pass  # Handle case when job posting doesn't exist
+            messages.error(request, "Something went wrong")
+            return redirect('admins')
 
     return redirect('admins')  # Redirect to the job list page after update
 
@@ -214,8 +210,6 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
-
-
             data .append(             
                 {'Sr.No': s_d.user.personalinfo.student_id, 
                  'Name': s_d.user.personalinfo.first_name, 
@@ -245,7 +239,6 @@ def ChangePassword(request , token):
             new_password = request.POST.get('new_password')
             confirm_password = request.POST.get('reconfirm_password')
             user_id = request.POST.get('user_id',)
-            print(user_id,'aaaaaaaaaaa')
             if user_id is  None:
                 messages.success(request, 'No user id found.')
                 return redirect(f'change-password{token}')
@@ -258,7 +251,7 @@ def ChangePassword(request , token):
             return redirect('/login/')
 
     except Exception as e:
-        print(e)
+        pass
     return render(request , 'change-password.html' , context)
 
 
@@ -280,9 +273,7 @@ def ForgetPassword(request):
 
             # Create the reset_password object but don't save it yet
             profile_obj, created = reset_password.objects.get_or_create(user=user_obj)
-
             send_forget_password_mail(user_obj.email , token)
-            print(token,'llllllllllllllllllllllllllll')
             # Save the token to the profile_obj after sending the email
             profile_obj.forgot_password_token = token
             profile_obj.save()
@@ -291,8 +282,8 @@ def ForgetPassword(request):
             return redirect('forget_password')
 
     except Exception as e:
-        print(e)
-    return render(request , 'forget-password.html')
+        print('dont want things')
+        return render(request , 'forget-password.html')
 
 
 

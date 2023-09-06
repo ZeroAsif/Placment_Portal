@@ -40,8 +40,9 @@
                         </a>
                     </p>
                     {% else %}
-                    <p>&#10146; <i>{{personal_info.first_name }}&minus;{{ personal_info.last_name }}</i><a data-bs-toggle="modal"
-                                                                                           data-bs-target="#update-personalModal"><i
+                    <p>&#10146; <i>{{personal_info.first_name }}&minus;{{ personal_info.last_name }}</i><a
+                            data-bs-toggle="modal"
+                            data-bs-target="#update-personalModal"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2" style="color: #000000;"></i></a></p>
                     {% endif %}
                     <p>&#10146; <i>{{ personal_info.date_of_birth }}</i></p>
@@ -68,6 +69,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- resume upload section -->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
@@ -118,6 +120,7 @@
     </div>
 </div>
 
+
 <!-- Experience Section-->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
@@ -135,8 +138,9 @@
         <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>&#10146; <i><b>Company &#818; Name</b></i> &#58; <i>{{ex.company_name}}</i><a data-bs-toggle="modal"
-                                                           data-bs-target="#update-experienceModal{{forloop.counter}}">
+                    <p>&#10146; <i><b>Company &#818; Name</b></i> &#58; <i>{{ex.company_name}}</i><a
+                            data-bs-toggle="modal"
+                            data-bs-target="#update-experienceModal{{forloop.counter}}">
                         <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a></p>
                     {% if ex.designation %}
                     <p>&#10146; <i><b>Designation</b></i> &#58; <i>{{ex.designation}}</i></p>
@@ -154,6 +158,7 @@
         {% endfor %}
     </div>
 </div>
+
 
 <!-- Education Section-->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
@@ -186,8 +191,9 @@
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
                     {% if ed.institution_name %}
-                    <p>&#10146; <b><i>Institution &#818; Name</i></b> &#58; <i>{{ed.institution_name}}</i><a data-bs-toggle="modal"
-                                                                                               data-bs-target="#update-educationModal{{forloop.counter}}">
+                    <p>&#10146; <b><i>Institution &#818; Name</i></b> &#58; <i>{{ed.institution_name}}</i><a
+                            data-bs-toggle="modal"
+                            data-bs-target="#update-educationModal{{forloop.counter}}">
                         <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a>
                     </p>
                     {% else %}
@@ -238,6 +244,7 @@
     </div>
 </div>
 
+
 <!-- Certification Section-->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
     <div class="row">
@@ -255,8 +262,9 @@
         <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>&#10146; <b><i>Certification &#818; Name</i></b> &#58; <i>{{cr.title}}</i><a data-bs-toggle="modal"
-                                                           data-bs-target="#update-certificationModal{{forloop.counter}}">
+                    <p>&#10146; <b><i>Certification &#818; Name</i></b> &#58; <i>{{cr.title}}</i><a
+                            data-bs-toggle="modal"
+                            data-bs-target="#update-certificationModal{{forloop.counter}}">
                         <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a>
                     <p>&#10146; <b><i>Issuing &#818; Organisation</i></b> &#58; <i>{{cr.issuing_organisation}}</i></p>
                     <p>&#10146; <b><i>Certificate &#818; Link</i></b> &#58; <i>{{cr.certificate_link}}</i></p>
@@ -268,6 +276,7 @@
         {% endfor %}
     </div>
 </div>
+
 
 <!-- project Section-->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
@@ -287,7 +296,7 @@
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
                     <p>&#10146; <i><b>Project &#818; Title</b></i> &#58; <i>{{pr.title}}</i><a data-bs-toggle="modal"
-                                                      data-bs-target="#update-projectModal{{forloop.counter}}"><i
+                                                                                               data-bs-target="#update-projectModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
                     <p>&#10146; <i><b>Guide &#818; name</b></i> &#58; <i>{{pr.advisor_name}}</i></p>
                     <p>&#10146; <i><b>Start &#818; date</b></i> &#58; <i>{{pr.start_date}}</i></p>
@@ -299,6 +308,7 @@
         {% endfor %}
     </div>
 </div>
+
 
 <!-- Additional Section-->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
@@ -317,8 +327,9 @@
         <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>&#10146; <i><b>Hobbies &#818; Name</b></i> &#58; <i>{{additional.hobbies_name}}</i><a data-bs-toggle="modal"
-                                                                    data-bs-target="#update-additionalModal{{forloop.counter}}"><i
+                    <p>&#10146; <i><b>Hobbies &#818; Name</b></i> &#58; <i>{{additional.hobbies_name}}</i><a
+                            data-bs-toggle="modal"
+                            data-bs-target="#update-additionalModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
                     <p>&#10146; <i><b>Language &#818; Name</b></i> &#58; <i>{{additional.language_name}}</i></p>
                     <p>&#10146; <i><b>Skill &#818; Name</b></i> &#58; <i>{{additional.skill_name}}</i></p>
@@ -328,6 +339,7 @@
         {% endfor %}
     </div>
 </div>
+
 
 <!-- Semester Section-->
 <div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
@@ -346,8 +358,9 @@
         <div class="container col-md-12">
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
-                    <p>&#10146; <i><b>Institute &#818; Name</b></i> &#58; <i>{{semester.institute_name}}</i><a data-bs-toggle="modal"
-                                                                    data-bs-target="#update-semesterModal{{forloop.counter}}"><i
+                    <p>&#10146; <i><b>Institute &#818; Name</b></i> &#58; <i>{{semester.institute_name}}</i><a
+                            data-bs-toggle="modal"
+                            data-bs-target="#update-semesterModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
                     <p>&#10146; <i><b>Semester</b></i> &#58; <i>{{semester.semester}}</i></p>
                     <p>&#10146; <i><b>Year</b></i> &#58; <i>{{semester.year}}</i></p>
@@ -379,7 +392,7 @@
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
                     <p>&#10146; <i><b>Title</b></i> &#58; <i>{{researches.title}}</i><a data-bs-toggle="modal"
-                                                                    data-bs-target="#update-researchModal{{forloop.counter}}"><i
+                                                                                        data-bs-target="#update-researchModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
                     <p>&#10146; <i><b>Supervisor</b></i> &#58; <i>{{researches.supervisor}}</i></p>
                     <p>&#10146; <i><b>Technologies_Used</b></i> &#58; <i>{{researches.technologies_used}}</i></p>
@@ -412,7 +425,7 @@
             <div class="my-3 d-flex border rounded">
                 <div class="col p-2">
                     <p>&#10146; <i><b>Award</b></i> &#58; <i>{{extra_curriculum.award}}</i><a data-bs-toggle="modal"
-                                                                    data-bs-target="#update-extra-curriculumModal{{forloop.counter}}"><i
+                                                                                              data-bs-target="#update-extra-curriculumModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
                     <p>&#10146; <i><b>Supervisor</b></i> &#58; <i>{{extra_curriculum.curriculum}}</i></p>
                 </div>
@@ -423,9 +436,7 @@
 </div>
 
 
-
-
-                                                     <!-- Modal Section -->
+<!-- Modal Section -->
 
 
 <!-- Personal Form Modal -->
@@ -460,29 +471,23 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-6">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Email&#42;<small class="mx-2" id="result"></small></label>
-                                <input type="email" id="email" name="email" class="form-control" onkeyup="check_email()"
-                                       required/>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-outline">
                                 <label class="form-label" for="">Phone&#42;<small class="mx-2"
-                                                                              id="p_result"></small></label>
+                                                                                  id="p_result"></small></label>
                                 <input type="text" id="phone_number" name="phone_number" class="form-control"
                                        onkeyup="check_phone()" required/>
                             </div>
                         </div>
+
+                    </div>
+                    <div class="row mb-4">
                         <div class="col-md-4">
                             <div class="form-outline">
                                 <label class="form-label" for="">Date of birth&#42;</label>
                                 <input type="date" id="dob" name="date_of_birth" class="form-control" required/>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mb-4">
                         <div class="col-md-4">
                             <label for="" class="form-label">Post_Code&#42;</label>
                             <input type="text" class="form-control" id="postcode" name="zip_code" required/>
@@ -495,11 +500,11 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                        <label for="linkedin" class="form-label">LinkedIn_URL&#42;</label>
-                        <input type="url" class="form-control" name="linkedin" id="linkedin"
-                               placeholder="LinKedIn Url" required/>
+                            <label for="linkedin" class="form-label">LinkedIn_URL&#42;</label>
+                            <input type="url" class="form-control" name="linkedin" id="linkedin"
+                                   placeholder="LinKedIn Url" required/>
+                        </div>
                     </div>
-                </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address&#42;</label>
                         <input type="text" class="form-control" name="address" id="inputAddress2"
@@ -509,7 +514,6 @@
                         <label for="exampleFormControlTextarea1" class="form-label">Objective&#42;</label>
                         <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1" rows="3"
                                   required></textarea>
-                    </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -591,7 +595,8 @@
 
 
 <!-- UnderGraduation Education From Modal  -->
-<div class="modal fade" id="previous-educationModal" tabindex="-1" aria-labelledby="previous-educationModalLabel" aria-hidden="true">
+<div class="modal fade" id="previous-educationModal" tabindex="-1" aria-labelledby="previous-educationModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
@@ -808,50 +813,50 @@
 
                     <h1 class="modal-title fs-5 mb-2 my-2 d-flex justify-content-center align-items-center"
                         style="background-color:lightgray;">B.Tech/M.Tech</h1>
-                        <div class="row mb-4">
-                            <div class="col">
-                                <div class="form-outline">
-                                    <label class="form-label" for="">Institution Name</label>
-                                    <input type="text" name="institute_name_degree" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-outline">
-                                    <label class="form-label" for="">Field Of Study</label>
-                                    <input type="text" name="field_of_study_degree" class="form-control"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col">
-                                <div class="form-outline">
-                                    <label class="form-label" for="">Start Date</label>
-                                    <input type="date" name="start_date_degree" class="form-control"/>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="form-outline">
-                                    <label class="form-label" for="">End Date</label>
-                                    <input type="date" name="end_date_degree" class="form-control"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <div class="col">
-                                <label class="form-label" for="">Department</label>
-                                <input type="text" name="department_degree" class="form-control"/>
-                            </div>
-                            <div class="col">
-                                <div class="form-outline">
-                                    <label class="form-label" for="">CGPA</label>
-                                    <input type="text" name="percentage_degree" class="form-control"/>
-                                </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Institution Name</label>
+                                <input type="text" name="institute_name_degree" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
-                            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                            <textarea class="form-control" name="description_degree" rows="3"></textarea>
+                            <div class="form-outline">
+                                <label class="form-label" for="">Field Of Study</label>
+                                <input type="text" name="field_of_study_degree" class="form-control"/>
+                            </div>
                         </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start Date</label>
+                                <input type="date" name="start_date_degree" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date</label>
+                                <input type="date" name="end_date_degree" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label class="form-label" for="">Department</label>
+                            <input type="text" name="department_degree" class="form-control"/>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">CGPA</label>
+                                <input type="text" name="percentage_degree" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <textarea class="form-control" name="description_degree" rows="3"></textarea>
+                    </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
@@ -907,10 +912,10 @@
                         <textarea class="form-control" name="desc" rows="3"></textarea>
                     </div>
                     <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Upload Document/Supported_file(pdf)</label>
-                                <input type="file" name="upload_document" accept=".pdf" class="form-control" multiple/>
-                            </div>
+                        <div class="form-outline">
+                            <label class="form-label" for="">Upload Document/Supported_file(pdf)</label>
+                            <input type="file" name="upload_document" accept=".pdf" class="form-control" multiple/>
+                        </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -1022,7 +1027,8 @@
 
 
 <!-- Semester College Form Modal -->
-<div class="modal fade" id="semester-collegeModal" tabindex="-1" aria-labelledby="semester-collegeModalLabel" aria-hidden="true">
+<div class="modal fade" id="semester-collegeModal" tabindex="-1" aria-labelledby="semester-collegeModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -1061,7 +1067,7 @@
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">CGPA</label>
-                        <input type="text" name="cgpa" class="form-control" />
+                        <input type="text" name="cgpa" class="form-control"/>
                     </div>
             </div>
             <div class="modal-footer">
@@ -1072,6 +1078,7 @@
         </form>
     </div>
 </div>
+
 
 <!-- Research Form Modal -->
 <div class="modal fade" id="researchModal" tabindex="-1" aria-labelledby="researchModalLabel" aria-hidden="true">
@@ -1113,7 +1120,7 @@
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">technologies_used</label>
-                        <input type="text" name="tech" class="form-control" />
+                        <input type="text" name="tech" class="form-control"/>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">description</label>
@@ -1131,7 +1138,8 @@
 
 
 <!-- Extra curriculum Form Modal -->
-<div class="modal fade" id="extra-curriculumModal" tabindex="-1" aria-labelledby="extra-curriculumModalLabel" aria-hidden="true">
+<div class="modal fade" id="extra-curriculumModal" tabindex="-1" aria-labelledby="extra-curriculumModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -1205,36 +1213,42 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-
-                            <div class="form-outline">
-                                <label class="form-label" for="">Phone</label>
-                                <input type="text" value="{{update_personal.phone_number}}" name="phone_number"
-                                       class="form-control" required/>
-                            </div>
+                        <div class="form-outline">
+                            <label class="form-label" for="">Phone</label>
+                            <input type="text" value="{{update_personal.phone_number}}" name="phone_number"
+                                   class="form-control" required/>
+                        </div>
 
                     </div>
-                    ]
-                        <div class="col-md-4">
+                    <div class="row mb-4">
+                        <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Date of birth</label>
                                 <input type="date" value="{{ update_personal.date_of_birth|date:'Y-m-d' }}"
                                        name="date_of_birth" class="form-control" required/>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="inputZip" class="form-label">Post_Code</label>
-                            <input type="text" class="form-control" value="{{update_personal.zip_code}}" name="zip_code"
-                                   required/>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label for="" class="form-label">Post_Code</label>
+                                <input type="text" class="form-control" value="{{update_personal.zip_code}}"
+                                       name="zip_code"
+                                       required/>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <label for="" class="form-label">Student_id</label>
-                            <input type="text" class="form-control" value="{{update_personal.student_college_id}}"
-                                   name="student_college_id" required/>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label for="" class="form-label">Student_id</label>
+                                <input type="text" class="form-control" value="{{update_personal.student_college_id}}"
+                                       name="student_college_id" required/>
+                            </div>
                         </div>
                     </div>
                     <div class="col-12">
-                            <label for="" class="form-label">LinKedIn URL*</label>
-                            <input type="url" class="form-control" value="{{update_personal.linkdin_url}}" name="linkedin_url" required/>
+                        <label for="" class="form-label">LinKedIn URL*</label>
+                        <input type="url" class="form-control" value="{{update_personal.linkdin_url}}"
+                               name="linkedin_url"
+                               required/>
                     </div>
                     <div class="col-12">
                         <label for="inputAddress2" class="form-label">Address</label>
@@ -1247,6 +1261,7 @@
                                   required>{{update_personal.objectives}}</textarea>
                     </div>
             </div>
+
             <div class="modal-footer">
                 <a href="delete-personal-info/{{update_personal.id}}">
                     <button type="button" class="btn btn-outline-danger">Delete</button>
@@ -1278,14 +1293,14 @@
                             <select name="employment_type" class="form-select"
                                     aria-label="Default select example" required>
                                 {% if update_experience.job_type == 'full_time' %}
-                                    <option value="{{update_experience.job_type}}" selected>Full-time</option>
+                                <option value="{{update_experience.job_type}}" selected>Full-time</option>
                                 {% else %}
-                                    <option value="full_time">Full-time</option>
+                                <option value="full_time">Full-time</option>
                                 {% endif %}
                                 {% if update_experience.job_type == 'internship' %}
-                                    <option value="{{update_experience.job_type}}" selected>Internship</option>
+                                <option value="{{update_experience.job_type}}" selected>Internship</option>
                                 {% else %}
-                                    <option value="internship">Internship</option>
+                                <option value="internship">Internship</option>
                                 {% endif %}
                             </select>
                         </div>
@@ -1576,7 +1591,7 @@
 
 <!-- Update Additional Form Modal -->
 {% for update_additional in additional_skill %}
-<div class="modal fade" id="update-additionalModal{{forloop.counter}}" tabindex="-1"z
+<div class="modal fade" id="update-additionalModal{{forloop.counter}}" tabindex="-1" z
      aria-labelledby="update-additionalModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
@@ -1643,7 +1658,8 @@
                         <div class="col">
                             <div class="form-outline">
                                 <label class="form-label" for="">Institute Name</label>
-                                <input type="text" value="{{update_semester_college.institute_name}}" name="institute_name" class="form-control"/>
+                                <input type="text" value="{{update_semester_college.institute_name}}"
+                                       name="institute_name" class="form-control"/>
                             </div>
                         </div>
                         <div class="col">
@@ -1737,7 +1753,8 @@
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">description</label>
-                        <textarea class="form-control" value="{{research.description}}" name="description" rows="3" required>{{research.description}}</textarea>
+                        <textarea class="form-control" value="{{research.description}}" name="description" rows="3"
+                                  required>{{research.description}}</textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -1809,9 +1826,8 @@
         alertify.error('{{ message }}');
     }
 {% endfor %}
+
 </script>
-
-
 
 
 <!--  This Script check user email-id  -->
@@ -1836,6 +1852,7 @@
             }
         })
     }
+
 </script>
 
 
@@ -1857,6 +1874,7 @@
             }
         })
     }
+
 </script>
 
 <script>
@@ -1877,6 +1895,7 @@
             }
         })
     }
+
 </script>
 
 

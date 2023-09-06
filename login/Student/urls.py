@@ -46,6 +46,7 @@ urlpatterns = [
     path("delete-research/<str:id>", Delete_Research, name='delete-research'),
     path("delete-extra-curriculum/<str:id>", Delete_Extra_Curriculum, name='delete-extra-curriculum'),
     path('status/', status_page, name='status_page'),
+
     # this path check validator user email & student_college_id
     path("check-user-email", Check_User_Email, name='check-user-email'),
     path("check-student-id", Check_Student_ID, name='check-student-id'),
@@ -53,5 +54,6 @@ urlpatterns = [
     path("resume", download_resume, name='resume'),
     path("download", html_to_pdf_view, name='download'),
     path("new-password", New_password, name='New-password'),
+
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
 
