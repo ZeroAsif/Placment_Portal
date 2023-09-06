@@ -9,24 +9,29 @@ from django.contrib import messages
 from datetime import datetime
 from django.db import IntegrityError
 from django.contrib.auth.models import User
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 from django.template.loader import render_to_string
 import uuid
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash, authenticate
+
 
 
 # Create your views here.
 
 
 def Check_User_Email(request):
-    if request.method == 'GET':
-        email = request.GET['email_id']
-        if email:
-            check_email = PersonalInfo.objects.filter(email=email)
-            if len(check_email) == 1:
-                return HttpResponse("Exists")
-            else:
-                return HttpResponse("Not Exists")
-
+    try:
+        if request.method == 'GET':
+            email = request.GET['email_id']
+            if email:
+                check_email = PersonalInfo.objects.filter(email=email)
+                if len(check_email) == 1:
+                    return HttpResponse("Exists")
+                else:
+                    return HttpResponse("Not Exists")
+    except:
+        messages.error(request, 'Something went wrong')
 
 def Check_Student_ID(request):
     if request.method == 'GET':
@@ -110,39 +115,51 @@ def ViewProfile(request):
 #             filtered_data = job_data.filter(name=name)
 
 
-# Student show Interest View Here.
+"""Student show Interest View Here."""
+@login_required(login_url='login')
 def job_application(request, job_id):
-    job_posting = JobPosting.objects.get(id=job_id)
+    try:
+        job_posting = JobPosting.objects.get(id=job_id)
 
-    # Check if an application for this job by the user already exists
-    existing_application = Job_application.objects.filter(user=request.user, job_posting=job_posting).first()
-    if existing_application:
-        existing_application.interested = True
-        existing_application.save()
-    else:
-        new_application = Job_application(user=request.user, job_posting=job_posting, interested=True)
-        messages.success(request, 'Applied Successfully')
-        new_application.save()
-    return redirect('home')
+        # Check if an application for this job by the user already exists
+        existing_application = Job_application.objects.filter(user=request.user, job_posting=job_posting).first()
+        if existing_application:
+            existing_application.interested = True
+            existing_application.save()
+        else:
+            new_application = Job_application(user=request.user, job_posting=job_posting, interested=True)
+            messages.success(request, 'Applied Successfully')
+            new_application.save()
+        return redirect('home')
+    except Exception as e:
+        # Handle exceptions here, e.g., log the error or provide an error message
+        messages.error(request, 'Something went wrong')
+        return redirect('home')
 
 
-# Job Description Views Here.
+"""  Job Description Views Here ."""
+@login_required(login_url='login')
 def Job_Description(request, id):
-    job_description = JobPosting.objects.get(id=id)
-    applied_jobs = Job_application.objects.filter(user=request.user)
-    applied_jobs_ids = [job.job_posting_id for job in applied_jobs]
-    context = {
-        "job_description": job_description,
-        "applied_jobs_ids": applied_jobs_ids
-    }
-    return render(request, "user_templates/job_description.html", context)
+    try:
+        job_description = JobPosting.objects.get(id=id)
+        applied_jobs = Job_application.objects.filter(user=request.user)
+        applied_jobs_ids = [job.job_posting_id for job in applied_jobs]
+        context = {
+            "job_description": job_description,
+            "applied_jobs_ids": applied_jobs_ids
+        }
+        return render(request, "user_templates/job_description.html", context)
+    except Exception as e:
+        # Handle other exceptions here, e.g., log the error or provide an error template
+        messages.error(request, 'Semothing went wrong ')
+        return render(request, "user_templates/error.html", context)
 
 
-# Here we are storing the data of Student of Personal Info using POST method
+"""  Here we are storing the data of Student of Personal Info using POST method """
+@login_required(login_url='login')
 def create_personal_info(request):
     if request.method == 'POST':
         student = request.user
-        # email = request.POST.get('email')
         first_name = request.POST.get('first_name')
         middle_name = request.POST.get('middle_name')
         last_name = request.POST.get('last_name')
@@ -160,7 +177,9 @@ def create_personal_info(request):
         student_college_id = request.POST.get('student_id')
 
         try:
-            p_obj = PersonalInfo(student=student,  first_name=first_name, middle_name=middle_name,
+
+            p_obj = PersonalInfo(student=student, first_name=first_name, middle_name=middle_name,
+
                                  last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
                                  address=address, zip_code=zip_code, objectives=objectives,
                                  profile_picture=profile_picture, student_college_id=student_college_id)
@@ -180,7 +199,8 @@ def create_personal_info(request):
     return render(request, 'user_templates/viewprofile.html')
 
 
-# Here we are updating the data of Student of Personal Info using Update method
+"""Here we are updating the data of Student of Personal Info using Update method"""
+@login_required(login_url='login')
 def update_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
     if request.method == 'POST':
@@ -199,18 +219,25 @@ def update_personal_info(request, personal_info_id):
         return redirect('profile')  # Redirect to the profile page or wherever you'd like
     messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'update_personal_info.html', {'personal_info': personal_info})
+   
 
 
-# Here we are deleting the data of Student of Personal Info using Delete method
+""" Here we are deleting the data of Student of Personal Info using Delete method """
+@login_required(login_url='login')
 def delete_personal_info(request, personal_info_id):
     personal_info = PersonalInfo.objects.get(id=personal_info_id)
-    if request.method == 'POST':
-        personal_info.delete()
+    try:
+        if request.method == 'POST':
+            personal_info.delete()
+            return redirect('profile')
+        return render(request, 'delete_personal_info.html', {'personal_info': personal_info})
+    except:
+        messages.error(request, " Something went wrong")
         return redirect('profile')
-    return render(request, 'delete_personal_info.html', {'personal_info': personal_info})
 
 
-# Upload Resume View Here.
+""" Upload Resume View Here """
+@login_required(login_url='login')
 def Upload_Resume(request):
     user = request.user
 
@@ -238,6 +265,8 @@ def Upload_Resume(request):
     return render(request, 'user_templates/viewprofile.html')
 
 
+"""  Delete Resume fuction here """
+@login_required(login_url='login')
 def Delete_Resume(request,id):
     try:
         delete_resume = Resume.objects.get(user__id=id)
@@ -251,99 +280,130 @@ def Delete_Resume(request,id):
         return redirect('viewprofile')
 
 
+""" Experience Fuction handle here """
+@login_required(login_url='login')
 def Experience_Information(request):
-    if request.method == 'POST':
-        user = request.user
-        job_type = request.POST.get('employment_type')
-        company_name = request.POST.get('company_name')
-        m_salary = request.POST.get('m_salary')
-        location = request.POST.get('location')
-        working_from = request.POST.get('working_from')
-        working_till = request.POST.get('working_till')
-        designation = request.POST.get('designation')
-        role_responsibility = request.POST.get('rr')
+    try:
+        if request.method == 'POST':
+            user = request.user
+            job_type = request.POST.get('employment_type')
+            company_name = request.POST.get('company_name')
+            m_salary = request.POST.get('m_salary')
+            location = request.POST.get('location')
+            working_from = request.POST.get('working_from')
+            working_till = request.POST.get('working_till')
+            designation = request.POST.get('designation')
+            role_responsibility = request.POST.get('rr')
 
-        experience = Experience(user=user, job_type=job_type, company_name=company_name, monthly_salary=m_salary,
-                                designation=designation, location=location, working_till=working_till,
-                                working_from=working_from, description=role_responsibility)
-        experience.save()
-        messages.success(request, 'Experience-information add successfully!')
+            experience = Experience(user=user, job_type=job_type, company_name=company_name, monthly_salary=m_salary,
+                                    designation=designation, location=location, working_till=working_till,
+                                    working_from=working_from, description=role_responsibility)
+            experience.save()
+            messages.success(request, 'Experience-information add successfully!')
+            return redirect('viewprofile')
+        messages.error(request, 'Something went wrong! Please contact Admin')
+        return render(request, 'user_templates/viewprofile.html')
+    except:
+        messages.error(request, 'Something went wrong')
         return redirect('viewprofile')
-    messages.error(request, 'Something went wrong! Please contact Admin')
-    return render(request, 'user_templates/viewprofile.html')
 
 
+"""  Education Function are here """
+@login_required(login_url='login')
 def Education_Information(request):
-    if request.method == 'POST':
-        user = request.user
-        institution_name = request.POST.get('i_name')
-        field_of_study = request.POST.get('fos')
-        start_date = request.POST.get('sd')
-        end_date = request.POST.get('ed')
-        department = request.POST.get('dn')
-        cgpa = request.POST.get('cgpa')
-        description = request.POST.get('des')
+    try:
+        if request.method == 'POST':
+            user = request.user
+            institution_name = request.POST.get('i_name')
+            field_of_study = request.POST.get('fos')
+            start_date = request.POST.get('sd')
+            end_date = request.POST.get('ed')
+            department = request.POST.get('dn')
+            cgpa = request.POST.get('cgpa')
+            description = request.POST.get('des')
 
-        education = Education(user=user, institution_name=institution_name, field_of_study=field_of_study, cgpa=cgpa,
-                              start_date=start_date, end_date=end_date, description=description, department=department)
-        education.save()
-        messages.success(request, 'Education-information add successfully')
+            education = Education(user=user, institution_name=institution_name, field_of_study=field_of_study, cgpa=cgpa,
+                                start_date=start_date, end_date=end_date, description=description, department=department)
+            education.save()
+            messages.success(request, 'Education-information add successfully')
+            return redirect('viewprofile')
+        messages.error(request, 'Something went wrong! Please contact Admin')
+        return render(request, 'user_templates/viewprofile.html')
+    except:
+        messages.error(request, 'Something went wrong')
         return redirect('viewprofile')
-    messages.error(request, 'Something went wrong! Please contact Admin')
-    return render(request, 'user_templates/viewprofile.html')
 
 
+""" Certificate Fucntion are here """
+@login_required(login_url='login')
 def Certification_Information(request):
-    if request.method == 'POST':
-        user = request.user
-        certification_title = request.POST.get('certification_name')
-        issue_organization = request.POST.get('issue-organization')
-        issue_date = request.POST.get('i_d')
-        certification_link = request.POST.get('c_l')
-        description = request.POST.get('desc')
+    try:
+        if request.method == 'POST':
+            user = request.user
+            certification_title = request.POST.get('certification_name')
+            issue_organization = request.POST.get('issue-organization')
+            issue_date = request.POST.get('i_d')
+            certification_link = request.POST.get('c_l')
+            description = request.POST.get('desc')
 
-        certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
-                                    issue_date=issue_date, certificate_link=certification_link, description=description)
-        certification.save()
-        messages.success(request, 'Certification-information add successfully')
+            certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
+                                        issue_date=issue_date, certificate_link=certification_link, description=description)
+            certification.save()
+            messages.success(request, 'Certification-information add successfully')
+            return redirect('viewprofile')
+        messages.error(request, 'Something went wrong! Please contact Admin')
+        return render(request, 'user_templates/viewprofile.html')
+    except:
+        messages.error(request, 'Something went wrong please try again')
         return redirect('viewprofile')
-    messages.error(request, 'Something went wrong! Please contact Admin')
-    return render(request, 'user_templates/viewprofile.html')
 
 
+""" Project Function are here """
+@login_required(login_url='login')
 def Projects_Information(request):
-    if request.method == 'POST':
-        user = request.user
-        project_title = request.POST.get("title")
-        guide_name = request.POST.get("guide_name")
-        start_date = request.POST.get("std")
-        end_date = request.POST.get("ede")
-        description = request.POST.get("desc")
+    try:
+        if request.method == 'POST':
+            user = request.user
+            project_title = request.POST.get("title")
+            guide_name = request.POST.get("guide_name")
+            start_date = request.POST.get("std")
+            end_date = request.POST.get("ede")
+            description = request.POST.get("desc")
 
-        project = Project(user=user, title=project_title, advisor_name=guide_name, start_date=start_date,
-                          end_date=end_date, description=description)
-        project.save()
-        messages.success(request, 'Project-information add successfully')
+            project = Project(user=user, title=project_title, advisor_name=guide_name, start_date=start_date,
+                            end_date=end_date, description=description)
+            project.save()
+            messages.success(request, 'Project-information add successfully')
+            return redirect('viewprofile')
+        messages.error(request, 'Something went wrong! Please contact Admin')
+        return render(request, 'user_templates/viewprofile.html')
+    except:
+        messages.error(request, 'Something went wrong Please try again')
         return redirect('viewprofile')
-    messages.error(request, 'Something went wrong! Please contact Admin')
-    return render(request, 'user_templates/viewprofile.html')
 
 
+""" Additional function are here """
+@login_required(login_url='login')
 def Additional_Skill(request):
-    if request.method == 'POST':
-        user = request.user
-        hobbies_name = request.POST.get('ij')
-        language = request.POST.get('lan')
-        skill_name = request.POST.get('s_name')
+    try:
+        if request.method == 'POST':
+            user = request.user
+            hobbies_name = request.POST.get('ij')
+            language = request.POST.get('lan')
+            skill_name = request.POST.get('s_name')
 
-        additional_skill = AdditionalSkill(user=user, hobbies_name=hobbies_name, language_name=language, skill_name=skill_name)
-        additional_skill.save()
-        messages.success(request, 'Additional-skill add successfully')
-        return redirect('viewprofile')
-    messages.error(request, 'Something went wrong! Please contact Admin')
-    return render(request, 'user_templates/viewprofile.html')
+            additional_skill = AdditionalSkill(user=user, hobbies_name=hobbies_name, language_name=language, skill_name=skill_name)
+            additional_skill.save()
+            messages.success(request, 'Additional-skill add successfully')
+            return redirect('viewprofile')
+        messages.error(request, 'Something went wrong! Please contact Admin')
+        return render(request, 'user_templates/viewprofile.html')
+    except:
+        messages.error(request, ' Something went wrong Please try again')
 
 
+""" Download resume function here """
+@login_required(login_url='login')
 def Download_Resume(request,id):
     try:
         document = get_object_or_404(Resume, user__id=id)
@@ -368,3 +428,48 @@ def Download_Resume(request,id):
 #
 #     context = {'show_job': jobs}
 #     return render(request, 'user_templates/home.html', context)
+
+
+@login_required(login_url='login')
+def New_password(request):
+    if request.method == 'POST':
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        user = request.user
+
+        try:
+            # Check if the old password is correct
+            if authenticate(username=user.username, password=old_password):
+                # Check if the new password and confirm password match
+                if new_password == confirm_password:
+                    # Set the new password
+                    user.set_password(new_password)
+                    user.save()
+
+                    # Update the session to prevent the user from being logged out
+                    update_session_auth_hash(request, user)
+
+                    messages.success(request, 'Password changed successfully.')
+                    return redirect('home')
+                else:
+                    messages.error(request,'New password and confirm password do not match.')
+                    return redirect('home')
+
+            else:
+                raise ValueError('Incorrect old password.')
+
+        except Exception as e:
+            messages.error(request, f'An error occurred: {str(e)}')
+
+    return render(request, 'user_templates/new_password.html')
+
+# selected student show here
+
+from django.shortcuts import render
+from app.models import SelectedStudent
+
+def status_page(request):
+    selected_students = SelectedStudent.objects.filter(selected=True)
+    return render(request, 'user_templates/status.html', {'selected_students': selected_students})
