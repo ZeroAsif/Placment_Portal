@@ -210,31 +210,6 @@ def ExportExcel(request, job_id):
 
         wb.save(response)
         return response
-
-
-
-
-
-# def toggle_selected(request, student_id):
-#     try:
-#         student = Student.objects.get(id=student_id)
-#         student.selected = not student.selected
-#         student.save()
-#         return redirect('your_student_list_view')  # Replace 'your_student_list_view' with the actual URL name of your student list view
-#     except Student.DoesNotExist:
-#         return redirect('your_student_list_view')  # Redirect to the student list view in case of an error
-    
-
-
-
-# def save_selected_students(request):
-#     id = request.POST.get('selected_students')
-#     job_id = request.POST.get('job_students')
-#     user_obj = User.objects.get(id =id)
-#     job_obj = JobPosting.objects.get(id = job_id)
-#     obj = SelectedStudent.objects.create(user=user_obj,company_name=job_obj,selected=True)
-#     obj.save()
-#     return redirect('admins')
     
 def save_selected_students(request):
     selected_student_id = request.POST.get('selected_students')
