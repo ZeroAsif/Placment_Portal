@@ -33,7 +33,7 @@ def send_verification_email(user, request):
     current_site = get_current_site(request)
     verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
     subject = 'Verify Your Email'
-    message = render_to_string('verification_email.html', {'user': user, 'verification_link': verification_link})
+    message = verification_link
     send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
 
 

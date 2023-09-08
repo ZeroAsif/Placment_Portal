@@ -170,7 +170,7 @@ def create_personal_info(request):
             qr_image = qr_code.make_image(fill_color="blue", back_color="white")
 
             # Load the LinkedIn logo image
-            logo_image = Image.open("static/images/linkind.png")
+            logo_image = Image.open("static/images/download.png")
 
             # Resize the logo image to a smaller size
             logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
