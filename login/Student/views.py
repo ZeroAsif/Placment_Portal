@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404, HttpResponse
 from django.contrib import messages
 from datetime import datetime
 from django.db import IntegrityError
-from xhtml2pdf import pisa
+# from xhtml2pdf import pisa
 import qrcode
 from PIL import Image
 from django.contrib.auth.models import User

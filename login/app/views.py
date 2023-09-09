@@ -10,6 +10,54 @@ from django.core.exceptions import ObjectDoesNotExist
 from .helper import send_forget_password_mail
 from .models import *
 import uuid
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.http import HttpResponse
+from django.utils.encoding import force_bytes
+from django.utils.encoding import force_str
+from django.template.loader import render_to_string
+from django.contrib.auth import get_user_model
+from django.db.models import Q
+
+
+
+""" Send Email function defined while user register"""
+
+
+User = get_user_model()
+def send_verification_email(user, request):
+    token = default_token_generator.make_token(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
+    current_site = get_current_site(request)
+    verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
+    subject = 'Verify Your Email'
+    message = render_to_string('verification_email.html', {'user': user, 'verification_link': verification_link})
+    send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
+
+
+def verify_email(request, uid, token):
+    try:
+        user_id = force_str(urlsafe_base64_decode(uid))
+        user = User.objects.get(pk=user_id)
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            messages.success(request, 'Email verification successful. You can now log in.')
+        else:
+            messages.error(request, 'Invalid email verification link.')
+    except User.DoesNotExist:
+        messages.error(request, 'User not found.')
+    except Exception as e:
+        messages.error(request, 'Something went wrong during email verification.')
+    return redirect('login')  # You should replace 'login' with the actual login URL
+
+
+def check_email(request):
+
+    return render(request, 'check_email_page.html')
+
 
 """ Sigup Function are here """
 
@@ -21,35 +69,30 @@ def SignupPage(request):
             email = request.POST.get('email', '')
             pass1 = request.POST.get('password1')
             pass2 = request.POST.get('password2')
-
             if not email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                messages.error(request, 'Must Be ICT Email ID')
-                return redirect('signup')
-
-            if not email:
+                messages.error(request, 'Email domain must be pg.ictmumbai.edu.in or ug.ictmumbai.edu.in')
+            elif not email:
                 messages.error(request, 'Email prefix is required')
-                return redirect('signup')
-
-            if len(pass1) < 8:
+            elif len(pass1) < 8:
                 messages.error(request, 'Password must be at least 8 characters long')
-                return redirect('signup')
-
-            if pass1 != pass2:
+            elif pass1 != pass2:
                 messages.error(request, 'Passwords do not match')
-                return redirect('signup')
-            
-            if uname and email and pass1:
-                my_user = User.objects.create_user(username=uname, email=email, password=pass1)
-                my_user.save()
-                return redirect('login')
+            elif User.objects.filter(Q(email=email) | Q(username=uname)).exists():
+               messages.error(request, 'Username or Email address already exists')
             else:
-                messages.error(request, 'Please enter all required fields')
+                #Create the user and set as inactive
+                my_user = User.objects.create_user(username=uname, email=email, password=pass1)
+                my_user.is_active = False
+                my_user.save()
+                # Send email verification
+                send_verification_email(my_user, request)
+                messages.success(request, 'Please check your email for a verification link.')
+                return redirect('check_email_page')
         return render(request, 'signup.html')
-
     except Exception as e:
-        # Handle other exceptions here, e.g., log the error or provide an error message
-        messages.error(request, 'Something wet wrong please try again')
-        return redirect('signup')
+        # Handle other exceptions here
+        messages.error(request, 'Something went wrong, please try again')
+    return redirect('signup')
 
 
 """ Login Function are here """
@@ -62,6 +105,8 @@ def LoginPage(request):
             email = request.POST.get('email')
             password = request.POST.get('password')
             user = authenticate(request, email=email, password=password)
+            if user.is_active == False:
+                messages.error(request,'Cannot Login until you recieved a Verification Mail')
             if user is not None:
                 if user.is_staff:
                     login(request, user)
@@ -77,7 +122,7 @@ def LoginPage(request):
         return render(request, 'login.html')
     except:
         messages.error(request, 'Something went wrong please try again')
-        return redirect('log in')
+        return redirect('login')
 
 
 """ Show the admin page"""
@@ -210,11 +255,11 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
-            data .append(             
-                {'Sr.No': s_d.user.personalinfo.student_id, 
-                 'Name': s_d.user.personalinfo.first_name, 
-                 'Email':  s_d.user.personalinfo.email, 
-                 'Phone Number':  s_d.user.personalinfo.phone_number, 
+            data .append(
+                {'Sr.No': s_d.user.personalinfo.student_id,
+                 'Name': s_d.user.personalinfo.first_name,
+                 'Email':  s_d.user.personalinfo.email,
+                 'Phone Number':  s_d.user.personalinfo.phone_number,
                  '	College ID':s_d.user.personalinfo.student_college_id},
             )
             print(data)
@@ -298,7 +343,7 @@ def ForgetPassword(request):
 #         return redirect('your_student_list_view')  # Replace 'your_student_list_view' with the actual URL name of your student list view
 #     except Student.DoesNotExist:
 #         return redirect('your_student_list_view')  # Redirect to the student list view in case of an error
-    
+
 
 
 
@@ -310,11 +355,11 @@ def ForgetPassword(request):
 #     obj = SelectedStudent.objects.create(user=user_obj,company_name=job_obj,selected=True)
 #     obj.save()
 #     return redirect('admins')
-    
+
 def save_selected_students(request):
     selected_student_id = request.POST.get('selected_students')
     job_id = request.POST.get('job_students')
-    
+
     try:
         user_obj = User.objects.get(id=selected_student_id)
         job_obj = JobPosting.objects.get(id=job_id)
