@@ -51,6 +51,14 @@ def Check_Phone(request):
 @login_required(login_url='login')
 def HomePage(request):
     try:
+        try:
+            check_personal = PersonalInfo.objects.get(student_id=request.user.id)
+        except PersonalInfo.DoesNotExist:
+            check_personal = None
+        try:
+            check_resume = Resume.objects.get(user__id=request.user.id)
+        except Resume.DoesNotExist:
+            check_resume = None
         show_job = JobPosting.objects.all().order_by("-id")
         profile_image = UserProfile.objects.filter(user__id=request.user.id)
         check_additional = AdditionalSkill.objects.filter(user__id=request.user.id)
@@ -60,11 +68,13 @@ def HomePage(request):
             'show_job': show_job,
             'applied_jobs_ids': applied_jobs_ids,
             'profile_image': profile_image,
-            'check_additional': check_additional
+            'check_additional': check_additional,
+            'check_personal': check_personal,
+            'check_resume': check_resume,
         }
         return render(request, 'user_templates/home.html', context)
     except Exception as e:
-        messages.error(request, 'Something went wrong. Please contact admin')
+        messages.error(request, e)
         return render(request, 'user_templates/home.html')
 
 
@@ -132,12 +142,22 @@ def job_application(request, job_id):
 @login_required(login_url='login')
 def Job_Description(request, id):
     try:
+        try:
+            check_personal = PersonalInfo.objects.get(student_id=request.user.id)
+        except PersonalInfo.DoesNotExist:
+            check_personal = None
+        try:
+            check_resume = Resume.objects.get(user__id=request.user.id)
+        except Resume.DoesNotExist:
+            check_resume = None
         job_description = JobPosting.objects.get(id=id)
         applied_jobs = Job_application.objects.filter(user=request.user)
         applied_jobs_ids = [job.job_posting_id for job in applied_jobs]
         context = {
             "job_description": job_description,
-            "applied_jobs_ids": applied_jobs_ids
+            "applied_jobs_ids": applied_jobs_ids,
+            'check_personal': check_personal,
+            'check_resume': check_resume,
         }
         return render(request, "user_templates/job_description.html", context)
     except Exception as e:
@@ -198,7 +218,14 @@ def create_personal_info(request):
                                  student_college_id=student_college_id, linkdin_url=linkedin_url)
             p_obj.save()
             # Save the final QR code image
-            qr_image.save("media/profile_pic/linkedin.png")
+            folder_path = "media/linkedinQR"
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+
+            # Save the image inside the folder with the user's first_name
+            image_name = f"linkedin{first_name}.png"  # Or any desired image format
+            image_path = os.path.join(folder_path, image_name)
+            qr_image.save(image_path)
             messages.success(request, 'Personal-information added successfully')
             return redirect('viewprofile')
         except IntegrityError as e:
@@ -441,13 +468,21 @@ def Certification_Information(request):
         issue_date = request.POST.get('i_d')
         certification_link = request.POST.get('c_l')
         description = request.POST.get('desc')
-        uploaded_files = request.FILES.get('upload_document')
-
+        aadhar_card = request.FILES.get('aadhar_card')
+        tenth_marksheet = request.FILES.get('tenth_marksheet')
+        eleven_marksheet = request.FILES.get('eleven_marksheet')
+        twelve_marksheet = request.FILES.get('twelve_marksheet')
+        eight_semester_marksheet = request.FILES.get('eight_semester_marksheet')
         certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
                                     issue_date=issue_date, certificate_link=certification_link,
-                                    description=description, document_prove=uploaded_files)
+                                    description=description, aadhar_card=aadhar_card,
+                                    tenth_marksheet=tenth_marksheet, eleven_marksheet=eleven_marksheet,
+                                    twelve_marksheet=twelve_marksheet, eight_semester_marksheet=eight_semester_marksheet)
         certification.save()
         messages.success(request, 'Certification-information add successfully')
+        return redirect('viewprofile')
+    messages.error(request, 'something went wrong')
+    return render(request, 'user_templates/viewprofile.html')
 
 
 def Post_Graduation_Information(request):
@@ -515,13 +550,28 @@ def Post_Graduation_Information(request):
 
 def Delete_Certification(request, id):
     try:
-        education = Certificate.objects.get(id=id)
-        education.delete()
-        messages.success(request, "Certification delete successfully!")
+        certification = Certificate.objects.get(id=id)
+
+        aadhar_card_path = certification.aadhar_card.path
+        tenth_marksheet_path = certification.tenth_marksheet.path
+        eleven_marksheet_path = certification.eleven_marksheet.path
+        twelve_marksheet_path = certification.twelve_marksheet.path
+        eight_semester_marksheet_path = certification.eight_semester_marksheet.path
+
+        certification.delete()
+
+        for file_path in [aadhar_card_path, tenth_marksheet_path, eleven_marksheet_path, twelve_marksheet_path,
+                          eight_semester_marksheet_path]:
+            if file_path and os.path.isfile(file_path):
+                os.remove(file_path)
+
+        messages.success(request, "Certification and Document delete successfully!")
         return redirect('viewprofile')
-    except:
-        messages.error(request, 'Something went wrong! Please contact Admin')
-        return render(request, 'user_templates/viewprofile.html')
+    except Exception.DoesNotExist:
+        messages.error(request, 'Document does not exist.')
+    except Exception as e:
+        messages.error(request, f'Something went wrong! Error: {str(e)}')
+    return render(request, 'user_templates/viewprofile.html')
 
 
 def Update_Certification(request, id):
@@ -558,10 +608,8 @@ def Projects_Information(request):
             project.save()
             messages.success(request, 'Project-information add successfully')
             return redirect('viewprofile')
-        messages.error(request, 'Something went wrong! Please contact Admin')
-        return render(request, 'user_templates/viewprofile.html')
-    except:
-        messages.error(request, 'Something went wrong Please try again')
+    except Exception as e:
+        messages.error(request, f'Please fill proper details. {e}')
         return redirect('viewprofile')
 
 

@@ -25,7 +25,6 @@ class TimeStampedModel(models.Model):
 # we are store Student Personal Information here.
 class PersonalInfo(TimeStampedModel):
     student = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     middle_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)
@@ -143,7 +142,11 @@ class Experience(TimeStampedModel):
 class Certificate(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True, null=True)
-    document_prove = models.FileField(upload_to="document_prove", null=True, blank=True)
+    aadhar_card = models.FileField(upload_to="document_prove", null=True, blank=True)
+    tenth_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
+    eleven_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
+    twelve_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
+    eight_semester_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
     issuing_organisation = models.CharField(max_length=200, blank=True, null=True)
     issue_date = models.DateField(blank=True, null=True)

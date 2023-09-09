@@ -30,10 +30,18 @@
                 <h4 class="mb-4 text-center" style="color:green;">Show Your Interest!</h4>
 
                 <div class="col-12">
-                    {% if job_description.id in applied_jobs_ids %}
-                    <button class="btn btn-outline-success w-100" disabled><i class="fa-solid fa-check"></i>Applied</button>
+                    {% if user.is_authenticated %}
+                        {% if check_personal and check_resume %}
+                            {% if job_description.id in applied_jobs_ids %}
+                                <button class="btn btn-outline-success w-100" disabled><i class="fa-solid fa-check"></i>Applied</button>
+                            {% else %}
+                                <a class="btn btn-outline-success w-100" href="{% url 'interest' job_description.id %}">Interest</a>
+                            {% endif %}
+                        {% else %}
+                            <a class="btn btn-outline-primary w-100" href="{% url 'viewprofile' %}">Create Profile</a>
+                        {% endif %}
                     {% else %}
-                    <a class="btn btn-outline-success w-100" href="{% url 'interest' job_description.id %}">Interest</a>
+                        <a class="btn btn-outline-success w-100 " href="{% url 'login' %}">Log in to Apply</a>
                     {% endif %}
                 </div>
 
