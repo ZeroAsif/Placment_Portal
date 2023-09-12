@@ -10,9 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .helper import send_forget_password_mail
 from .models import *
 import uuid
-<<<<<<< HEAD
 import xlwt
-=======
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
@@ -62,7 +60,6 @@ def send_verification_email(user, request):
 #     return render(request, 'check_email_page.html')
 
 
->>>>>>> 14083754f944464dd2ad1ca4ad142ebe8ee18661
 """ Sigup Function are here """
 
 
