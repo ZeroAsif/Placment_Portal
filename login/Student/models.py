@@ -25,7 +25,6 @@ class TimeStampedModel(models.Model):
 # we are store Student Personal Information here.
 class PersonalInfo(TimeStampedModel):
     student = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=100, blank=True, null=True, unique=True)
     first_name = models.CharField(max_length=50, blank=True, null=True)
     middle_name = models.CharField(max_length=50, blank=True, null=True)
     last_name = models.CharField(max_length=50, blank=True, null=True)

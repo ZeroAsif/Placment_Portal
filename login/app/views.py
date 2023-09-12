@@ -10,7 +10,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .helper import send_forget_password_mail
 from .models import *
 import uuid
-
+import xlwt
 """ Sigup Function are here """
 
 
@@ -194,7 +194,6 @@ def ExportExcel(request, job_id):
     if request.method == 'POST':
         print('inside post export')
     if request.method == 'GET':
-        print(job_id,'iside a excel')
         response = HttpResponse(content_type='application/ms-excel')
         response['Content-Disposition'] = 'attachment; filename="data_export.xls"'
 
@@ -213,11 +212,11 @@ def ExportExcel(request, job_id):
             data .append(             
                 {'Sr.No': s_d.user.personalinfo.student_id, 
                  'Name': s_d.user.personalinfo.first_name, 
-                 'Email':  s_d.user.personalinfo.email, 
+                 'Email':  s_d.user.email, 
                  'Phone Number':  s_d.user.personalinfo.phone_number, 
                  '	College ID':s_d.user.personalinfo.student_college_id},
             )
-            print(data)
+         
 
         # Write data rows
         for row_num, row_data in enumerate(data, start=1):
