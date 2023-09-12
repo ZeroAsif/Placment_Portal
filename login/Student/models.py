@@ -123,7 +123,9 @@ class Experience(TimeStampedModel):
     description = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     working_from = models.CharField(max_length=30, blank=True, null=True)
+    working_from_text = models.CharField(max_length=30, blank=True, null=True)
     working_till = models.CharField(max_length=30, blank=True, null=True)
+    working_till_text = models.CharField(max_length=30, blank=True, null=True)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -142,7 +144,11 @@ class Experience(TimeStampedModel):
 class Certificate(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=200, blank=True, null=True)
-    document_prove = models.FileField(upload_to="document_prove", null=True, blank=True)
+    aadhar_card = models.FileField(upload_to="document_prove", null=True, blank=True)
+    tenth_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
+    eleven_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
+    twelve_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
+    eight_semester_marksheet = models.FileField(upload_to="document_prove", null=True, blank=True)
     description = models.TextField(max_length=500, blank=True, null=True)
     issuing_organisation = models.CharField(max_length=200, blank=True, null=True)
     issue_date = models.DateField(blank=True, null=True)
@@ -257,7 +263,9 @@ class Research(TimeStampedModel):
     supervisor = models.CharField(max_length=100, blank=True, null=True)
     technologies_used = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.CharField(max_length=30, blank=True, null=True)
+    start_date_text = models.CharField(max_length=30, blank=True, null=True)
     end_date = models.CharField(max_length=30, blank=True, null=True)
+    end_date_text = models.CharField(max_length=30, blank=True, null=True)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
