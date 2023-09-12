@@ -3,6 +3,19 @@
 <html lang="en">
 <head>
 
+    <style>
+        /* Add styles for the eye icon */
+        .toggle-password {
+            position: relative;
+            cursor: pointer;
+            right: 35px;
+            top: -28px;
+            color: #ccc;
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -55,6 +68,7 @@ body {
 }
 
 .wrapper .name {
+
     font-weight: 600;
     font-size: 1.4rem;
     letter-spacing: 1.3px;
@@ -68,7 +82,7 @@ body {
     border: none;
     outline: none;
     background: none;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: #666;
     padding: 10px 15px 10px 10px;
     /* border: 1px solid red; */
@@ -118,7 +132,11 @@ body {
     }
 }
 
-
+.wrapper .toggle-password{
+    position: relative;
+    top: 4px;
+    right: 8px;
+}
 
 
 
@@ -149,15 +167,19 @@ body {
                 <span class="far fa-user"></span>
                 <input type="email" name="email" id="email" placeholder="Email" autocomplete="off" value="">
             </div>
+
+
             <div class="form-field d-flex align-items-center">
                 <span class="fas fa-key"></span>
                 <input type="password" name="password" id="pwd" placeholder="Password" value="">
+                <span toggle="#pwd" class="toggle-password fas fa-eye"></span>
             </div>
             <button class="btn mt-3">Login</button>
         </div>
+
         <div class="text-center fs-6">
-            <a href="{% url 'signup' %}">Create a account</a></br>
-            <a href="{% url 'forget_password'%}">Forget Password</a>
+            <a href="{% url 'signup' %}">Create  account</a></br>
+            <a href="{% url 'forget_password'%}">Forgot Password</a>
         </div>
 
     </form>
@@ -167,5 +189,22 @@ body {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
+
+
+        <script>
+            // JavaScript to toggle password visibility
+            document.querySelector(".toggle-password").addEventListener("click", function () {
+                const passwordField = document.querySelector(this.getAttribute("toggle"));
+                if (passwordField.type === "password") {
+                    passwordField.type = "text";
+                    this.classList.remove("fa-eye");
+                    this.classList.add("fa-eye-slash");
+                } else {
+                    passwordField.type = "password";
+                    this.classList.remove("fa-eye-slash");
+                    this.classList.add("fa-eye");
+                }
+            });
+        </script>
 </body>
 </html>

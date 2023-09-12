@@ -47,7 +47,7 @@
         {% endif %}
         <div class="col-md-9 mx-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3">{{ user.personalinfo.first_name }}
+                <h2 class="me-3">{{ user.username }}
                     <a href="{% url 'viewprofile' %}" class="btn btn-outline-primary">Edit Profile</a>
                 </h2>
 
@@ -87,12 +87,13 @@
     </div>
 </div>
 
-
+<input type="text" id="searchInput" class="form-control searchInput" placeholder="Search..."
+    data-accordion-id="{{ data.jdata.id }}">
 <!-- Search Bar Section -->
-<div class="row mx-1">
+{% comment %} <div class="row mx-1">
     <div class="col-xl-12">
         <div class="container mt-3 p-4 border rounded">
-            <form>
+            <form id="job-search-form">
                 <div class="d-flex align-items-end">
                     <div class="col-5">
                         <div class="form-outline">
@@ -111,13 +112,20 @@
                         </div>
                     </div>
                     <div class="col-2">
-                        <button type="button" class="btn btn-outline-primary btn-md mx-2">Search</button>
+                        <button type="submit" class="btn btn-outline-primary btn-md mx-2">Search</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-</div>
+</div> {% endcomment %}
+
+
+
+
+
+
+
 
 
 <!-- latest jobs-->
@@ -126,7 +134,9 @@
         <h1 class="text-center my-2">Latest Jobs</h1>
         <div class="container mt-3 p-3 border rounded overflow-auto shadow" style="height: 450px;">
             <div class="tab-content">
-                <div id="tab-1" class="tab-pane fade show p-0 active">
+                <div id="search-results-container">
+                </div>
+                <div id="tab-1" class="tab-pane fade show p-0 active" id="search-results-container">
                     {% for show_jobs in show_job %}
                     <div class="job-item p-4 mb-4 border rounded">
                         <div class="row g-4">
@@ -172,12 +182,28 @@
 </div>
 
 
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+
+
 <script>
-{% for flash in messages %}
-    alertify.set('notifier','position', 'top-right');
-    alertify.success('{{flash}}');
-{% endfor %}
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const jobItems = document.querySelectorAll('.job-item');
+
+        searchInput.addEventListener('input', function () {
+            const searchText = searchInput.value.trim().toLowerCase();
+
+            jobItems.forEach(function (jobItem) {
+                const companyName = jobItem.querySelector('.text-truncate:nth-child(3)').textContent.toLowerCase();
+                if (companyName.includes(searchText)) {
+                    jobItem.style.display = 'block';
+                } else {
+                    jobItem.style.display = 'none';
+                }
+            });
+        });
+    });
 </script>
 
 {% endblock %}

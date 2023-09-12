@@ -20,5 +20,21 @@
     {% else %}
         <p>You are not logged in.</p>
     {% endif %}
+
+
+
+
+    <h1>Student Interest Status</h1>
+    <p>Number of Companies Interested: {{ numCompanies }}</p>
+    <ul>
+        {% for interest in interests %}
+            <li>
+                <strong>Company Name:</strong> {{ interest.companyName }}<br>
+                <strong>Status:</strong> {{ interest.status }}
+            </li>
+        {% endfor %}
+    </ul>
+
+    
 </body>
 </html>

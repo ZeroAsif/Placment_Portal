@@ -320,7 +320,7 @@ def save_selected_students(request):
 
         # Check if the student is already selected
         if SelectedStudent.objects.filter(user=user_obj, company_name=job_obj).exists():
-            messages.error(request,"Successfully selected student")
+            messages.succ(request,"Successfully selected student")
             return render (request,'admin.html')
 
         # Create a new SelectedStudent object with the "You Are Selected" message
@@ -334,7 +334,7 @@ def save_selected_students(request):
 
         return HttpResponse("You Are Selected")
     except User.DoesNotExist:
-        return HttpResponse("Selected student not found.")
+        return HttpResponse("Already selected.")
     except JobPosting.DoesNotExist:
         return HttpResponse("Job posting not found.")
 

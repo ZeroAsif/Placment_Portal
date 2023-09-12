@@ -22,6 +22,8 @@ urlpatterns = [
     path("extra-curriculum", Extra_Curriculum, name='extra-curriculum'),
     path("download-resume/<int:id>", Download_Resume, name='download-resume'),
     path("upload-image", Upload_Image, name='upload-image'),
+    path('status/', status_page, name='status_page'),
+    path('job-search/', job_search, name='job_search'),
 
     # this update path section
     path("update-personal-info/<str:id>", Update_Personal_Info, name='update-personal-info'),
@@ -45,7 +47,7 @@ urlpatterns = [
     path("delete-semester-college/<str:id>", Delete_Semester_College, name='delete-semester-college'),
     path("delete-research/<str:id>", Delete_Research, name='delete-research'),
     path("delete-extra-curriculum/<str:id>", Delete_Extra_Curriculum, name='delete-extra-curriculum'),
-    path('status/', status_page, name='status_page'),
+    
 
     # this path check validator user email & student_college_id
     path("check-user-email", Check_User_Email, name='check-user-email'),

@@ -64,7 +64,7 @@ def HomePage(request):
         }
         return render(request, 'user_templates/home.html', context)
     except Exception as e:
-        messages.error(request, 'Something went wrong. Please contact admin')
+        # messages.error(request, e)
         return render(request, 'user_templates/home.html')
 
 
@@ -170,7 +170,7 @@ def create_personal_info(request):
             qr_image = qr_code.make_image(fill_color="blue", back_color="white")
 
             # Load the LinkedIn logo image
-            logo_image = Image.open("static/images/linkind.png")
+            logo_image = Image.open("static/images/linkedin.png")
 
             # Resize the logo image to a smaller size
             logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
@@ -908,3 +908,21 @@ def status_page(request):
     selected_students = SelectedStudent.objects.filter(selected=True)
     return render(request, 'user_templates/status.html', {'selected_students': selected_students})
 
+
+
+
+# search company names
+
+def job_search(request):
+    if request.method == "GET":
+        company_name = request.GET.get("company-name", "")
+        location = request.GET.get("employment-type", "")
+
+        # Filter jobs based on company name and location and extract company names
+        matching_company_names = JobPosting.objects.filter(company_name__icontains=company_name, location__icontains=location).values_list('company_name', flat=True)
+
+        # Create a comma-separated string of matching company names
+        company_names_str = ", ".join(matching_company_names)
+
+        # Return the matching company names as plain text
+        return HttpResponse(company_names_str)

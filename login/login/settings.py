@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'Student',
     'auth_app',
 
+
 ]
 
 MIDDLEWARE = [
