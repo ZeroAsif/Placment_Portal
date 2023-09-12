@@ -123,7 +123,9 @@ class Experience(TimeStampedModel):
     description = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     working_from = models.CharField(max_length=30, blank=True, null=True)
+    working_from_text = models.CharField(max_length=30, blank=True, null=True)
     working_till = models.CharField(max_length=30, blank=True, null=True)
+    working_till_text = models.CharField(max_length=30, blank=True, null=True)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
@@ -261,7 +263,9 @@ class Research(TimeStampedModel):
     supervisor = models.CharField(max_length=100, blank=True, null=True)
     technologies_used = models.CharField(max_length=200, blank=True, null=True)
     start_date = models.CharField(max_length=30, blank=True, null=True)
+    start_date_text = models.CharField(max_length=30, blank=True, null=True)
     end_date = models.CharField(max_length=30, blank=True, null=True)
+    end_date_text = models.CharField(max_length=30, blank=True, null=True)
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,

@@ -18,8 +18,8 @@ urlpatterns = [
      path('change-password/<token>/' , ChangePassword , name="change_password"),
      path('<int:job_id>/', ExportExcel, name='export_excels'),
      path('save_selected_students/',save_selected_students,name='save_selected_students'),
-     path('verify_email/<str:uidb64>/<str:token>/', verify_email, name='verify_email'),
-     path('check_email_page/', check_email, name='check_email_page'),
+     # path('verify_email/<str:uidb64>/<str:token>/', verify_email, name='verify_email'),
+     # path('check_email_page/', check_email, name='check_email_page'),
 
 ]
 

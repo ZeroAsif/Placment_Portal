@@ -26,37 +26,37 @@ from django.db.models import Q
 """ Send Email function defined while user register"""
 
 
-User = get_user_model()
-def send_verification_email(user, request):
-    token = default_token_generator.make_token(user)
-    uid = urlsafe_base64_encode(force_bytes(user.pk))
-    current_site = get_current_site(request)
-    verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
-    subject = 'Verify Your Email'
-    message = render_to_string('verification_email.html', {'user': user, 'verification_link': verification_link})
-    send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
+# User = get_user_model()
+# def send_verification_email(user, request):
+#     token = default_token_generator.make_token(user)
+#     uid = urlsafe_base64_encode(force_bytes(user.pk))
+#     current_site = get_current_site(request)
+#     verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
+#     subject = 'Verify Your Email'
+#     message = render_to_string('verification_email.html', {'user': user, 'verification_link': verification_link})
+#     send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
 
 
-def verify_email(request, uid, token):
-    try:
-        user_id = force_str(urlsafe_base64_decode(uid))
-        user = User.objects.get(pk=user_id)
-        if default_token_generator.check_token(user, token):
-            user.is_active = True
-            user.save()
-            messages.success(request, 'Email verification successful. You can now log in.')
-        else:
-            messages.error(request, 'Invalid email verification link.')
-    except User.DoesNotExist:
-        messages.error(request, 'User not found.')
-    except Exception as e:
-        messages.error(request, 'Something went wrong during email verification.')
-    return redirect('login')  # You should replace 'login' with the actual login URL
+# def verify_email(request, uid, token):
+#     try:
+#         user_id = force_str(urlsafe_base64_decode(uid))
+#         user = User.objects.get(pk=user_id)
+#         if default_token_generator.check_token(user, token):
+#             user.is_active = True
+#             user.save()
+#             messages.success(request, 'Email verification successful. You can now log in.')
+#         else:
+#             messages.error(request, 'Invalid email verification link.')
+#     except User.DoesNotExist:
+#         messages.error(request, 'User not found.')
+#     except Exception as e:
+#         messages.error(request, 'Something went wrong during email verification.')
+#     return redirect('login')  # You should replace 'login' with the actual login URL
 
 
-def check_email(request):
+# def check_email(request):
 
-    return render(request, 'check_email_page.html')
+#     return render(request, 'check_email_page.html')
 
 
 """ Sigup Function are here """
@@ -82,12 +82,12 @@ def SignupPage(request):
             else:
                 #Create the user and set as inactive
                 my_user = User.objects.create_user(username=uname, email=email, password=pass1)
-                my_user.is_active = False
+                # my_user.is_active = False
                 my_user.save()
                 # Send email verification
-                send_verification_email(my_user, request)
+                # send_verification_email(my_user, request)
                 messages.success(request, 'Please check your email for a verification link.')
-                return redirect('check_email_page')
+                return redirect('login')
         return render(request, 'signup.html')
     except Exception as e:
         # Handle other exceptions here
@@ -111,7 +111,7 @@ def LoginPage(request):
                 if user.is_staff:
                     login(request, user)
                     if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                        return redirect('admins')
+                        return redirect('home')
                     else:
                         messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
                 else:
