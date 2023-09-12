@@ -33,7 +33,7 @@ def send_verification_email(user, request):
     current_site = get_current_site(request)
     verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
     subject = 'Verify Your Email'
-    message = verification_link
+    message = message = f'Click the following link to verify your email:\n{verification_link}'
     send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
 
 
@@ -273,7 +273,7 @@ def ExportExcel(request, job_id):
         return response
 
 """ Change password are define here """
-@login_required(login_url='login')
+
 def ChangePassword(request , token):
     context = {}
     try:
@@ -303,19 +303,16 @@ def ChangePassword(request , token):
 
 
 """ Change password are create here"""
-@login_required(login_url='login')
 def ForgetPassword(request):
     try:
         if request.method == 'POST':
             email = request.POST.get('email')
-
             if not User.objects.filter(email=email).first():
                 messages.error(request, 'No user found with this email.')
                 return redirect('forget-password')
 
             user_obj = User.objects.get(email=email)
             token = str(uuid.uuid4())
-
             # Create the reset_password object but don't save it yet
             profile_obj, created = reset_password.objects.get_or_create(user=user_obj)
             send_forget_password_mail(user_obj.email , token)
@@ -325,11 +322,10 @@ def ForgetPassword(request):
 
             messages.success(request, 'An email is sent.')
             return redirect('forget_password')
-
-    except Exception as e:
-        print('dont want things')
         return render(request , 'forget-password.html')
-
+    except:
+        messages.error(request, " Something is wrong")
+        return redirect('login')
 
 
 

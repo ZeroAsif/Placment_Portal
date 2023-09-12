@@ -190,7 +190,6 @@ def create_personal_info(request):
             zip_code = None
         objectives = request.POST.get('objectives')
         student_college_id = request.POST.get('student_id')
-
         try:
             p_obj = PersonalInfo(student=student, first_name=first_name, middle_name=middle_name,
                                  last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
