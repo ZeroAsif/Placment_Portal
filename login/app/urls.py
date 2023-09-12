@@ -21,6 +21,7 @@ urlpatterns = [
      path('verify_email/<str:uid>/<str:token>/', verify_email, name='verify_email'),
      path('check_email_page/', check_email, name='check_email_page'),
 
+
 ]
 
 if settings.DEBUG:

@@ -4,8 +4,6 @@
 <head>
     <title>Amit Gautam - Resume</title>
     <style>
-
-
         body {
             font-family: Arial, sans-serif;
             margin: 0px;
@@ -24,12 +22,14 @@
         .row-profiles {
             margin-top: -40px;
 
-           padding-bottom: 10px;
+            padding-bottom: 10px;
         }
 
-        <!-- .section {
+        /* < !-- .section {
             margin-bottom: 20px;
-        } -->
+        }
+
+        --> */
 
         /* Repeating header on each page */
         .page-header {
@@ -99,14 +99,21 @@
         }
 
         .work-experience {
-            margin-bottom: 10px;
+            margin-bottom: 0px;
             margin-top: 1px;
         }
 
-        .work-experience ul {
-            list-style-type: disc;
-            margin-left: 10px;
+        .row-experience table {
+            width: 100%;
+            border-collapse: collapse;
+            display: block;
         }
+
+        .row-experience-td {
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
 
         .achievements {
             margin-bottom: 20px;
@@ -147,6 +154,14 @@
         .row-profile {
             display: flex;
             justify-content: space-between;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+        .row-profile p {
+            margin: 0;
+            padding: 0;
+            font-weight: normal;
         }
 
         h3 {
@@ -187,261 +202,305 @@
             margin-bottom: 0;
         }
 
-        .inlines{
-            display:inline;
-            margin-right:50%;
+        .inlines {
+            display: inline;
+            margin-right: 50%;
         }
 
+        .row-profiles-td {
+            margin-bottom: 0;
+            margin-top: 0;
 
-
+        }
     </style>
 </head>
 
 <body>
 
-<div class="section section_1">
-    <div class="row-profiles">
-        <table style="width: 100%;">
-            <tr>
-                <td style="width: 10%;">
-                    <img src="static/images/ict.jpeg"
-                         alt="" style="width: 100px;
+    <div class="section section_1">
+        <div class="row-profiles">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 10%;">
+                        <img src="static/images/ict.jpeg" alt="" style="width: 100px;
                             height: 100px;
                             border-radius: 50%; ">
-                </td>
-                <td style="width: 70%;">
-                    <ul style="margin-bottom: 0;list-style: none;">
-                        <p style="text-align: start;"> {{user_data.first_name}}</p>
-                        <p style="text-align: start;">{{education_data.department}}</p>
-                        <p style="text-align: start;"> {{education_data.institution_name}}</p>
+                    </td>
+                    <td style="width: 70%;">
+                        <ul class="row-profiles-td" style="margin-bottom: 0;list-style: none;">
+                            <p style="text-align: start;"> {{user_data.first_name}}<br>{{education_data.department}}
+                                <br>{{education_data.institution_name}}
+                            </p>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="row-profiles-td" style="margin-bottom: 0;list-style: none;">
+                            {{user_data.student_college_id}}<br>
+                            {{user_date.zip_code}}<br>
+                            {{user_data.date_of_birth}}</p>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="section-profile">
+        <div class="row-profile">
+            <table>
+                <th style="width: 100px; height: 100px; padding: 0; border: 1px solid black;">
+                    {% for up in user_profile %}
+                    <img src="media/{{up.profile_picture}}" alt=""
+                        style="width:300px;height: 300px;border-radius: 50%;">
+                    {% endfor %}
+                </th>
+                <th style="width: 70%;">
+                    <ul style="margin-bottom: 0;">
+                        <p style="text-align: start;"><i><b>Address : </b></i> {{user_data.address}}</p>
+                        <p style="text-align: start;"><i><b>Mobile :</b></i> {{user_data.phone_number}}</p>
+                        <p style="text-align: start;"><i><b>Email :</b></i> {{user_data.email}}</p>
                     </ul>
-                </td>
-                <td>
-                    <ul style="margin-bottom: 0;list-style: none;">
-                        <p> {{user_data.student_college_id}}</p>
-                        <p> {{user_date.zip_code}}</p>
-                        <p> {{user_data.date_of_birth}}</p>
-                    </ul>
-                </td>
-            </tr>
-        </table>
+                </th>
+                <th style="width: 100px; height: 100px; padding: 0; border: 1px solid black;">
+                    <img src="media/profile_pic/linkedin.png" alt=""
+                        style="width: 300px; height: 300px; object-fit: cover;">
+                </th>
+
+            </table>
+        </div>
     </div>
-</div>
 
 
-<div class="section-profile">
-    <div class="row-profile">
-        <table>
-            <th style="width: 100px; height: 100px; padding: 0; border: 1px solid black;">
-                {% for up in user_profile %}
-                <img src="media/{{up.profile_picture}}" alt="" style="width:300px;height: 300px;border-radius: 50%;">
+    <div class="section">
+
+        <p><i><b> Objective:</b></i>{{user_data.objectives}}</p>
+
+
+    </div>
+
+    <div class="section">
+        <h3>
+            <span style="font-weight: bold;"><i>Educational Qualifications (Pre-University and Undergraduate)</i></span>
+        </h3>
+        <div class="education">
+            <table>
+                <tr>
+                    <th>Examination</th>
+                    <th>Institution</th>
+                    <th>%Marks/CGPA</th>
+                </tr>
+                {% for edu in education %}
+                <tr>
+                    <td>{{edu.board_name}}</td>
+                    <td>{{edu.institution_name}}</td>
+                    <td>{{edu.cgpa_percentage}}</td>
+                </tr>
                 {% endfor %}
-            </th>
-            <th style="width: 70%;">
-                <ul style="margin-bottom: 0;">
-                    <p style="text-align: start;"><b>Address : </b>{{user_data.address}}</p>
-                    <p style="text-align: start;"><b>Mobile :</b>{{user_data.phone_number}}</p>
-                    <p style="text-align: start;"><b>Email :</b>{{user_data.email}}</p>
-                </ul>
-            </th>
-            <th style="width: 100px; height: 100px; padding: 0; border: 1px solid black;">
-                <img src="media/profile_pic/linkedin.png"
-                     alt="" style="width: 300px; height: 300px; object-fit: cover;">
-            </th>
+            </table>
+        </div>
+    </div><br>
 
-        </table>
+
+    <div class="section">
+        <h3>
+            <span style="font-weight: bold;"><i>Educational Qualifications (Postgraduate)</i></span>
+        </h3>
+        <div class="education">
+            <table>
+
+                <p style="border: 1px solid black; padding: 4px; margin:0px; text-align: center;">
+                    <span style="font-weight: bold;">Institute of Chemical Technology, Mumbai, Maharastra</span>
+                </p>
+
+                <tr>
+                    <th style="width: 12.5%;">Semester</th>
+                    <th style="width: 12.5%;">Year</th>
+                    <th style="width: 12.5%;">SGPA</th>
+                    <th style="width: 12.5%;">CGPA</th>
+                    <th style="width: 12.5%;">Semester</th>
+                    <th style="width: 12.5%;">Year</th>
+                    <th style="width: 12.5%;">SGPA</th>
+                    <th style="width: 12.5%;">CGPA</th>
+                </tr>
+                {%for sem in sem_data %}
+                <tr>
+                    <td>{{sem.0}}</td>
+                    <td>{{sem.1}}</td>
+                    <td>{{sem.2}}</td>
+                    <td>{{sem.3}}</td>
+                    <td>{{sem.4}}</td>
+                    <td>{{sem.5}}</td>
+                    <td>{{sem.6}}</td>
+                    <td>{{sem.7}}</td>
+                    {% endfor %}
+                </tr>
+
+
+            </table>
+        </div>
     </div>
-</div>
+    <br>
 
 
-<div class="section">
-    <h3>
-        <span style="font-weight: bold;"><i>Career Objective:</i></span>
-        {{user_data.objectives}}
-    </h3>
-</div>
+    {% for res in resarch %}
+    <div class="section">
+        <h3>
+            <span style="font-weight: bold;"><i>Research</i></span><br>
+                <table style="width: 100%;">
+                <tr>
+                    <td style="width: 80%;">
+                        <ul style="margin-bottom: 0;list-style: none;">
+                            <p style="text-align: start;"><span> <b><i>{{res.title}}</i></b> 
+                        </ul>
+                    </td>
+                    <td>
+                        <ul style="margin-bottom: 0;list-style: none;">
+                            <b><span>{{res.start_date_text}} - {{res.end_date_text}}</span></b>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </h3>
+        <div class="work-experience">
+            <ul style="margin-bottom: 0;">
 
-<div class="section">
-    <h3>
-        <span style="font-weight: bold;"><i>Educational Qualifications (Pre-University and Undergraduate)</i></span>
-    </h3>
-    <div class="education">
-        <table>
-            <tr>
-                <th>Examination</th>
-                <th>Institution</th>
-                <th>%Marks/CGPA</th>
-            </tr>
-            {% for edu in education %}
-            <tr>
-                <td>{{edu.board_name}</td>
-                <td>{{edu.institution_name}</td>
-                <td>{{edu.cgpa}</td>
-            </tr>
-            {% endfor %}
-        </table>
+                <p>
+                    Research Supervisor:<b>{{res.supervisor}}</b><br>
+                    {{res.description}}</p>
+            </ul>
+        </div>
+
     </div>
-</div><br>
+    {% endfor %}
 
 
-<div class="section">
-    <h3>
-        <span style="font-weight: bold;"><i>Educational Qualifications (Postgraduate)</i></span>
-    </h3>
-    <div class="education">
-        <table>
-
-            <p style="border: 1px solid black; padding: 4px; margin:0px; text-align: center;">
-                <span style="font-weight: bold;">{{sem_college_name.institute_name}}</span>
-            </p>
-
-            <tr>
-                <th style="width: 12.5%;">Semester</th>
-                <th style="width: 12.5%;">Year</th>
-                <th style="width: 12.5%;">SGPA</th>
-                <th style="width: 12.5%;">CGPA</th>
-                <th style="width: 12.5%;">Semester</th>
-                <th style="width: 12.5%;">Year</th>
-                <th style="width: 12.5%;">SGPA</th>
-                <th style="width: 12.5%;">CGPA</th>
-            </tr>
-            {%for sem in sem_data %}
-            <tr>
-                <td>{{sem.0}}</td>
-                <td>{{sem.1}}</td>
-                <td>{{sem.2}}</td>
-                <td>{{sem.3}}</td>
-                <td>{{sem.4}}</td>
-                <td>{{sem.5}}</td>
-                <td>{{sem.6}}</td>
-                <td>{{sem.7}}</td>
-                {% endfor %}
-            </tr>
-
-
-        </table>
-        <br>
-
-
-        {% for res in resarch %}
-        <div class="section">
-            <h3>
-                <span style="font-weight: bold;"><i>Research</i></span><br>
-                <p class="inlines"><b><i>{{res.title}}</i></b> <b>{{res.start_date}}--{{res.end_date}}</b></p>
-            </h3>
-            <div class="work-experience">
-                <ul style="margin-bottom: 0;">
-
-                    <p>
-                        Research Supervisor:<b>{{res.supervisor}}</b><br>
-                        {{res.description}}</p>
-                </ul>
-            </div>
+    <div class="section">
+        {% if internship %}
+        {% for inter in internship %}
+        <h3>
+            <span style="font-weight: bold;"><i>Industrial Internship</i></span><br>
+            <span style="font-weight: bold;"><i>{{inter.job_type}}</i></span>
+        </h3>
+        <div class="work-experience">
+                <table style="width: 100%;">
+                <tr>
+                    <td style="width: 80%;">
+                        <ul style="margin-bottom: 0;list-style: none;">
+                            <p style="text-align: start;"><span> <b><i>{{inter.company_name}}</i></b> at
+                                    <b>{{inter.location}}</b></span></p>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul style="margin-bottom: 0;list-style: none;">
+                            <b><span>{{inter.working_from_text}} - {{inter.working_till_text}}</span></b>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            <!-- <p class="inlines"><b><i>{{inter.company_name}}</i></b> at <b>{{inter.location}}</b> <b>{{inter.working_from}}-{{inter.working_till}}</b>
+                </p> -->
+            <p>{{inter.description}}</p>
 
         </div>
         {% endfor %}
-        <br>
+        {% endif %}
+    </div>
+    <br>
 
-        <div class="section">
-            {% if internship %}
-            {% for inter in internship %}
-            <h3>
-                <span style="font-weight: bold;"><i>Internship</i></span><br>
-                <span style="font-weight: bold;"><i>{{inter.job_type}}</i></span>
-            </h3>
-            <div class="work-experience">
 
-                <p class="inlines"><b><i>{{inter.company_name}}</i></b> at <b>{{inter.location}}</b> <b>{{inter.working_from}}-{{inter.working_till}}</b>
-                </p>
-                <p>{{inter.description}}</p>
 
-            </div>
+    <div class="section">
+        {% if experience %}
+
+        <h3>
+            <span style="font-weight: bold;"><i>Experience</i></span><br>
+            <span style="font-weight: bold;"><i>{{inter.job_type}}</i></span>
+        </h3>
+        {% for inter in experience %}
+        <div class="work-experience">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 80%;">
+                        <ul style="margin-bottom: 0;list-style: none;">
+                            <p style="text-align: start;"><span> <b><i>{{inter.company_name}}</i></b> at
+                                    <b>{{inter.location}}</b></span></p>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul style="margin-bottom: 0;list-style: none;">
+                            <b><span>{{inter.working_from_text}} - {{inter.working_till_text}}</span></b>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+            <p>{{inter.description}}</p>
+
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <br>
+
+
+    <div class="section">
+        {% if award %}
+        <h3>
+            <span style="font-weight: bold;"><i>Academic Achievements and Awards</i></span>
+        </h3>
+        {% for a in award %}
+        <div class="achievements">
+            <ul style="margin-bottom: 0;">
+                <li>{{a.award}}</li>
+            </ul>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <br>
+
+    <!--        <div class="section">-->
+    <!--            <h3>-->
+    <!--                <span style="font-weight: bold;"><i>Positions of Responsibilities</i></span>-->
+    <!--            </h3>-->
+    <!--            <div class="responsibilities">-->
+    <!--                <ul style="margin-bottom: 0;">-->
+    <!--                    <li>Student Placement Coordinator (Aug 2022 - Present)</li>-->
+    <!--                </ul>-->
+    <!--            </div>-->
+    <!--        </div>-->
+
+    <div class="section">
+        {% if curriculum %}
+        <h3>
+            <span style="font-weight: bold;"><i>Extra-Curricular</i></span>
+        </h3>
+        {% for c in curriculum %}
+        <div class="extra-curricular">
+            <ul style="margin-bottom: 0;">
+                <li>{{c.curriculum}}</li>
+            </ul>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+    <br>
+    
+
+    <div class="section">
+        <div class="interests">
+            {% for add in additional_skill %}
+            <ul style="margin-bottom: 0;">
+                <p><b><i>Computer Knowledge:</i></b></p>
+                <p>{{add.skill_name}}</p>
+                <p><b><i> Language Skills: </i></b></p>
+                <p> {{add.language_name}} </p>
+                <p><b><i>Interests and Hobbies:</i></b></p>
+                <p>{{add.hobbies_name}}</p>
+            </ul>
             {% endfor %}
-            {% endif %}
         </div>
-        <br>
-
-
-        <div class="section">
-            {% if experience %}
-
-            <h3>
-                <span style="font-weight: bold;"><i>Experience</i></span><br>
-                <span style="font-weight: bold;"><i>{{inter.job_type}}</i></span>
-            </h3>
-            {% for inter in experience %}
-            <div class="work-experience">
-                <ul style="margin-bottom: 0;">
-
-                    <p class="inlines"><b><i>{{inter.company_name}}</i></b> at <b>{{inter.location}}</b> <b>{{inter.working_from}}-{{inter.working_from}}</b>
-                    </p>
-                    <p class="inlines"></p>
-                    <p>{{inter.description}}</p>
-                </ul>
-            </div>
-            {% endfor %}
-            {% endif %}
-        </div>
-        <br>
-
-
-        <div class="section">
-            {% if award %}
-            <h3>
-                <span style="font-weight: bold;"><i>Academic Achievements and Awards</i></span>
-            </h3>
-            {% for a in award %}
-            <div class="achievements">
-                <ul style="margin-bottom: 0;">
-                    <li>{{a.award}}</li>
-                </ul>
-            </div>
-            {% endfor %}
-            {% endif %}
-        </div>
-        <br>
-
-<!--        <div class="section">-->
-<!--            <h3>-->
-<!--                <span style="font-weight: bold;"><i>Positions of Responsibilities</i></span>-->
-<!--            </h3>-->
-<!--            <div class="responsibilities">-->
-<!--                <ul style="margin-bottom: 0;">-->
-<!--                    <li>Student Placement Coordinator (Aug 2022 - Present)</li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-
-        <div class="section">
-            {% if curriculum %}
-            <h3>
-                <span style="font-weight: bold;"><i>Extra-Curricular</i></span>
-            </h3>
-            {% for c in curriculum %}
-            <div class="extra-curricular">
-                <ul style="margin-bottom: 0;">
-                    <li>{{c.curriculum}}</li>
-                </ul>
-            </div>
-            {% endfor %}
-            {% endif %}
-        </div>
-        <br>
-
-        <div class="section">
-            <div class="interests">
-                {% for add in additional_skill %}
-                <ul style="margin-bottom: 0;">
-                    <p><b><i>Computer Knowledge:</i></b></p>
-                    <p>{{add.skill_name}}</p>
-                    <p><b><i> Language Skills: </i></b></p>
-                    <p> {{add.language_name}} </p>
-                    <p><b><i>Interests and Hobbies:</i></b></p>
-                    <p>{{add.hobbies_name}}</p>
-                </ul>
-                {% endfor %}
-            </div>
-        </div>
+    </div>
 
 
 </body>
