@@ -83,6 +83,10 @@
                                             <span class="text-truncate me-3"><i
                                                     class="fa fa-bullhorn text-primary mx-3 me-2"
                                                     aria-hidden="true"></i>{{show_jobs.hiring_status}}</span>
+                                            {% if show_jobs.pdf_file %}
+                                            <span class="text-truncate me-3">JD : <a href="{{ show_jobs.pdf_file.url }}" target="_blank">{{show_jobs.pdf_file.name}}</a></span>
+                                            {% else %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">

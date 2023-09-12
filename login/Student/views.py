@@ -552,22 +552,22 @@ def Delete_Certification(request, id):
     try:
         certification = Certificate.objects.get(id=id)
 
-        aadhar_card_path = certification.aadhar_card.path
-        tenth_marksheet_path = certification.tenth_marksheet.path
-        eleven_marksheet_path = certification.eleven_marksheet.path
-        twelve_marksheet_path = certification.twelve_marksheet.path
-        eight_semester_marksheet_path = certification.eight_semester_marksheet.path
+        aadhar_card_path = certification.aadhar_card
+        tenth_marksheet_path = certification.tenth_marksheet
+        eleven_marksheet_path = certification.eleven_marksheet
+        twelve_marksheet_path = certification.twelve_marksheet
+        eight_semester_marksheet_path = certification.eight_semester_marksheet
 
         certification.delete()
 
         for file_path in [aadhar_card_path, tenth_marksheet_path, eleven_marksheet_path, twelve_marksheet_path,
                           eight_semester_marksheet_path]:
-            if file_path and os.path.isfile(file_path):
-                os.remove(file_path)
+            if bool(file_path) and file_path.name and os.path.isfile(file_path.path):
+                os.remove(file_path.path)
 
         messages.success(request, "Certification and Document delete successfully!")
         return redirect('viewprofile')
-    except Exception.DoesNotExist:
+    except Certificate.DoesNotExist:
         messages.error(request, 'Document does not exist.')
     except Exception as e:
         messages.error(request, f'Something went wrong! Error: {str(e)}')
