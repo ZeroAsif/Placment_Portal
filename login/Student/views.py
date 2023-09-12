@@ -51,6 +51,14 @@ def Check_Phone(request):
 @login_required(login_url='login')
 def HomePage(request):
     try:
+        try:
+            check_personal = PersonalInfo.objects.get(student_id=request.user.id)
+        except PersonalInfo.DoesNotExist:
+            check_personal = None
+        try:
+            check_resume = Resume.objects.get(user__id=request.user.id)
+        except Resume.DoesNotExist:
+            check_resume = None
         show_job = JobPosting.objects.all().order_by("-id")
         profile_image = UserProfile.objects.filter(user__id=request.user.id)
         check_additional = AdditionalSkill.objects.filter(user__id=request.user.id)
@@ -60,18 +68,20 @@ def HomePage(request):
             'show_job': show_job,
             'applied_jobs_ids': applied_jobs_ids,
             'profile_image': profile_image,
-            'check_additional': check_additional
+            'check_additional': check_additional,
+            'check_personal': check_personal,
+            'check_resume': check_resume,
         }
         return render(request, 'user_templates/home.html', context)
     except Exception as e:
-        messages.error(request, 'Something went wrong. Please contact admin')
+        messages.error(request, e)
         return render(request, 'user_templates/home.html')
 
 
 # User View_Profile Page
 @login_required(login_url='login')
 def ViewProfile(request):
-    try:
+    # try:
         user = request.user.id
         profile_image = UserProfile.objects.filter(user__id=user)
         personal_info = PersonalInfo.objects.filter(student__id=user)
@@ -98,7 +108,7 @@ def ViewProfile(request):
             'extra_curriculum': extra_curriculum
         }
         return render(request, 'user_templates/viewprofile.html', context)
-    except Exception as e:
+    # except Exception as e:
         messages.error(request, f"An error occurred: {str(e)}")  # Display the error message
         return render(request, 'user_templates/viewprofile.html')
 
@@ -132,12 +142,22 @@ def job_application(request, job_id):
 @login_required(login_url='login')
 def Job_Description(request, id):
     try:
+        try:
+            check_personal = PersonalInfo.objects.get(student_id=request.user.id)
+        except PersonalInfo.DoesNotExist:
+            check_personal = None
+        try:
+            check_resume = Resume.objects.get(user__id=request.user.id)
+        except Resume.DoesNotExist:
+            check_resume = None
         job_description = JobPosting.objects.get(id=id)
         applied_jobs = Job_application.objects.filter(user=request.user)
         applied_jobs_ids = [job.job_posting_id for job in applied_jobs]
         context = {
             "job_description": job_description,
-            "applied_jobs_ids": applied_jobs_ids
+            "applied_jobs_ids": applied_jobs_ids,
+            'check_personal': check_personal,
+            'check_resume': check_resume,
         }
         return render(request, "user_templates/job_description.html", context)
     except Exception as e:
@@ -170,7 +190,7 @@ def create_personal_info(request):
             qr_image = qr_code.make_image(fill_color="blue", back_color="white")
 
             # Load the LinkedIn logo image
-            logo_image = Image.open("static/images/linkind.png")
+            logo_image = Image.open("static/images/download.png")
 
             # Resize the logo image to a smaller size
             logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
@@ -190,7 +210,6 @@ def create_personal_info(request):
             zip_code = None
         objectives = request.POST.get('objectives')
         student_college_id = request.POST.get('student_id')
-
         try:
             p_obj = PersonalInfo(student=student, first_name=first_name, middle_name=middle_name,
                                  last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
@@ -198,7 +217,14 @@ def create_personal_info(request):
                                  student_college_id=student_college_id, linkdin_url=linkedin_url)
             p_obj.save()
             # Save the final QR code image
-            qr_image.save("media/profile_pic/linkedin.png")
+            folder_path = "media/linkedinQR"
+            if not os.path.exists(folder_path):
+                os.makedirs(folder_path)
+
+            # Save the image inside the folder with the user's first_name
+            image_name = f"linkedin{first_name}.png"  # Or any desired image format
+            image_path = os.path.join(folder_path, image_name)
+            qr_image.save(image_path)
             messages.success(request, 'Personal-information added successfully')
             return redirect('viewprofile')
         except IntegrityError as e:
@@ -315,7 +341,9 @@ def Experience_Information(request):
         company_name = request.POST.get('company_name')
         location = request.POST.get('location')
         working_from = request.POST.get('working_from')
+        working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
+        working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
         if working_till == "":
             working_till = "Present"
         designation = request.POST.get('designation')
@@ -323,7 +351,7 @@ def Experience_Information(request):
 
         experience = Experience(user=user, job_type=job_type, company_name=company_name,
                                 designation=designation, location=location, working_till=working_till,
-                                working_from=working_from, description=role_responsibility)
+                                working_from=working_from, working_from_text=working_from_text, working_till_text=working_till_text, description=role_responsibility)
         experience.save()
         messages.success(request, 'Experience-information added successfully!')
         return redirect('viewprofile')
@@ -339,11 +367,16 @@ def Update_Experience(request, id):
         update_experience.designation = request.POST.get('designation')
         update_experience.description = request.POST.get('rr')
         update_experience.location = request.POST.get('location')
-        update_experience.working_from = request.POST.get('working_from')
+        work_from = request.POST.get('working_from')
+        update_experience.working_from = work_from
+        update_experience.working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
+        if working_till:
+            working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
         if working_till == "":
             working_till = "Present"
         update_experience.working_till = working_till
+        update_experience.working_till_text = working_till_text
         update_experience.save()
         messages.success(request, 'Experience update successfully')
         return redirect('viewprofile')  # Redirect to the profile page or wherever you'd like
@@ -441,13 +474,21 @@ def Certification_Information(request):
         issue_date = request.POST.get('i_d')
         certification_link = request.POST.get('c_l')
         description = request.POST.get('desc')
-        uploaded_files = request.FILES.get('upload_document')
-
+        aadhar_card = request.FILES.get('aadhar_card')
+        tenth_marksheet = request.FILES.get('tenth_marksheet')
+        eleven_marksheet = request.FILES.get('eleven_marksheet')
+        twelve_marksheet = request.FILES.get('twelve_marksheet')
+        eight_semester_marksheet = request.FILES.get('eight_semester_marksheet')
         certification = Certificate(user=user, title=certification_title, issuing_organisation=issue_organization,
                                     issue_date=issue_date, certificate_link=certification_link,
-                                    description=description, document_prove=uploaded_files)
+                                    description=description, aadhar_card=aadhar_card,
+                                    tenth_marksheet=tenth_marksheet, eleven_marksheet=eleven_marksheet,
+                                    twelve_marksheet=twelve_marksheet, eight_semester_marksheet=eight_semester_marksheet)
         certification.save()
         messages.success(request, 'Certification-information add successfully')
+        return redirect('viewprofile')
+
+    return render(request, 'user_templates/viewprofile.html')
 
 
 def Post_Graduation_Information(request):
@@ -515,13 +556,36 @@ def Post_Graduation_Information(request):
 
 def Delete_Certification(request, id):
     try:
-        education = Certificate.objects.get(id=id)
-        education.delete()
-        messages.success(request, "Certification delete successfully!")
+        certification = Certificate.objects.get(id=id)
+
+        # Check if file fields have files associated with them
+        aadhar_card_file = certification.aadhar_card
+        tenth_marksheet_file = certification.tenth_marksheet
+        eleven_marksheet_file = certification.eleven_marksheet
+        twelve_marksheet_file = certification.twelve_marksheet
+        eight_semester_marksheet_file = certification.eight_semester_marksheet
+
+        # Delete the certificate object
+        certification.delete()
+
+        # Delete associated files if they exist
+        for file_field in [
+            aadhar_card_file,
+            tenth_marksheet_file,
+            eleven_marksheet_file,
+            twelve_marksheet_file,
+            eight_semester_marksheet_file,
+        ]:
+            if bool(file_field) and file_field.name and os.path.isfile(file_field.path):
+                os.remove(file_field.path)
+
+        messages.success(request, "Certification and Documents deleted successfully!")
         return redirect('viewprofile')
-    except:
-        messages.error(request, 'Something went wrong! Please contact Admin')
-        return render(request, 'user_templates/viewprofile.html')
+    except Certificate.DoesNotExist:
+        messages.error(request, 'Certificate does not exist.')
+    except Exception as e:
+        messages.error(request, f'Something went wrong! Error: {str(e)}')
+    return render(request, 'user_templates/viewprofile.html')
 
 
 def Update_Certification(request, id):
@@ -558,10 +622,8 @@ def Projects_Information(request):
             project.save()
             messages.success(request, 'Project-information add successfully')
             return redirect('viewprofile')
-        messages.error(request, 'Something went wrong! Please contact Admin')
-        return render(request, 'user_templates/viewprofile.html')
-    except:
-        messages.error(request, 'Something went wrong Please try again')
+    except Exception as e:
+        messages.error(request, f'Please fill proper details. {e}')
         return redirect('viewprofile')
 
 
@@ -690,11 +752,13 @@ def Research_info(request):
         supervisor = request.POST.get('supervisor')
         technologies_used = request.POST.get('tech')
         start_date = request.POST.get('start_date')
+        start_date_text = datetime.strptime(start_date, "%Y-%m").strftime("%b-%Y")
         end_date = request.POST.get('end_date')
+        end_date_text = datetime.strptime(end_date, "%Y-%m").strftime("%b-%Y")
         description = request.POST.get('description')
 
         research = Research(user=user, title=title_name, supervisor=supervisor, technologies_used=technologies_used,
-                            start_date=start_date, end_date=end_date, description=description)
+                            start_date=start_date, end_date=end_date, start_date_text=start_date_text, end_date_text=end_date_text, description=description)
         research.save()
         messages.success(request, 'Research detail add successfully')
         return redirect('viewprofile')
@@ -707,8 +771,12 @@ def Update_Research(request, id):
     if request.method == 'POST':
         update_research.title = request.POST.get('title')
         update_research.technologies_used = request.POST.get('tech')
-        update_research.start_date = request.POST.get('start_date')
-        update_research.end_date = request.POST.get('end_date')
+        start_date = request.POST.get('start_date')
+        update_research.start_date = start_date
+        update_research.start_date_text = datetime.strptime(start_date, "%Y-%m").strftime("%b-%Y")
+        end_date = request.POST.get('end_date')
+        update_research.end_date = end_date
+        update_research.end_date_text = datetime.strptime(end_date, "%Y-%m").strftime("%b-%Y")
         update_research.supervisor = request.POST.get('supervisor')
         update_research.description = request.POST.get('description')
 
@@ -803,6 +871,7 @@ def Upload_Image(request):
         messages.success(request, 'Profile Save Successfully')
         return redirect('viewprofile')
     return render(request, 'user_templates/viewprofile.html')
+
 
 
 def html_to_pdf_view(request):

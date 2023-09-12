@@ -5,25 +5,26 @@
 {% block body %}
 
 <!--  personal-info section -->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col col-lg-2 gx-0 mx-2 d-flex justify-content-center align-items-center">
+        <div class="col-lg-2 gx-0 d-flex justify-content-center align-items-center mt-3">
             {% if profile_image %}
             {% for pm in profile_image %}
-            <img id="images" src="media/{{pm.profile_picture}}" class="img-fluid mx-4 rounded-circle">
+            <img class="images img-fluid mx-4 rounded-circle" src="media/{{pm.profile_picture}}" alt="">
             {% endfor %}
             {% else %}
-            <img id="image" src="{% static 'images/ict.jpeg' %}" class="img-fluid  mx-4">
+            <img class="images img-fluid mx-4" src="{% static 'images/ict.jpeg' %}" alt="">
             {% endif %}
-            <form action="{% url 'upload-image' %}" method="POST" id="upload-form" enctype="multipart/form-data">{% csrf_token %}
+            <form action="{% url 'upload-image' %}" method="POST" id="upload-form" enctype="multipart/form-data">
+                {% csrf_token %}
                 <input type="file" id="file" name="file" accept="image/png, image/jpeg"
                        onchange="document.getElementById('upload-form').submit();">
                 <label for="file" id="upload_btn"><i class="fa fa-camera"></i></label>
             </form>
         </div>
-        <div class="col-md-9 mx-3">
+        <div class="col-lg-9 mt-3">
             <div class="d-flex align-items-center">
-                <h2 class="me-3"><i>Personal&#8209;Information</i></h2>
+                <h2 class="me-3"><i>Personal Information</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
                         data-bs-target="#personalModal">
                     <i class="fa-solid fa-pencil"></i>
@@ -32,15 +33,15 @@
             <hr>
             {% for personal_info in personal_infos %}
             <div class="my-3 d-flex justify-content-start flex-wrap">
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-6">
                     {% if personal_info.middle_name %}
-                    <p>&#10146; <i>{{ personal_info.first_name }}&minus;{{ personal_info.middle_name }}&minus;{{ personal_info.last_name }}</i>
+                    <p>&#10146; <i>{{ personal_info.first_name }}-{{ personal_info.middle_name }}-{{ personal_info.last_name }}</i>
                         <a data-bs-toggle="modal" data-bs-target="#update-personalModal">
                             <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i>
                         </a>
                     </p>
                     {% else %}
-                    <p>&#10146; <i>{{personal_info.first_name }}&minus;{{ personal_info.last_name }}</i><a
+                    <p>&#10146; <i>{{personal_info.first_name }}-{{ personal_info.last_name }}</i><a
                             data-bs-toggle="modal"
                             data-bs-target="#update-personalModal"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2" style="color: #000000;"></i></a></p>
@@ -48,16 +49,15 @@
                     <p>&#10146; <i>{{ personal_info.date_of_birth }}</i></p>
                     <p>&#10146; <i>{{ personal_info.student_college_id }}</i></p>
                 </div>
-                <div class="col-md-4">
+                <div class="col-lg-4 col-md-6">
                     <p>&#10146; <i>{{ personal_info.phone_number }}</i></p>
-                    <p>&#10146; <i>{{ personal_info.email }}</i></p>
                     <p>&#10146; <i>{{ personal_info.zip_code }}</i></p>
-                </div>
-                <div class="col-md-4">
-                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                    <p style="word-break: break-all; overflow-wrap: break-word;">
                         &#10146; <i>{{ personal_info.linkdin_url }}</i>
                     </p>
-                    <p style="word-wrap: break-word; overflow-wrap: break-word;">
+                </div>
+                <div class="col-lg-4 col-md-12">
+                     <p style="word-wrap: break-word; overflow-wrap: break-word;">
                         &#10146; <i>{{ personal_info.objectives }}</i>
                     </p>
                     <p style="word-wrap: break-word; overflow-wrap: break-word;">
@@ -71,60 +71,62 @@
 </div>
 
 
+
 <!-- resume upload section -->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-5 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Resume</i></h2>
             </div>
         </div>
-        <hr>
-        <div class="container col-md-10">
-            {% if cvs %}
-            {% for cv in cvs %}
-            <div class="d-flex justify-content-center align-items-center">
-                {{cv.resume_file}}
-                <a href="{% url 'download-resume' cv.user_id %}">
-                    <button class="btn btn-outline-info rounded-circle mx-2"><i
-                            class="fa-solid fa-download fa-bounce"></i>
-                    </button>
-                </a>
-                <a href="delete-resume/{{cv.id}}">
-                    <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
-                            class="fa-regular fa-trash-can fa-bounce"></i>
-                    </button>
-                </a>
-            </div>
-            {% endfor %}
-            {% else %}
-            <p class="text-center"><i>Resume is the most important document recruiters look for. Recruiters generally do
-                not look at profiles without resumes.</i></p>
-            {% endif %}
+    </div>
+    <hr>
+    <div class="container col-md-10">
+        {% if cvs %}
+        {% for cv in cvs %}
+        <div class="d-flex justify-content-center align-items-center my-3">
+            {{cv.resume_file}}
+            <a href="{% url 'download-resume' cv.user_id %}">
+                <button class="btn btn-outline-info rounded-circle mx-2"><i
+                        class="fa-solid fa-download fa-bounce"></i>
+                </button>
+            </a>
+            <a href="delete-resume/{{cv.id}}">
+                <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
+                        class="fa-regular fa-trash-can fa-bounce"></i>
+                </button>
+            </a>
         </div>
-        <div class="container my-3 p-2">
-            <div class="" style="border:dotted 2px; border-radius:20px;">
-                <form class="p-4" action="upload-resume" method="POST" enctype="multipart/form-data"> {% csrf_token %}
-                    <input class="form-control" accept=".pdf,.doc,.docx" name="cv" type="file" required>
-                    <div class="d-flex my-2 justify-content-center">
-                        Supported Formats &#58; docx, pdf
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button class="btn btn-outline-primary btn-sm" type="submit"><i
-                                class="fa-solid fa-upload fa-beat mx-2"></i>Upload
-                        </button>
-                    </div>
-                </form>
-            </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-center"><i>Resume is the most important document recruiters look for. Recruiters generally do
+            not look at profiles without resumes.</i></p>
+        {% endif %}
+    </div>
+    <div class="container my-3 p-2">
+        <div class="" style="border: dotted 2px; border-radius: 20px;">
+            <form class="p-4" action="upload-resume" method="POST" enctype="multipart/form-data">{% csrf_token %}
+                <input class="form-control" accept=".pdf,.doc,.docx" name="cv" type="file" required>
+                <div class="d-flex my-2 justify-content-center">
+                    Supported Formats: docx, pdf
+                </div>
+                <div class="d-flex justify-content-center">
+                    <button class="btn btn-outline-primary btn-sm" type="submit"><i
+                            class="fa-solid fa-upload fa-beat mx-2"></i>Upload
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
 
+
 <!-- Experience Section-->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Experience</i></h2>
                 <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
@@ -160,13 +162,14 @@
 </div>
 
 
+
 <!-- Education Section-->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>UnderGraduation &#47; PostGraduation</i></h2>
-                <div class="btn-group">
+                <div class="btn-group me-3">
                     <button type="button" class="btn btn-outline-primary dropdown-toggle" data-bs-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                         <i class="fa-solid fa-pencil"></i>
@@ -245,46 +248,75 @@
 </div>
 
 
-<!-- Certification Section-->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<!-- Certification/Document Section-->
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Certification/Documents</i></h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                <button class="btn btn-outline-primary rounded-circle me-3" data-bs-toggle="modal"
                         data-bs-target="#certificationModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
             </div>
         </div>
-        <hr>
-        {% for cr in certification %}
-        <div class="container col-md-12">
-            <div class="my-3 d-flex border rounded">
-                <div class="col p-2">
-                    <p>&#10146; <b><i>Certification &#818; Name</i></b> &#58; <i>{{cr.title}}</i><a
-                            data-bs-toggle="modal"
-                            data-bs-target="#update-certificationModal{{forloop.counter}}">
-                        <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000000;"></i></a>
+    </div>
+    <hr>
+    {% for cr in certification %}
+    <div class="container col-md-12">
+        <div class="my-3 d-flex border rounded">
+            <div class="col p-2">
+                <p>&#10146;
+                    <b><i>Certification &#818; Name</i></b> &#58; <i>{{cr.title}}</i>
+                    <a data-bs-toggle="modal" data-bs-target="#update-certificationModal{{forloop.counter}}">
+                        <i class="fa-regular fa-pen-to-square fa-beat" style="color: #000;"></i>
+                    </a>
                     <p>&#10146; <b><i>Issuing &#818; Organisation</i></b> &#58; <i>{{cr.issuing_organisation}}</i></p>
                     <p>&#10146; <b><i>Certificate &#818; Link</i></b> &#58; <i>{{cr.certificate_link}}</i></p>
                     <p>&#10146; <b><i>Issue &#818; Date</i></b> &#58; <i>{{cr.issue_date}}</i></p>
                     <p>&#10146; <b><i>Description</i></b> &#58; <i>{{cr.description}}</i></p>
+                    <a class="btn btn-link" data-bs-toggle="collapse" href="#collapseCert{{forloop.counter}}"
+                       role="button" aria-expanded="false" aria-controls="collapseCert{{forloop.counter}}">
+                        <i class="fa-solid fa-caret-down" style="color: #000;"></i>
+                    </a><i><b>Document_Prove</b></i>
+                </p>
+                <div class="collapse" id="collapseCert{{forloop.counter}}">
+                    <!-- Display associated documents here -->
+                    {% if cr.aadhar_card %}
+                    <a href="{{ cr.aadhar_card.url }}" target="_blank">{{ cr.aadhar_card.name }}</a><br>
+                    {% else %}
+                    {% endif %}
+                    {% if cr.tenth_marksheet %}
+                    <a href="{{ cr.tenth_marksheet.url }}" target="_blank">{{ cr.tenth_marksheet.name }}</a><br>
+                    {% else %}
+                    {% endif %}
+                    {% if cr.eleven_marksheet %}
+                    <a href="{{ cr.eleven_marksheet.url }}" target="_blank">{{ cr.eleven_marksheet.name }}</a><br>
+                    {% else %}
+                    {% endif %}
+                    {% if cr.twelve_marksheet %}
+                    <a href="{{ cr.twelve_marksheet.url }}" target="_blank">{{ cr.twelve_marksheet.name }}</a><br>
+                    {% else %}
+                    {% endif %}
+                    {% if cr.eight_semester_marksheet %}
+                    <a href="{{ cr.eight_semester_marksheet.url }}" target="_blank">{{ cr.eight_semester_marksheet.name }}</a><br>
+                    {% else %}
+                    {% endif %}
                 </div>
             </div>
         </div>
-        {% endfor %}
     </div>
+    {% endfor %}
 </div>
 
 
 <!-- project Section-->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Project</i></h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                <button class="btn btn-outline-primary rounded-circle me-3" data-bs-toggle="modal"
                         data-bs-target="#projectModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
@@ -310,13 +342,15 @@
 </div>
 
 
+
+
 <!-- Additional Section-->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Additional Skill</i></h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                <button class="btn btn-outline-primary rounded-circle me-3" data-bs-toggle="modal"
                         data-bs-target="#additionalModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
@@ -341,13 +375,14 @@
 </div>
 
 
+
 <!-- Semester Section-->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>SemesterCollege</i></h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                <button class="btn btn-outline-primary rounded-circle me-3" data-bs-toggle="modal"
                         data-bs-target="#semester-collegeModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
@@ -374,13 +409,14 @@
 </div>
 
 
+
 <!-- Research Section -->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Research</i></h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                <button class="btn btn-outline-primary rounded-circle me-3" data-bs-toggle="modal"
                         data-bs-target="#researchModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
@@ -395,9 +431,9 @@
                                                                                         data-bs-target="#update-researchModal{{forloop.counter}}"><i
                             class="fa-regular fa-pen-to-square fa-beat mx-2"></i></a></p>
                     <p>&#10146; <i><b>Supervisor</b></i> &#58; <i>{{researches.supervisor}}</i></p>
-                    <p>&#10146; <i><b>Technologies_Used</b></i> &#58; <i>{{researches.technologies_used}}</i></p>
-                    <p>&#10146; <i><b>Start_Date</b></i> &#58; <i>{{researches.start_date}}</i></p>
-                    <p>&#10146; <i><b>End_Date</b></i> &#58; <i>{{researches.end_date}}</i></p>
+                    <p>&#10146; <i><b>Technologies Used</b></i> &#58; <i>{{researches.technologies_used}}</i></p>
+                    <p>&#10146; <i><b>Start Date</b></i> &#58; <i>{{researches.start_date}}</i></p>
+                    <p>&#10146; <i><b>End Date</b></i> &#58; <i>{{researches.end_date}}</i></p>
                     <p>&#10146; <i><b>Description</b></i> &#58; <i>{{researches.description}}</i></p>
                 </div>
             </div>
@@ -407,13 +443,14 @@
 </div>
 
 
+
 <!-- extra-curriculum Section -->
-<div class="container border rounded my-3 p-3 shadow" style="width: 75rem;">
+<div class="container border rounded my-3 p-3 shadow" style="max-width: 75rem;">
     <div class="row">
-        <div class="col-md-12 mx-3">
+        <div class="col-md-5">
             <div class="d-flex align-items-center">
                 <h2 class="me-3"><i>Extra-Curriculum</i></h2>
-                <button class="btn btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                <button class="btn btn-outline-primary rounded-circle me-3" data-bs-toggle="modal"
                         data-bs-target="#extra-curriculumModal">
                     <i class="fa-solid fa-pencil"></i>
                 </button>
@@ -434,6 +471,7 @@
         {% endfor %}
     </div>
 </div>
+
 
 
 <!-- Modal Section -->
@@ -471,7 +509,7 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <div class="form-outline">
                                 <label class="form-label" for="">Phone&#42;<small class="mx-2"
                                                                                   id="p_result"></small></label>
@@ -479,41 +517,44 @@
                                        onkeyup="check_phone()" required/>
                             </div>
                         </div>
-
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col-md-4">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Date of birth&#42;</label>
-                                <input type="date" id="dob" name="date_of_birth" class="form-control" required/>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <label for="" class="form-label">Post_Code&#42;</label>
-                            <input type="text" class="form-control" id="postcode" name="zip_code" required/>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label for="" class="form-label">Student_id&#42;<small mx-2 id="s_result"></small></label>
                             <input type="text" class="form-control" id="student_id" name="student_id"
                                    onkeyup="check_student_id()" required/>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Date of birth&#42;</label>
+                                <input type="date" id="dob" name="date_of_birth" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Post_Code&#42;</label>
+                            <input type="text" class="form-control" id="postcode" name="zip_code" required/>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
                         <div class="col-12">
                             <label for="linkedin" class="form-label">LinkedIn_URL&#42;</label>
                             <input type="url" class="form-control" name="linkedin" id="linkedin"
                                    placeholder="LinKedIn Url" required/>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Address&#42;</label>
-                        <input type="text" class="form-control" name="address" id="inputAddress2"
-                               placeholder="Apartment, studio, or floor" required/>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">Address&#42;</label>
+                            <input type="text" class="form-control" name="address" id="inputAddress2"
+                                   placeholder="Apartment, studio, or floor" required/>
+                        </div>
                     </div>
-                    <div class="col-12">
-                        <label for="exampleFormControlTextarea1" class="form-label">Objective&#42;</label>
-                        <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1" rows="3"
-                                  required></textarea>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="exampleFormControlTextarea1" class="form-label">Objective&#42;</label>
+                            <textarea class="form-control" name="objectives" id="exampleFormControlTextarea1" rows="3"
+                                      required></textarea>
+                        </div>
                     </div>
             </div>
             <div class="modal-footer">
@@ -592,6 +633,7 @@
         </form>
     </div>
 </div>
+
 
 
 <!-- UnderGraduation Education From Modal  -->
@@ -705,6 +747,7 @@
         </form>
     </div>
 </div>
+
 
 
 <!-- PostGraduation Education From Modal  -->
@@ -868,7 +911,7 @@
 </div>
 
 
-<!-- Certification Form Modal -->
+<!-- Certification/Document Form Modal -->
 <div class="modal fade" id="certificationModal" tabindex="-1" aria-labelledby="certificationModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
@@ -878,6 +921,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
+                <h1 class="modal-title fs-5 mb-2 my-2 d-flex justify-content-center align-items-center"
+                        style="background-color:lightgray;"><i>Certification</i></h1>
+
                 <form action="certification" method="POST" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="row mb-4">
                         <div class="col">
@@ -907,14 +954,50 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="desc" rows="3"></textarea>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                            <textarea class="form-control" name="desc" rows="3"></textarea>
+                        </div>
                     </div>
-                    <div class="col">
-                        <div class="form-outline">
-                            <label class="form-label" for="">Upload Document/Supported_file(pdf)</label>
-                            <input type="file" name="upload_document" accept=".pdf" class="form-control" multiple/>
+
+                    <h1 class="modal-title fs-5 mb-2 my-2 d-flex justify-content-center align-items-center"
+                        style="background-color:lightgray;">Document</h1>
+
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="form-outline">
+                                <label class="form-label" for=""><small>Upload AadharCard / Supported_file (pdf)</small></label>
+                                <input type="file" name="aadhar_card" accept=".pdf" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-outline">
+                                <label class="form-label" for=""><small>Upload 10<sup>th</sup> Marksheet / Supported_file (pdf)</small></label>
+                                <input type="file" name="tenth_marksheet" accept=".pdf" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <div class="form-outline">
+                                <label class="form-label" for=""><small>Upload 11<sup>th</sup> Marksheet / Supported_file (pdf)</small></label>
+                                <input type="file" name="eleven_marksheet" accept=".pdf" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-outline">
+                                <label class="form-label" for=""><small>Upload 12<sup>th</sup> Marksheet / Supported_file (pdf)</small></label>
+                                <input type="file" name="twelve_marksheet" accept=".pdf" class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="form-outline">
+                                <label class="form-label" for=""><small>Upload 8<sup>th</sup> Semester Marksheet / Supported_file (pdf)</small></label>
+                                <input type="file" name="eight_semester_marksheet" accept=".pdf" class="form-control"/>
+                            </div>
                         </div>
                     </div>
             </div>
@@ -1143,7 +1226,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="extra-curriculumModalLabel">Research</h5>
+                <h5 class="modal-title" id="extra-curriculumModalLabel">ExtraCurriculum</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -1191,7 +1274,7 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="f_name">First name*</label>
+                                <label class="form-label" for="f_name">First name</label>
                                 <input type="text" id="f_name" value="{{update_personal.first_name}}" name="first_name"
                                        class="form-control" required/>
                             </div>
@@ -1213,12 +1296,20 @@
                         </div>
                     </div>
                     <div class="row mb-4">
-                        <div class="form-outline">
-                            <label class="form-label" for="">Phone</label>
-                            <input type="text" value="{{update_personal.phone_number}}" name="phone_number"
+                        <div class="col-6">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Phone</label>
+                                <input type="text" value="{{update_personal.phone_number}}" name="phone_number"
                                    class="form-control" required/>
+                            </div>
                         </div>
-
+                        <div class="col-6">
+                            <div class="form-outline">
+                                <label for="" class="form-label">Student_id</label>
+                                <input type="text" class="form-control" value="{{update_personal.student_college_id}}"
+                                       name="student_college_id" required/>
+                            </div>
+                        </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
@@ -1236,32 +1327,30 @@
                                        required/>
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label for="" class="form-label">Student_id</label>
-                                <input type="text" class="form-control" value="{{update_personal.student_college_id}}"
-                                       name="student_college_id" required/>
-                            </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="" class="form-label">LinKedIn URL</label>
+                            <input type="url" class="form-control" value="{{update_personal.linkdin_url}}"
+                                   name="linkedin_url"
+                                   required/>
                         </div>
                     </div>
-                    <div class="col-12">
-                        <label for="" class="form-label">LinKedIn URL*</label>
-                        <input type="url" class="form-control" value="{{update_personal.linkdin_url}}"
-                               name="linkedin_url"
-                               required/>
-                    </div>
-                    <div class="col-12">
-                        <label for="inputAddress2" class="form-label">Address</label>
-                        <input type="text" class="form-control" name="address" value="{{update_personal.address}}"
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <label for="inputAddress2" class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" value="{{update_personal.address}}"
                                placeholder="Apartment, studio, or floor" required/>
+                        </div>
                     </div>
-                    <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Objective</label>
-                        <textarea class="form-control" name="objectives" value="{{update_personal.objectives}}" rows="3"
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label for="exampleFormControlTextarea1" class="form-label">Objective</label>
+                            <textarea class="form-control" name="objectives" value="{{update_personal.objectives}}" rows="3"
                                   required>{{update_personal.objectives}}</textarea>
+                        </div>
                     </div>
             </div>
-
             <div class="modal-footer">
                 <a href="delete-personal-info/{{update_personal.id}}">
                     <button type="button" class="btn btn-outline-danger">Delete</button>
