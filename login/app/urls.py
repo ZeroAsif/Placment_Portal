@@ -22,6 +22,7 @@ urlpatterns = [
      path('check_email_page/', check_email, name='check_email_page'),
 
 
+
 ]
 
 if settings.DEBUG:

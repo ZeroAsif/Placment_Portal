@@ -260,7 +260,7 @@ def ExportExcel(request, job_id):
                  'Name': s_d.user.personalinfo.first_name, 
                  'Email':  s_d.user.email, 
                  'Phone Number':  s_d.user.personalinfo.phone_number, 
-                 '	College ID':s_d.user.personalinfo.student_college_id},
+                 'College ID':s_d.user.personalinfo.student_college_id},
             )
          
 

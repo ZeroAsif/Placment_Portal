@@ -61,28 +61,11 @@
             padding-bottom: 32px;
         }
 
-<<<<<<< Updated upstream
         footer h3,
         footer p {
             line-height: 1.5;
             color: white;
         }
-=======
-        footer h3, footer p {
-            line-height: 1.5;
-            color: white;
-        }
-
-
-.lower-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 2px 0;
-    position: relative;
-}
->>>>>>> Stashed changes
-
 
         .lower-footer {
             background-color: #333;
@@ -108,33 +91,6 @@
             }
         }
 
-
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
-        @media screen and (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .left {
-                flex: 1;
-                margin-right: 20px;
-            }
-
-            .contact-us {
-                flex: 1;
-                text-align: left;
-                margin-top: 0;
-            }
-        }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     </style>
 
 
@@ -547,7 +503,6 @@
                 {% endfor %}
 
             </div>
-<<<<<<< Updated upstream
 
 
             <div id="users" class="section">
@@ -559,72 +514,18 @@
                 <h2>Update Status</h2>
                 <p>View and analyze data and insights.</p>
             </div>
-=======
             {% endfor %}
->>>>>>> Stashed changes
-
         </div>
 
 
 
 
-<<<<<<< Updated upstream
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
-=======
-
->>>>>>> Stashed changes
-
 
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-
-        {% comment %}
-        <script>
-            $(document).ready(function () {
-                $("#searchInput").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $("#dataTable tbody tr").filter(function () {
-                        var row = $(this);
-                        var columns = row.find("td");
-                        var found = false;
-
-                        columns.each(function () {
-                            var columnText = $(this).text().toLowerCase();
-                            if (columnText.indexOf(value) > -1) {
-                                found = true;
-                                return false; // Exit loop if match found in this column
-                            }
-                        });
-
-<<<<<<< Updated upstream
-                        row.toggle(found);
-=======
-
-    <script>
-        $(document).ready(function() {
-            $("#searchInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#dataTable tbody tr").filter(function() {
-                    var row = $(this);
-                    var columns = row.find("td");
-                    var found = false;
-
-                    columns.each(function() {
-                        var columnText = $(this).text().toLowerCase();
-                        if (columnText.indexOf(value) > -1) {
-                            found = true;
-                            return false; // Exit loop if match found in this column
-                        }
->>>>>>> Stashed changes
-                    });
-                });
-            });
-<<<<<<< Updated upstream
-        </script> {% endcomment %}
-
 
 
         {% comment %} ********** ADMIN SREACH JS ************** {% endcomment %}
@@ -656,18 +557,6 @@
 
         </script>
 
-
-
-
-
-
-
-
-
-=======
-        });
- </script>
->>>>>>> Stashed changes
 </body>
 
 </html>
