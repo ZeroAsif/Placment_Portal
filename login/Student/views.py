@@ -192,6 +192,7 @@ def create_personal_info(request):
             # Load the LinkedIn logo image
             logo_image = Image.open("static/images/linkedin.png")
 
+
             # Resize the logo image to a smaller size
             logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
             logo_image = logo_image.resize(logo_size)
