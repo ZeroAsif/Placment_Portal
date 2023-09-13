@@ -488,7 +488,7 @@ def Certification_Information(request):
         certification.save()
         messages.success(request, 'Certification-information add successfully')
         return redirect('viewprofile')
-
+    messages.error(request, 'something went wrong')
     return render(request, 'user_templates/viewprofile.html')
 
 
