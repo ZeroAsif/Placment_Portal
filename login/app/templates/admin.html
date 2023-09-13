@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
+
+
 <html lang="en">
 
 <head>
@@ -8,14 +10,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-
-
-
-
-
-
-
-
 
     <title>Admin Interface</title>
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
@@ -29,13 +23,13 @@
             margin: 0;
             padding: 0;
         }
-        
+
         .footer {
             background: #505050 url('https://www.ictmumbai.edu.in/img/footer-bg.png');
             background-size: cover;
             padding: 20px;
         }
-        
+
         .footer-content {
             display: flex;
             flex-direction: column;
@@ -43,79 +37,114 @@
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+
         .left img {
             max-width: 100%;
             height: auto;
         }
-        
+
         .right {
             text-align: center;
             margin-top: 20px;
         }
-        
+
         .contact-us {
             text-align: center;
             margin-bottom: 20px;
             margin-left: 50px;
         }
-        
+
         .small-image img {
             max-width: 100%;
             height: auto;
             width: 100px;
             padding-bottom: 32px;
         }
-        
-        footer h3, footer p {
+        footer h3,
+        footer p {
             line-height: 1.5;
             color: white;
         }
-        
-
-.lower-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 2px 0;
-    position: relative;
-}
 
 
-@media screen and (max-width: 767px) {
-    .footer {
-        padding-bottom: 60px; /* Create space for the lower footer */
-    }
-    .lower-footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 10px 0;
-    }
-}
 
-        
+        .lower-footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 2px 0;
+            position: relative;
+        }
+
+
+        @media screen and (max-width: 767px) {
+            .footer {
+                padding-bottom: 60px;
+                /* Create space for the lower footer */
+            }
+
+            .lower-footer {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 10px 0;
+            }
+        }
+
+
         @media screen and (min-width: 768px) {
             .footer-content {
                 flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
             }
-        
+
             .left {
                 flex: 1;
                 margin-right: 20px;
             }
-        
+
             .contact-us {
                 flex: 1;
                 text-align: left;
                 margin-top: 0;
             }
         }
-        
     </style>
+
+
+
+
+    {% comment %} /* ADMIN SEARC BAR {% endcomment %}
+    <style>
+        .search-container {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .search-container input[type=text] {
+            padding: 10px;
+            margin-right: 5px;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
 
 
 
@@ -124,14 +153,14 @@
 </head>
 
 <body>
-{% if messages %}
-{% for message in messages %}
-<div class="container alert alert-danger alert-dismissible fade show" role="alert">
-    <strong>{{message}}</strong>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-{% endfor %}
-{% endif %}
+    {% if messages %}
+    {% for message in messages %}
+    <div class="container alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{message}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    {% endif %}
 
 
     <div class="sidebar" id="sidebar">
@@ -200,9 +229,8 @@
 
                         <div class="form-group">
                             <label for="pdfFile" class="form-label">Upload PDF File</label>
-                            <input type="file" id="pdf_File" name="pdf_file" class="form-input" accept=".pdf" >
+                            <input type="file" id="pdf_File" name="pdf_file" class="form-input" accept=".pdf">
                         </div>
-
 
                         <button type="submit" class="form-button">Submit</button>
                     </form>
@@ -291,18 +319,6 @@
                                             <input type="text" id="updateJobLocation" name="location" class="form-input"
                                                 value="{{ jp.location }}" required>
                                         </div>
-                                        {% comment %}
-                                        <div class="form-group">
-                                            <label for="updateJobDescription" class="form-label">Job Description</label>
-                                            <textarea id="updateJobDescription" name="description" class="form-input"
-                                                rows="4" required>{{ jp.description }}</textarea>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <label for="updateJobRequirements" class="form-label">Requirements</label>
-                                            <textarea id="updateJobRequirements" name="requirements" class="form-input"
-                                                rows="4" required>{{ jp.requirements }}</textarea>
-                                        </div> {% endcomment %}
 
                                         <div class="form-group">
                                             <label for="updateJobRequirements" class="form-label">Salary Range</label>
@@ -314,29 +330,30 @@
                                         <div class="form-group">
                                             <label for="updateJobRequirements" class="form-label">JD File</label>
                                             <input type="file" id="pdf_file" name="pdf_file" class="form-input"
-                                                value="{{ jp.job_pdfs }}" >
+                                                value="{{ jp.job_pdfs }}">
                                         </div>
 
 
 
 
+                            
+                                       
                                         <div class="form-group">
                                             <label class="form-label">Hiring Status</label>
                                             {% for choice in jp.HIRING_STATUS_CHOICES %}
                                             <div class="form-check">
-                                                    <input type="radio" class="form-check-input" id="updateHiringStatus{{ choice.0|title }}" name="hiring_status" value="{{ choice.0 }}"
-                                                        {% if jp.hiring_status == choice.0 %}checked{% endif %}>
-                                                <label class="form-check-label" for="updateHiringStatus{{ choice.0|title }}">{{ choice.1 }}</label>
+                                                <input type="radio" class="form-check-input"
+                                                    id="updateHiringStatus{{ choice.0|title }}" name="hiring_status"
+                                                    value="{{ choice.0 }}"
+                                                    {% if jp.hiring_status == choice.0 %}checked{% endif %}>
+                                                <label class="form-check-label"
+                                                    for="updateHiringStatus{{ choice.0|title }}">{{ choice.1 }}</label>
                                             </div>
                                             {% endfor %}
                                         </div>
-
-
-
+                                        
 
                                         {% comment %} update modal end here {% endcomment %}
-
-
 
                                         <button type="submit" class="form-button">Save and Submit</button>
                                     </form>
@@ -352,7 +369,7 @@
                         </tr>
                         <!-- Add more table rows here -->
                     </tbody>
-                   
+
                 </div>
                 {% endfor %}
             </table>
@@ -360,62 +377,66 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if job_posting.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ job_posting.previous_page_number }}">previous</a>
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ job_posting.previous_page_number }}">previous</a>
                     {% endif %}
-            
+
                     <span class="current">
                         Page {{ job_posting.number }} of {{ job_posting.paginator.num_pages }}.
                     </span>
-            
+
                     {% if job_posting.has_next %}
-                        <a href="?page={{ job_posting.next_page_number }}">Next</a>
-                        <a href="?page={{ job_posting.paginator.num_pages }}">Page &raquo;</a>
+                    <a href="?page={{ job_posting.next_page_number }}">Next</a>
+                    <a href="?page={{ job_posting.paginator.num_pages }}">Page &raquo;</a>
                     {% endif %}
                 </span>
             </div>
-
-
         </div>
-
-
 
 
         <!-- job listing accordion yaha hai -->
 
 
         <div id="job-listing" class="section mt-3">
-             {% comment %} <div class="input-box">
+            {% comment %} <div class="input-box">
                 <i class="uil uil-search"></i>
-                <input type="text"  placeholder="Search here..." />
+                <input type="text" placeholder="Search here..." />
                 <button class="button" onclick="searchTable()">Search</button>
-            </div>  {% endcomment %}
+            </div> {% endcomment %}
 
             {% comment %} {% if job_posting %} {% endcomment %}
-            
+
             {% for data in context %}
             <div class="accordion mt-3" id="accordionExample-{{ data.jdata.id }}">
                 <div class="accordion-item">
                     <h2 class="accordion-header">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne-{{ data.jdata.id }}" aria-expanded="true" aria-controls="collapseOne-{{ data.jdata.id }}">
+                            data-bs-target="#collapseOne-{{ data.jdata.id }}" aria-expanded="true"
+                            aria-controls="collapseOne-{{ data.jdata.id }}">
                             {{data.jdata.company_name}}
                         </button>
                     </h2>
 
-                    <div id="collapseOne-{{ data.jdata.id }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample-{{ data.jdata.id }}">
+                    <div id="collapseOne-{{ data.jdata.id }}" class="accordion-collapse collapse"
+                        data-bs-parent="#accordionExample-{{ data.jdata.id }}">
                         <div class="accordion-body">
                             <div class="container-xl">
                                 <div class="table-responsive">
                                     <div class="table-wrapper">
                                         <div class="table-title">
                                             <div class="row">
-                                                <div class="col-sm-8"><h2>Customer <b>Details</b></h2></div>
-                                                <div class="col-sm-4">
-                                                <div class="search-box">
-                                                    <i class="material-icons">&#xE8B6;</i>
-                                                    <input type="text" class="form-control" id="searchInput" placeholder="Search&hellip;">
+                                                <div class="col-sm-8">
+                                                    <h2>Intrested <b>student</b></h2>
                                                 </div>
+                                                <div class="col-sm-4">
+
+                                                    <div class="search-wrapper">
+                                                        <div class="input-group mb-3">
+                                                            <input type="text" class="form-control searchInput"
+                                                                placeholder="Search..."
+                                                                data-accordion-id="{{ data.jdata.id }}">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -430,16 +451,16 @@
                                                     <th>Address</th>
                                                     <th>Resume</th>
                                                     <th>Actions</th>
-                                                   
+
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                
+
                                                 {% for student in data.sdata%}
                                                 <tr>
                                                     <td>{{forloop.counter}}</td>
                                                     <td>{{student.user.personalinfo.first_name }} {{ student.user.personalinfo.last_name }}</td>
-                                                    <td>{{ student.user.email}}</td>
+                                                    <td>{{ user.email}}</td>
                                                     <td>{{ student.user.personalinfo.phone_number}}</td>
                                                     <td>{{ student.user.personalinfo.student_college_id}}</td>
                                                     <td>{{student.user.personalinfo.address}}</td>
@@ -472,9 +493,9 @@
 
                                                 </form>
                                             </td>
-                                            
+
                                                 </tr>
-                                             
+
                                                 {% endfor %}
 
 
@@ -487,62 +508,70 @@
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+
             </div>
-            {% endfor %}
-            
+
+
+            <div id="users" class="section">
+                <h2>Users</h2>
+                <p>Manage user accounts and permissions.</p>
+            </div>
+
+            <div id="analytics" class="section">
+                <h2>Update Status</h2>
+                <p>View and analyze data and insights.</p>
+            </div>
+
+
         </div>
 
 
-        <div id="users" class="section">
-            <h2>Users</h2>
-            <p>Manage user accounts and permissions.</p>
-        </div>
-
-        <div id="analytics" class="section">
-            <h2>Update Status</h2>
-            <p>View and analyze data and insights.</p>
-        </div>
-
-    </div>
 
 
-    
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+            crossorigin="anonymous"></script>
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
-        crossorigin="anonymous"></script>
+        {% comment %} ********** ADMIN SREACH JS ************** {% endcomment %}
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                // Event listener for input field changes
+                $('.searchInput').on('input', function () {
+                    var searchText = $(this).val().toLowerCase();
+                    var accordionId = $(this).data('accordion-id');
+                    var $tableBody = $('#dataTable-' + accordionId + ' tbody');
 
-     
-    <script>
-        $(document).ready(function() {
-            $("#searchInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#dataTable tbody tr").filter(function() {
-                    var row = $(this);
-                    var columns = row.find("td");
-                    var found = false;
+                    // Iterate through each table row
+                    $tableBody.find('tr').each(function () {
+                        var $row = $(this);
 
-                    columns.each(function() {
-                        var columnText = $(this).text().toLowerCase();
-                        if (columnText.indexOf(value) > -1) {
-                            found = true;
-                            return false; // Exit loop if match found in this column
+                        // Combine the text of Name, Email, and Number columns
+                        var rowData = $row.find('td:nth-child(2), td:nth-child(3), td:nth-child(4)').text().toLowerCase();
+
+                        // Check if the row contains the search text
+                        if (rowData.indexOf(searchText) === -1) {
+                            $row.hide(); // Hide the row if it doesn't match
+                        } else {
+                            $row.show(); // Show the row if it matches
                         }
                     });
-
-                    row.toggle(found);
                 });
             });
-        });
- </script>
-            
-            
+
+        </script>
+
+
 
 </body>
 

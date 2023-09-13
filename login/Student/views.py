@@ -190,7 +190,7 @@ def create_personal_info(request):
             qr_image = qr_code.make_image(fill_color="blue", back_color="white")
 
             # Load the LinkedIn logo image
-            logo_image = Image.open("static/images/linkind.png")
+            logo_image = Image.open("static/images/linkedin.png")
 
             # Resize the logo image to a smaller size
             logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
@@ -210,7 +210,6 @@ def create_personal_info(request):
             zip_code = None
         objectives = request.POST.get('objectives')
         student_college_id = request.POST.get('student_id')
-
         try:
             p_obj = PersonalInfo(student=student, first_name=first_name, middle_name=middle_name,
                                  last_name=last_name, date_of_birth=date_of_birth, phone_number=phone_number,
@@ -342,7 +341,9 @@ def Experience_Information(request):
         company_name = request.POST.get('company_name')
         location = request.POST.get('location')
         working_from = request.POST.get('working_from')
+        working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
+        working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
         if working_till == "":
             working_till = "Present"
         designation = request.POST.get('designation')
@@ -350,7 +351,7 @@ def Experience_Information(request):
 
         experience = Experience(user=user, job_type=job_type, company_name=company_name,
                                 designation=designation, location=location, working_till=working_till,
-                                working_from=working_from, description=role_responsibility)
+                                working_from=working_from, working_from_text=working_from_text, working_till_text=working_till_text, description=role_responsibility)
         experience.save()
         messages.success(request, 'Experience-information added successfully!')
         return redirect('viewprofile')
@@ -366,11 +367,16 @@ def Update_Experience(request, id):
         update_experience.designation = request.POST.get('designation')
         update_experience.description = request.POST.get('rr')
         update_experience.location = request.POST.get('location')
-        update_experience.working_from = request.POST.get('working_from')
+        work_from = request.POST.get('working_from')
+        update_experience.working_from = work_from
+        update_experience.working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
+        if working_till:
+            working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
         if working_till == "":
             working_till = "Present"
         update_experience.working_till = working_till
+        update_experience.working_till_text = working_till_text
         update_experience.save()
         messages.success(request, 'Experience update successfully')
         return redirect('viewprofile')  # Redirect to the profile page or wherever you'd like
@@ -552,20 +558,28 @@ def Delete_Certification(request, id):
     try:
         certification = Certificate.objects.get(id=id)
 
-        aadhar_card_path = certification.aadhar_card
-        tenth_marksheet_path = certification.tenth_marksheet
-        eleven_marksheet_path = certification.eleven_marksheet
-        twelve_marksheet_path = certification.twelve_marksheet
-        eight_semester_marksheet_path = certification.eight_semester_marksheet
+        # Check if file fields have files associated with them
+        aadhar_card_file = certification.aadhar_card
+        tenth_marksheet_file = certification.tenth_marksheet
+        eleven_marksheet_file = certification.eleven_marksheet
+        twelve_marksheet_file = certification.twelve_marksheet
+        eight_semester_marksheet_file = certification.eight_semester_marksheet
 
+        # Delete the certificate object
         certification.delete()
 
-        for file_path in [aadhar_card_path, tenth_marksheet_path, eleven_marksheet_path, twelve_marksheet_path,
-                          eight_semester_marksheet_path]:
-            if bool(file_path) and file_path.name and os.path.isfile(file_path.path):
-                os.remove(file_path.path)
+        # Delete associated files if they exist
+        for file_field in [
+            aadhar_card_file,
+            tenth_marksheet_file,
+            eleven_marksheet_file,
+            twelve_marksheet_file,
+            eight_semester_marksheet_file,
+        ]:
+            if bool(file_field) and file_field.name and os.path.isfile(file_field.path):
+                os.remove(file_field.path)
 
-        messages.success(request, "Certification and Document delete successfully!")
+        messages.success(request, "Certification and Documents deleted successfully!")
         return redirect('viewprofile')
     except Certificate.DoesNotExist:
         messages.error(request, 'Document does not exist.')
@@ -738,11 +752,13 @@ def Research_info(request):
         supervisor = request.POST.get('supervisor')
         technologies_used = request.POST.get('tech')
         start_date = request.POST.get('start_date')
+        start_date_text = datetime.strptime(start_date, "%Y-%m").strftime("%b-%Y")
         end_date = request.POST.get('end_date')
+        end_date_text = datetime.strptime(end_date, "%Y-%m").strftime("%b-%Y")
         description = request.POST.get('description')
 
         research = Research(user=user, title=title_name, supervisor=supervisor, technologies_used=technologies_used,
-                            start_date=start_date, end_date=end_date, description=description)
+                            start_date=start_date, end_date=end_date, start_date_text=start_date_text, end_date_text=end_date_text, description=description)
         research.save()
         messages.success(request, 'Research detail add successfully')
         return redirect('viewprofile')
@@ -755,8 +771,12 @@ def Update_Research(request, id):
     if request.method == 'POST':
         update_research.title = request.POST.get('title')
         update_research.technologies_used = request.POST.get('tech')
-        update_research.start_date = request.POST.get('start_date')
-        update_research.end_date = request.POST.get('end_date')
+        start_date = request.POST.get('start_date')
+        update_research.start_date = start_date
+        update_research.start_date_text = datetime.strptime(start_date, "%Y-%m").strftime("%b-%Y")
+        end_date = request.POST.get('end_date')
+        update_research.end_date = end_date
+        update_research.end_date_text = datetime.strptime(end_date, "%Y-%m").strftime("%b-%Y")
         update_research.supervisor = request.POST.get('supervisor')
         update_research.description = request.POST.get('description')
 
@@ -851,6 +871,7 @@ def Upload_Image(request):
         messages.success(request, 'Profile Save Successfully')
         return redirect('viewprofile')
     return render(request, 'user_templates/viewprofile.html')
+
 
 
 def html_to_pdf_view(request):
@@ -956,3 +977,21 @@ def status_page(request):
     selected_students = SelectedStudent.objects.filter(selected=True)
     return render(request, 'user_templates/status.html', {'selected_students': selected_students})
 
+
+
+
+# search company names
+
+def job_search(request):
+    if request.method == "GET":
+        company_name = request.GET.get("company-name", "")
+        location = request.GET.get("employment-type", "")
+
+        # Filter jobs based on company name and location and extract company names
+        matching_company_names = JobPosting.objects.filter(company_name__icontains=company_name, location__icontains=location).values_list('company_name', flat=True)
+
+        # Create a comma-separated string of matching company names
+        company_names_str = ", ".join(matching_company_names)
+
+        # Return the matching company names as plain text
+        return HttpResponse(company_names_str)

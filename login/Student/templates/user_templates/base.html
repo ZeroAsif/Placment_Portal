@@ -147,6 +147,14 @@
 
     </style>
 
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+    
+
+
 </head>
 <body>
 <!-- Navbar -->
@@ -178,6 +186,10 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Projects</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url  'status_page' %}">Status</a>
                 </li>
             </ul>
 

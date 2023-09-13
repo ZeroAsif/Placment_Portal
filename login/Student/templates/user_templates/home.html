@@ -32,33 +32,11 @@
                                 <!--  Search Bar  -->
 
     <div class="col-md-10">
-        <form class="p-4">
-            <div class="row">
-                <div class="col-12 col-md-5 mb-2">
-                    <div class="form-group">
-                        <input type="text" name="company-name" placeholder="Enter keyword / Designation / Companies"
-                               class="form-control"/>
-                    </div>
-                </div>
-                <div class="col-12 col-md-5 mb-2">
-                    <div class="form-group">
-                        <select name="employment-type" class="form-select" aria-label="Default select example">
-                            <option selected>Select location</option>
-                            {% for location in show_job %}
-                            <option value="{{location.location}}">{{location.location}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-                <div class="col-12 col-md-2">
-                    <button type="button" class="btn btn-outline-primary btn-md w-100">Search</button>
-                </div>
-            </div>
-        </form>
-
+        <input type="text" id="searchInput" class="form-control searchInput" placeholder="Search..."
+        data-accordion-id="{{ data.jdata.id }}">
+    
 
         <!-- latest jobs-->
-
 
         <h1 class="text-center">Latest Jobs</h1>
         <div class="row mx-1">
@@ -123,6 +101,26 @@
 
 
 
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const jobItems = document.querySelectorAll('.job-item');
+
+        searchInput.addEventListener('input', function () {
+            const searchText = searchInput.value.trim().toLowerCase();
+
+            jobItems.forEach(function (jobItem) {
+                const companyName = jobItem.querySelector('.text-truncate:nth-child(3)').textContent.toLowerCase();
+                if (companyName.includes(searchText)) {
+                    jobItem.style.display = 'block';
+                } else {
+                    jobItem.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
 
 <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 <script>
