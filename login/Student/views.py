@@ -81,7 +81,7 @@ def HomePage(request):
 # User View_Profile Page
 @login_required(login_url='login')
 def ViewProfile(request):
-    # try:
+    try:
         user = request.user.id
         profile_image = UserProfile.objects.filter(user__id=user)
         personal_info = PersonalInfo.objects.filter(student__id=user)
@@ -108,7 +108,7 @@ def ViewProfile(request):
             'extra_curriculum': extra_curriculum
         }
         return render(request, 'user_templates/viewprofile.html', context)
-    # except Exception as e:
+    except Exception as e:
         messages.error(request, f"An error occurred: {str(e)}")  # Display the error message
         return render(request, 'user_templates/viewprofile.html')
 
