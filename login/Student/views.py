@@ -369,7 +369,7 @@ def Update_Experience(request, id):
         update_experience.location = request.POST.get('location')
         work_from = request.POST.get('working_from')
         update_experience.working_from = work_from
-        update_experience.working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
+        update_experience.working_from_text = datetime.strptime(work_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
         if working_till:
             working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
