@@ -20,6 +20,10 @@ urlpatterns = [
      path('save_selected_students/',save_selected_students,name='save_selected_students'),
      path('verify_email/<str:uid>/<str:token>/', verify_email, name='verify_email'),
      path('check_email_page/', check_email, name='check_email_page'),
+<<<<<<< HEAD
+=======
+
+>>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
 
 ]
 

@@ -255,14 +255,22 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
+<<<<<<< HEAD
             data .append(             
                 {'Sr.No': s_d.user.personalinfo.student_id, 
                  'Name': s_d.user.personalinfo.first_name, 
                  'Email':  s_d.user.email, 
                  'Phone Number':  s_d.user.personalinfo.phone_number, 
                  'College ID':s_d.user.personalinfo.student_college_id},
+=======
+            data .append(
+                {'Sr.No': s_d.user.personalinfo.student_id,
+                 'Name': s_d.user.personalinfo.first_name,
+                 'Email':  s_d.user.email,
+                 'Phone Number':  s_d.user.personalinfo.phone_number,
+                 '	College ID':s_d.user.personalinfo.student_college_id},
+>>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
             )
-         
 
         # Write data rows
         for row_num, row_data in enumerate(data, start=1):
