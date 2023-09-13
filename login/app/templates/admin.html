@@ -312,23 +312,7 @@
                                             <input type="file" id="pdf_file" name="pdf_file" class="form-input"
                                                 value="{{ jp.job_pdfs }}">
                                         </div>
-
-
-
-
-                                         {% comment %} <div class="form-group">
-                                            <label class="form-label">Hiring Status</label>
-                                            {% for choice in jp.HIRING_STATUS_CHOICES %}
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input"
-                                                    id="updateHiringStatus{{ choice.0|title }}" name="hiring_status"
-                                                    value="{{ choice.0 }}" {% if jp.hiring_status==choice.0 %}checked>
-                                                    {%endif %}
-                                                <label class="form-check-label"
-                                                    for="updateHiringStatus{{ choice.0|title }}">{{ choice.1 }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div> {% endcomment %}
+                                    
                                        
                                         <div class="form-group">
                                             <label class="form-label">Hiring Status</label>
@@ -514,7 +498,6 @@
                 <h2>Update Status</h2>
                 <p>View and analyze data and insights.</p>
             </div>
-            {% endfor %}
         </div>
 
 
@@ -530,7 +513,6 @@
 
 
         {% comment %} ********** ADMIN SREACH JS ************** {% endcomment %}
-
  
     <script>
         $(document).ready(function() {
