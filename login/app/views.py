@@ -112,7 +112,7 @@ def LoginPage(request):
                 if user.is_staff:
                     login(request, user)
                     if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                        return redirect('home')
+                        return redirect('admins')
                     else:
                         messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
                 else:

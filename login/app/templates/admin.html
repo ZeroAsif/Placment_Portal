@@ -61,19 +61,12 @@
             padding-bottom: 32px;
         }
 
-<<<<<<< HEAD
         footer h3,
         footer p {
             line-height: 1.5;
             color: white;
         }
-=======
-        footer h3, footer p {
-            line-height: 1.5;
-            color: white;
-        }
 
->>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
 
         .lower-footer {
             background-color: #333;
@@ -84,7 +77,6 @@
         }
 
 
-<<<<<<< HEAD
         @media screen and (max-width: 767px) {
             .footer {
                 padding-bottom: 60px;
@@ -97,41 +89,8 @@
                 left: 0;
                 right: 0;
                 padding: 10px 0;
-=======
-@media screen and (max-width: 767px) {
-    .footer {
-        padding-bottom: 60px; /* Create space for the lower footer */
-    }
-    .lower-footer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        padding: 10px 0;
-    }
-}
-
-
-        @media screen and (min-width: 768px) {
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            .left {
-                flex: 1;
-                margin-right: 20px;
-            }
-
-            .contact-us {
-                flex: 1;
-                text-align: left;
-                margin-top: 0;
->>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
             }
         }
-
     </style>
 
 
@@ -556,22 +515,15 @@
                 <p>View and analyze data and insights.</p>
             </div>
             {% endfor %}
-<<<<<<< HEAD
-=======
-
->>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
         </div>
 
 
 
 
-<<<<<<< HEAD
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
-=======
 
->>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
 
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -579,23 +531,7 @@
 
         {% comment %} ********** ADMIN SREACH JS ************** {% endcomment %}
 
-        <script>
-            $(document).ready(function () {
-                // Event listener for input field changes
-                $('.searchInput').on('input', function () {
-                    var searchText = $(this).val().toLowerCase();
-                    var accordionId = $(this).data('accordion-id');
-                    var $tableBody = $('#dataTable-' + accordionId + ' tbody');
-
-                    // Iterate through each table row
-                    $tableBody.find('tr').each(function () {
-                        var $row = $(this);
-
-<<<<<<< HEAD
-                        // Combine the text of Name, Email, and Number columns
-                        var rowData = $row.find('td:nth-child(2), td:nth-child(3), td:nth-child(4)').text().toLowerCase();
-=======
-
+ 
     <script>
         $(document).ready(function() {
             $("#searchInput").on("keyup", function() {
@@ -604,7 +540,6 @@
                     var row = $(this);
                     var columns = row.find("td");
                     var found = false;
->>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
 
                         // Check if the row contains the search text
                         if (rowData.indexOf(searchText) === -1) {
@@ -615,14 +550,9 @@
                     });
                 });
             });
-<<<<<<< HEAD
 
         </script>
 
-=======
-        });
- </script>
->>>>>>> 044b5abe38e1e7dda59092c205569ae0dc81d890
 </body>
 
 </html>
