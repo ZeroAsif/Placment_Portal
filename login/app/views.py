@@ -38,26 +38,26 @@ def send_verification_email(user, request):
     send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
 
 
-# def verify_email(request, uid, token):
-#     try:
-#         user_id = force_str(urlsafe_base64_decode(uid))
-#         user = User.objects.get(pk=user_id)
-#         if default_token_generator.check_token(user, token):
-#             user.is_active = True
-#             user.save()
-#             messages.success(request, 'Email verification successful. You can now log in.')
-#         else:
-#             messages.error(request, 'Invalid email verification link.')
-#     except User.DoesNotExist:
-#         messages.error(request, 'User not found.')
-#     except Exception as e:
-#         messages.error(request, 'Something went wrong during email verification.')
-#     return redirect('login')  # You should replace 'login' with the actual login URL
+def verify_email(request, uid, token):
+    try:
+        user_id = force_str(urlsafe_base64_decode(uid))
+        user = User.objects.get(pk=user_id)
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            messages.success(request, 'Email verification successful. You can now log in.')
+        else:
+            messages.error(request, 'Invalid email verification link.')
+    except User.DoesNotExist:
+        messages.error(request, 'User not found.')
+    except Exception as e:
+        messages.error(request, 'Something went wrong during email verification.')
+    return redirect('login')  # You should replace 'login' with the actual login URL
 
 
-# def check_email(request):
+def check_email(request):
 
-#     return render(request, 'check_email_page.html')
+    return render(request, 'check_email_page.html')
 
 
 """ Sigup Function are here """
@@ -83,12 +83,12 @@ def SignupPage(request):
             else:
                 #Create the user and set as inactive
                 my_user = User.objects.create_user(username=uname, email=email, password=pass1)
-                # my_user.is_active = False
+                my_user.is_active = False
                 my_user.save()
                 # Send email verification
-                # send_verification_email(my_user, request)
+                send_verification_email(my_user, request)
                 messages.success(request, 'Please check your email for a verification link.')
-                return redirect('login')
+                return redirect('check_email_page')
         return render(request, 'signup.html')
     except Exception as e:
         # Handle other exceptions here
