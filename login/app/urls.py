@@ -22,7 +22,10 @@ urlpatterns = [
      path('check_email_page/', check_email, name='check_email_page'),
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f1835e (resume)
 ]
 
 if settings.DEBUG:
