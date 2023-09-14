@@ -14,7 +14,10 @@
                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{job_description.location}}</span>
                         <span class="text-truncate me-3"><i class="fa-regular fa-building text-primary me-2"></i>{{job_description.company_name}}</span>
                         <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{job_description.salary_range}}</span>
+                        {% if job_description.pdf_file %}
                         <span class="text-truncate me-0 "><b>JD</b> : <a href="{{ job_description.pdf_file.url }}" target="_blank">{{job_description.pdf_file.name}}</a></span>
+                        {% else %}
+                        {% endif %}
                     </div>
                 </div>
 
@@ -55,8 +58,10 @@
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Salary : {{job_description.salary_range}}</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Location : {{job_description.location}}</p>
                     <p><i class="fa fa-angle-right text-primary me-2"></i>Hiring_Status : {{job_description.hiring_status}}</p>
+                    {% if job_description.pdf_file %}
                     <p><i class="fa fa-angle-right text-primary me-2"></i>JD : <a href="{{ job_description.pdf_file.url }}" target="_blank">{{job_description.pdf_file}}</a></p>
-
+                    {% else %}
+                    {% endif %}
                 </div>
             </div>
         </div>

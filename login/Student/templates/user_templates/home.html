@@ -73,6 +73,8 @@
                                                 {% if check_personal and check_resume %}
                                                     {% if show_jobs.id in applied_jobs_ids %}
                                                         <span class="btn btn-success disabled"><i class="fa-solid fa-check"></i>Applied</span>
+                                                    {% elif show_jobs.id in selected %}
+                                                        <span class="btn btn-warning disabled"><i class="fa-solid fa-info"></i>Selected</span>
                                                     {% else %}
                                                         <a class="btn btn-success" href="{% url 'interest' show_jobs.id %}">Interest</a>
                                                     {% endif %}
