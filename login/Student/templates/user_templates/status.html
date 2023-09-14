@@ -7,7 +7,7 @@
 <body>
     <h1>Your Status</h1>
     {% if request.user.is_authenticated %}
-        {% if request.user.selectedstudent_set.all %}
+        {% if request.user.SelectedStudent_set.all %}
             <p>You are selected for the following company:</p>
             <ul>
                 {% for student in selected_students %}

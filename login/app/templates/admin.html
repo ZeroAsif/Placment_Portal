@@ -60,28 +60,12 @@
             width: 100px;
             padding-bottom: 32px;
         }
-
-<<<<<<< Updated upstream
         footer h3,
         footer p {
             line-height: 1.5;
             color: white;
         }
-=======
-        footer h3, footer p {
-            line-height: 1.5;
-            color: white;
-        }
 
-
-.lower-footer {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 2px 0;
-    position: relative;
-}
->>>>>>> Stashed changes
 
 
         .lower-footer {
@@ -109,10 +93,6 @@
         }
 
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
         @media screen and (min-width: 768px) {
             .footer-content {
                 flex-direction: row;
@@ -131,10 +111,6 @@
                 margin-top: 0;
             }
         }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
     </style>
 
 
@@ -360,19 +336,7 @@
 
 
 
-                                         {% comment %} <div class="form-group">
-                                            <label class="form-label">Hiring Status</label>
-                                            {% for choice in jp.HIRING_STATUS_CHOICES %}
-                                            <div class="form-check">
-                                                <input type="radio" class="form-check-input"
-                                                    id="updateHiringStatus{{ choice.0|title }}" name="hiring_status"
-                                                    value="{{ choice.0 }}" {% if jp.hiring_status==choice.0 %}checked>
-                                                    {%endif %}
-                                                <label class="form-check-label"
-                                                    for="updateHiringStatus{{ choice.0|title }}">{{ choice.1 }}</label>
-                                            </div>
-                                            {% endfor %}
-                                        </div> {% endcomment %}
+                            
                                        
                                         <div class="form-group">
                                             <label class="form-label">Hiring Status</label>
@@ -547,7 +511,6 @@
                 {% endfor %}
 
             </div>
-<<<<<<< Updated upstream
 
 
             <div id="users" class="section">
@@ -559,71 +522,23 @@
                 <h2>Update Status</h2>
                 <p>View and analyze data and insights.</p>
             </div>
-=======
-            {% endfor %}
->>>>>>> Stashed changes
+
 
         </div>
 
 
 
 
-<<<<<<< Updated upstream
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
             crossorigin="anonymous"></script>
-=======
 
->>>>>>> Stashed changes
 
 
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
-        {% comment %}
-        <script>
-            $(document).ready(function () {
-                $("#searchInput").on("keyup", function () {
-                    var value = $(this).val().toLowerCase();
-                    $("#dataTable tbody tr").filter(function () {
-                        var row = $(this);
-                        var columns = row.find("td");
-                        var found = false;
-
-                        columns.each(function () {
-                            var columnText = $(this).text().toLowerCase();
-                            if (columnText.indexOf(value) > -1) {
-                                found = true;
-                                return false; // Exit loop if match found in this column
-                            }
-                        });
-
-<<<<<<< Updated upstream
-                        row.toggle(found);
-=======
-
-    <script>
-        $(document).ready(function() {
-            $("#searchInput").on("keyup", function() {
-                var value = $(this).val().toLowerCase();
-                $("#dataTable tbody tr").filter(function() {
-                    var row = $(this);
-                    var columns = row.find("td");
-                    var found = false;
-
-                    columns.each(function() {
-                        var columnText = $(this).text().toLowerCase();
-                        if (columnText.indexOf(value) > -1) {
-                            found = true;
-                            return false; // Exit loop if match found in this column
-                        }
->>>>>>> Stashed changes
-                    });
-                });
-            });
-<<<<<<< Updated upstream
-        </script> {% endcomment %}
 
 
 
@@ -658,16 +573,6 @@
 
 
 
-
-
-
-
-
-
-=======
-        });
- </script>
->>>>>>> Stashed changes
 </body>
 
 </html>

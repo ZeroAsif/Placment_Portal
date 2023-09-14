@@ -35,7 +35,7 @@ def send_verification_email(user, request):
     verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
     subject = 'Verify Your Email'
     message = message = f'Click the following link to verify your email:\n{verification_link}'
-    send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
+    send_mail(subject, message, 'chemenggictplacement@gmail.com', [user.email])
 
 
 def verify_email(request, uid, token):
@@ -65,6 +65,8 @@ def check_email(request):
 
 def SignupPage(request):
     try:
+        data =User.objects.all()
+        data.delete()
         if request.method == 'POST':
             uname = request.POST.get('username')
             email = request.POST.get('email', '')
@@ -112,7 +114,7 @@ def LoginPage(request):
                 if user.is_staff:
                     login(request, user)
                     if email.endswith(('pg.ictmumbai.edu.in', 'ug.ictmumbai.edu.in')):
-                        return redirect('home')
+                        return redirect('admins')
                     else:
                         messages.error(request, 'Superusers must use pg.ictmumbai.edu.in or ug.ictmumbai.edu.in domain')
                 else:
@@ -255,14 +257,13 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
-            data .append(             
-                {'Sr.No': s_d.user.personalinfo.student_id, 
-                 'Name': s_d.user.personalinfo.first_name, 
-                 'Email':  s_d.user.email, 
-                 'Phone Number':  s_d.user.personalinfo.phone_number, 
-                 '	College ID':s_d.user.personalinfo.student_college_id},
+            data .append(
+                {'Sr.No': s_d.user.personalinfo.student_id,
+                 'Name': s_d.user.personalinfo.first_name,
+                 'Email':  s_d.user.email,
+                 'Phone Number':  s_d.user.personalinfo.phone_number,
+                 'College ID':s_d.user.personalinfo.student_college_id},
             )
-         
 
         # Write data rows
         for row_num, row_data in enumerate(data, start=1):
@@ -329,29 +330,6 @@ def ForgetPassword(request):
 
 
 
-
-
-# def toggle_selected(request, student_id):
-#     try:
-#         student = Student.objects.get(id=student_id)
-#         student.selected = not student.selected
-#         student.save()
-#         return redirect('your_student_list_view')  # Replace 'your_student_list_view' with the actual URL name of your student list view
-#     except Student.DoesNotExist:
-#         return redirect('your_student_list_view')  # Redirect to the student list view in case of an error
-
-
-
-
-# def save_selected_students(request):
-#     id = request.POST.get('selected_students')
-#     job_id = request.POST.get('job_students')
-#     user_obj = User.objects.get(id =id)
-#     job_obj = JobPosting.objects.get(id = job_id)
-#     obj = SelectedStudent.objects.create(user=user_obj,company_name=job_obj,selected=True)
-#     obj.save()
-#     return redirect('admins')
-
 def save_selected_students(request):
     selected_student_id = request.POST.get('selected_students')
     job_id = request.POST.get('job_students')
@@ -362,7 +340,7 @@ def save_selected_students(request):
 
         # Check if the student is already selected
         if SelectedStudent.objects.filter(user=user_obj, company_name=job_obj).exists():
-            messages.succ(request,"Successfully selected student")
+            messages.success(request,"Successfully selected student")
             return render (request,'admin.html')
 
         # Create a new SelectedStudent object with the "You Are Selected" message
