@@ -14,6 +14,7 @@ from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash, authenticate
 from app.models import SelectedStudent
+from django.conf import settings
 
 
 # Create your views here.
@@ -59,6 +60,10 @@ def HomePage(request):
             check_resume = Resume.objects.get(user__id=request.user.id)
         except Resume.DoesNotExist:
             check_resume = None
+        try:
+            selected = SelectedStudent.objects.all()
+        except SelectedStudent.DoesNotExist:
+            selected = None
         show_job = JobPosting.objects.all().order_by("-id")
         profile_image = UserProfile.objects.filter(user__id=request.user.id)
         check_additional = AdditionalSkill.objects.filter(user__id=request.user.id)
@@ -71,6 +76,7 @@ def HomePage(request):
             'check_additional': check_additional,
             'check_personal': check_personal,
             'check_resume': check_resume,
+            'selected': selected,
         }
         return render(request, 'user_templates/home.html', context)
     except Exception as e:
@@ -162,8 +168,8 @@ def Job_Description(request, id):
         return render(request, "user_templates/job_description.html", context)
     except Exception as e:
         # Handle other exceptions here, e.g., log the error or provide an error template
-        messages.error(request, 'Something went wrong. Please contact admin ')
-        return render(request, "user_templates/error.html", context)
+        messages.error(request, e)
+        return render(request, "user_templates/home.html", context)
 
 
 """  Here we are storing the data of Student of Personal Info using POST method """
@@ -187,10 +193,10 @@ def create_personal_info(request):
             qr_code.make(fit=True)
 
             # Create an image from the QR code
-            qr_image = qr_code.make_image(fill_color="blue", back_color="white")
+            qr_image = qr_code.make_image(fill_color="black", back_color="white")
 
             # Load the LinkedIn logo image
-            logo_image = Image.open("static/images/linkedin.png")
+            logo_image = Image.open("static/images/linkind.png")
 
             # Resize the logo image to a smaller size
             logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
@@ -252,22 +258,71 @@ def create_personal_info(request):
 def Update_Personal_Info(request, id):
     personal_info = PersonalInfo.objects.get(id=id)
     if request.method == 'POST':
-        personal_info.first_name = request.POST.get('first_name')
-        personal_info.middle_name = request.POST.get('middle_name')
-        personal_info.last_name = request.POST.get('last_name')
-        personal_info.date_of_birth = request.POST.get('date_of_birth')
-        personal_info.phone_number = request.POST.get('phone_number')
-        personal_info.address = request.POST.get('address')
-        personal_info.linkdin_url = request.POST.get('linkedin_url')
-        personal_info.zip_code = request.POST.get('zip_code')
-        personal_info.objectives = request.POST.get('objectives')
-        personal_info.student_college_id = request.POST.get('student_college_id')
-        personal_info.save()
-        messages.success(request, 'Personal-info update successfully')
-        return redirect('viewprofile')  # Redirect to the profile page or wherever you'd like
+        try:
+            # Retrieve user's existing LinkedIn URL
+            existing_linkedin_url = personal_info.linkdin_url
+
+            personal_info.first_name = request.POST.get('first_name')
+            personal_info.middle_name = request.POST.get('middle_name')
+            personal_info.last_name = request.POST.get('last_name')
+            personal_info.date_of_birth = request.POST.get('date_of_birth')
+            personal_info.phone_number = request.POST.get('phone_number')
+            personal_info.address = request.POST.get('address')
+            personal_info.linkdin_url = request.POST.get('linkedin_url')
+            personal_info.zip_code = request.POST.get('zip_code')
+            personal_info.objectives = request.POST.get('objectives')
+            personal_info.student_college_id = request.POST.get('student_college_id')
+            personal_info.save()
+            if personal_info.linkdin_url != existing_linkedin_url:
+                # Generate and update the QR code
+                generate_and_update_qr_code(personal_info)
+            messages.success(request, 'Personal-info update successfully')
+            return redirect('viewprofile')  # Redirect to the profile page or wherever you'd like
+        except IntegrityError as e:
+            error_message = str(e).lower().strip()
+            if 'unique constraint' in error_message and 'phone_number' in error_message:
+                messages.error(request,"Phone_number Already Exist.")
+            elif 'unique constraint' in error_message and 'linkdin_url' in error_message:
+                messages.error(request, 'Linkedin_URL Already Exist.')
+            elif 'unique constraint' in error_message and 'student_college_id' in error_message:
+                messages.error(request, 'student_college_id Already Exist.')
+            return redirect('viewprofile')
     messages.error(request, 'Something went wrong! Please contact Admin')
     return render(request, 'user_templates/viewprofile.html')
 
+
+def generate_and_update_qr_code(personal_info):
+    linkedin_url = personal_info.linkdin_url
+    if linkedin_url:
+        # Generate the QR code
+        qr_code = qrcode.QRCode(version=1, box_size=10, border=4)
+        qr_code.add_data(linkedin_url)
+        qr_code.make(fit=True)
+
+        # Create an image from the QR code
+        qr_image = qr_code.make_image(fill_color="black", back_color="white")
+
+        # Load the LinkedIn logo image
+        logo_image = Image.open("static/images/linkind.png")
+
+        # Resize the logo image to a smaller size
+        logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
+        logo_image = logo_image.resize(logo_size)
+
+        # Calculate the position to place the logo in the center of the QR code
+        logo_position = ((qr_image.size[0] - logo_image.size[0]) // 2, (qr_image.size[1] - logo_image.size[1]) // 2)
+
+        # Paste the logo image onto the QR code image
+        qr_image.paste(logo_image, logo_position)
+
+        folder_path = "media/linkedinQR"
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+
+        # Save the image inside the folder with the user's first_name
+        image_name = f"linkedin{personal_info.first_name}.png"  # Or any desired image format
+        image_path = os.path.join(folder_path, image_name)
+        qr_image.save(image_path)
 
 # Here we are deleting the data of Student of Personal Info using Delete method
 @login_required(login_url='login')
@@ -582,7 +637,7 @@ def Delete_Certification(request, id):
         messages.success(request, "Certification and Documents deleted successfully!")
         return redirect('viewprofile')
     except Certificate.DoesNotExist:
-        messages.error(request, 'Certificate does not exist.')
+        messages.error(request, 'Document does not exist.')
     except Exception as e:
         messages.error(request, f'Something went wrong! Error: {str(e)}')
     return render(request, 'user_templates/viewprofile.html')

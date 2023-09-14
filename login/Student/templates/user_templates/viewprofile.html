@@ -87,16 +87,18 @@
         {% for cv in cvs %}
         <div class="d-flex justify-content-center align-items-center my-3">
             {{cv.resume_file}}
-            <a href="{% url 'download-resume' cv.user_id %}">
-                <button class="btn btn-outline-info rounded-circle mx-2"><i
-                        class="fa-solid fa-download fa-bounce"></i>
-                </button>
-            </a>
-            <a href="delete-resume/{{cv.id}}">
-                <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
-                        class="fa-regular fa-trash-can fa-bounce"></i>
-                </button>
-            </a>
+            <div class="d-flex flex-column flex-sm-row mt-2">
+                <a href="{% url 'download-resume' cv.user_id %}">
+                    <button class="btn btn-outline-info rounded-circle mx-2"><i
+                            class="fa-solid fa-download fa-bounce"></i>
+                    </button>
+                </a>
+                <a href="delete-resume/{{cv.id}}">
+                    <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
+                            class="fa-regular fa-trash-can fa-bounce"></i>
+                    </button>
+                </a>
+            </div>
         </div>
         {% endfor %}
         {% else %}
@@ -286,18 +288,22 @@
                     <a href="{{ cr.aadhar_card.url }}" target="_blank">{{ cr.aadhar_card.name }}</a><br>
                     {% else %}
                     {% endif %}
+
                     {% if cr.tenth_marksheet %}
                     <a href="{{ cr.tenth_marksheet.url }}" target="_blank">{{ cr.tenth_marksheet.name }}</a><br>
                     {% else %}
                     {% endif %}
+
                     {% if cr.eleven_marksheet %}
                     <a href="{{ cr.eleven_marksheet.url }}" target="_blank">{{ cr.eleven_marksheet.name }}</a><br>
                     {% else %}
                     {% endif %}
+
                     {% if cr.twelve_marksheet %}
                     <a href="{{ cr.twelve_marksheet.url }}" target="_blank">{{ cr.twelve_marksheet.name }}</a><br>
                     {% else %}
                     {% endif %}
+
                     {% if cr.eight_semester_marksheet %}
                     <a href="{{ cr.eight_semester_marksheet.url }}" target="_blank">{{ cr.eight_semester_marksheet.name }}</a><br>
                     {% else %}

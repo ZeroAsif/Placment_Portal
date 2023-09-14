@@ -61,6 +61,10 @@
                                             <span class="text-truncate me-3"><i
                                                     class="fa fa-bullhorn text-primary mx-3 me-2"
                                                     aria-hidden="true"></i>{{show_jobs.hiring_status}}</span>
+                                            {% if show_jobs.pdf_file %}
+                                            <span class="text-truncate me-3">JD : <a href="{{ show_jobs.pdf_file.url }}" target="_blank">{{show_jobs.pdf_file.name}}</a></span>
+                                            {% else %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
@@ -69,6 +73,8 @@
                                                 {% if check_personal and check_resume %}
                                                     {% if show_jobs.id in applied_jobs_ids %}
                                                         <span class="btn btn-success disabled"><i class="fa-solid fa-check"></i>Applied</span>
+                                                    {% elif show_jobs.id in selected %}
+                                                        <span class="btn btn-warning disabled"><i class="fa-solid fa-info"></i>Selected</span>
                                                     {% else %}
                                                         <a class="btn btn-success" href="{% url 'interest' show_jobs.id %}">Interest</a>
                                                     {% endif %}
