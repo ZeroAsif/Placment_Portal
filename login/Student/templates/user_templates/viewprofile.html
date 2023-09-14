@@ -87,16 +87,18 @@
         {% for cv in cvs %}
         <div class="d-flex justify-content-center align-items-center my-3">
             {{cv.resume_file}}
-            <a href="{% url 'download-resume' cv.user_id %}">
-                <button class="btn btn-outline-info rounded-circle mx-2"><i
-                        class="fa-solid fa-download fa-bounce"></i>
-                </button>
-            </a>
-            <a href="delete-resume/{{cv.id}}">
-                <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
-                        class="fa-regular fa-trash-can fa-bounce"></i>
-                </button>
-            </a>
+            <div class="d-flex flex-column flex-sm-row mt-2">
+                <a href="{% url 'download-resume' cv.user_id %}">
+                    <button class="btn btn-outline-info rounded-circle mx-2"><i
+                            class="fa-solid fa-download fa-bounce"></i>
+                    </button>
+                </a>
+                <a href="delete-resume/{{cv.id}}">
+                    <button type="submit" class="btn btn-outline-danger rounded-circle mx-2"><i
+                            class="fa-regular fa-trash-can fa-bounce"></i>
+                    </button>
+                </a>
+            </div>
         </div>
         {% endfor %}
         {% else %}
