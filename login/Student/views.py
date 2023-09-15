@@ -369,7 +369,7 @@ def Update_Experience(request, id):
         update_experience.location = request.POST.get('location')
         work_from = request.POST.get('working_from')
         update_experience.working_from = work_from
-        update_experience.working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
+        update_experience.working_from_text = datetime.strptime(work_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
         if working_till:
             working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
@@ -982,16 +982,16 @@ def status_page(request):
 
 # search company names
 
-def job_search(request):
-    if request.method == "GET":
-        company_name = request.GET.get("company-name", "")
-        location = request.GET.get("employment-type", "")
+# def job_search(request):
+#     if request.method == "GET":
+#         company_name = request.GET.get("company-name", "")
+#         location = request.GET.get("employment-type", "")
 
-        # Filter jobs based on company name and location and extract company names
-        matching_company_names = JobPosting.objects.filter(company_name__icontains=company_name, location__icontains=location).values_list('company_name', flat=True)
+#         # Filter jobs based on company name and location and extract company names
+#         matching_company_names = JobPosting.objects.filter(company_name__icontains=company_name, location__icontains=location).values_list('company_name', flat=True)
 
-        # Create a comma-separated string of matching company names
-        company_names_str = ", ".join(matching_company_names)
+#         # Create a comma-separated string of matching company names
+#         company_names_str = ", ".join(matching_company_names)
 
-        # Return the matching company names as plain text
-        return HttpResponse(company_names_str)
+#         # Return the matching company names as plain text
+#         return HttpResponse(company_names_str)
