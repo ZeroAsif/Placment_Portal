@@ -491,6 +491,10 @@ def Under_Graduation_Information(request):
             department=department_hsc
         )
         messages.success(request, 'Education-information add successfully')
+        return redirect('viewprofile')
+
+    messages.error(request, 'Something went wrong.')
+    return render(request, 'user_templates/viewprofile.html')
 
 
 def Delete_Under_Graduation(request, id):
