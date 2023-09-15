@@ -35,7 +35,7 @@ def send_verification_email(user, request):
     verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
     subject = 'Verify Your Email'
     message = message = f'Click the following link to verify your email:\n{verification_link}'
-    send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
+    send_mail(subject, message, 'chemenggictplacement@gmail.com', [user.email])
 
 
 def verify_email(request, uid, token):
@@ -65,6 +65,8 @@ def check_email(request):
 
 def SignupPage(request):
     try:
+        data =User.objects.all()
+        data.delete()
         if request.method == 'POST':
             uname = request.POST.get('username')
             email = request.POST.get('email', '')
@@ -255,11 +257,11 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
-            data .append(             
-                {'Sr.No': s_d.user.personalinfo.student_id, 
-                 'Name': s_d.user.personalinfo.first_name, 
-                 'Email':  s_d.user.email, 
-                 'Phone Number':  s_d.user.personalinfo.phone_number, 
+            data .append(
+                {'Sr.No': s_d.user.personalinfo.student_id,
+                 'Name': s_d.user.personalinfo.first_name,
+                 'Email':  s_d.user.email,
+                 'Phone Number':  s_d.user.personalinfo.phone_number,
                  'College ID':s_d.user.personalinfo.student_college_id},
             )
 
