@@ -486,8 +486,8 @@
                                                 </a>
                                                 <form id="selected" method="post" action="{% url 'save_selected_students' %}">{% csrf_token %}
                                                     <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="job_students" type="hidden"  value="{{ data.jdata.id }}">
-                                                        <input class="form-check-input" name="selected_students" type="checkbox" onchange="document.getElementById('selected').submit();" id="customSwitch" value="{{ student.user.id }}">
+                                                        <input class="form-check-input" name="job_students" type="hidden" value="{{ data.jdata.id }}">
+                                                        <input class="form-check-input" name="selected_students" type="checkbox" id="customSwitch" value="{{ student.user.id }}" {% if student.selected %}checked{% endif %} onchange="selectStudent(this);">
                                                         <label class="form-check-label" for="customSwitch">Selected</label>
                                                     </div>
 
@@ -538,10 +538,6 @@
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-
-
-
-
         {% comment %} ********** ADMIN SREACH JS ************** {% endcomment %}
 
         <script>
@@ -568,10 +564,18 @@
                     });
                 });
             });
-
         </script>
 
+        {% comment %} **************POP UP MESSAGE**************{% endcomment %}
 
+        <script>
+            function selectStudent(checkbox) {
+                if (checkbox.checked) {
+                    // Show a pop-up message when the checkbox is checked
+                    window.alert('Student successfully selected');
+                }
+            }
+            </script>
 
 </body>
 
