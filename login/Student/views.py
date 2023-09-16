@@ -398,9 +398,12 @@ def Experience_Information(request):
         working_from = request.POST.get('working_from')
         working_from_text = datetime.strptime(working_from, "%Y-%m").strftime("%b-%Y")
         working_till = request.POST.get('working_till')
-        working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
         if working_till == "":
             working_till = "Present"
+            working_till_text = "Present"
+
+        else:
+            working_till_text = datetime.strptime(working_till, "%Y-%m").strftime("%b-%Y")
         designation = request.POST.get('designation')
         role_responsibility = request.POST.get('rr')
 
@@ -491,6 +494,7 @@ def Under_Graduation_Information(request):
             department=department_hsc
         )
         messages.success(request, 'Education-information add successfully')
+        return redirect('viewprofile')
 
 
 def Delete_Under_Graduation(request, id):
