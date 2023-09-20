@@ -330,7 +330,8 @@ def ForgetPassword(request):
 
 
 def save_selected_students(request):
-    selected_student_id = int(request.POST.get('selected_students'))
+    print('Save selected students')
+    selected_student_id = request.POST.get('selected_students')
     job_id = int(request.POST.get('job_students'))
 
     try:
@@ -351,8 +352,12 @@ def save_selected_students(request):
             if created:
                 messages.success(request, "Student successfully selected")
 
-        return redirect('admin')  # Redirect to admin page after selection
+        return redirect('admins')  # Redirect to admin page after selection
     except User.DoesNotExist:
         return HttpResponse("User not found.")
     except JobPosting.DoesNotExist:
         return HttpResponse("Job posting not found.")
+
+
+# ****************************************************************
+

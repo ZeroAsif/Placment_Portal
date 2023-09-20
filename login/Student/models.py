@@ -210,7 +210,8 @@ class AdditionalSkill(TimeStampedModel):
 class Job_application(TimeStampedModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     job_posting = models.ForeignKey(JobPosting, on_delete=models.CASCADE)
-    interested = models.BooleanField(default=False) # Set to True if interested False if not
+    interested = models.BooleanField(default=False)
+     # Set to True if interested False if not
     INTERESTED_CHOICES = [
         (True, 'Interested'),
         (False, 'Not Interested'),
@@ -274,3 +275,16 @@ class Research(TimeStampedModel):
         verbose_name='ID',
         help_text='Unique identifier for the record',
         db_index=True)
+
+
+
+
+
+
+class StudentInterest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    companyName = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('selected', 'Selected')])
+
+    def __str__(self):
+        return f"{self.user.username} - {self.companyName}"

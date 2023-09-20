@@ -460,7 +460,7 @@
                                                 <tr>
                                                     <td>{{forloop.counter}}</td>
                                                     <td>{{student.user.personalinfo.first_name }} {{ student.user.personalinfo.last_name }}</td>
-                                                    <td>{{ user.email}}</td>
+                                                    <td>{{ student.user.email}}</td>
                                                     <td>{{ student.user.personalinfo.phone_number}}</td>
                                                     <td>{{ student.user.personalinfo.student_college_id}}</td>
                                                     <td>{{student.user.personalinfo.address}}</td>
@@ -484,20 +484,29 @@
                                                     {% endif %} title="View Resume" data-toggle="tooltip">
                                                     <i class="material-icons">visibility</i>
                                                 </a>
-                                                <form id="selected" method="post" action="{% url 'save_selected_students' %}">{% csrf_token %}
+                                                {% comment %} <form id="selected" method="post" action="{% url 'save_selected_students' %}">{% csrf_token %}
+                                                    <div class="form-check form-switch">
+                                                        <input class="form-check-input" name="job_students" type="hidden" value="{{ data.jdata.id }}">
+                                                        <input class="form-check-input" name="selected_students"  type="submit" id="customSwitch" value="{{ student.user.id }}" {% if student.selected %}checked{% endif %} onchange="selectStudent(this);">
+                                                        <label  class="form-check-label"  for="customSwitch">Selected</label>
+                                                        
+                                                    </div>
+                                                </form> {% endcomment %}
+                                                
+                                                <form id="selected" method="post" action="{% url 'save_selected_students' %}">
+                                                    {% csrf_token %}
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" name="job_students" type="hidden" value="{{ data.jdata.id }}">
                                                         <input class="form-check-input" name="selected_students" type="checkbox" id="customSwitch" value="{{ student.user.id }}" {% if student.selected %}checked{% endif %} onchange="selectStudent(this);">
                                                         <label class="form-check-label" for="customSwitch">Selected</label>
                                                     </div>
-
                                                 </form>
+                                                
                                             </td>
 
                                                 </tr>
 
                                                 {% endfor %}
-
 
                                             </tbody>
                                         </table>
@@ -572,10 +581,13 @@
             function selectStudent(checkbox) {
                 if (checkbox.checked) {
                     // Show a pop-up message when the checkbox is checked
-                    window.alert('Student successfully selected');
+                    if (window.confirm('Student successfully selected. Do you want to save your selection?')) {
+                        // If the user clicks OK in the confirmation dialog, submit the form
+                        document.getElementById("selected").submit();
+                    }
                 }
             }
-            </script>
+        </script>
 
 </body>
 

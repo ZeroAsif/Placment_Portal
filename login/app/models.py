@@ -29,8 +29,6 @@ class SelectedStudent(models.Model):
     selected = models.BooleanField(default=False)  
     message = models.CharField(max_length=255, blank=True, null=True, default="")
 
-    def __str__(self):
-        return f"{self.job_title} at {self.company_name}"
 
 
 """  Here define a Reset password model"""

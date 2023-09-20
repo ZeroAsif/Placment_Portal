@@ -68,6 +68,7 @@
                                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                         <div class="d-flex mb-3">
                                             {% if user.is_authenticated %}
+                                                {% if not SelectedStudent %}
                                                 {% if check_personal and check_resume %}
                                                     {% if show_jobs.id in applied_jobs_ids %}
                                                         <span class="btn btn-success disabled"><i class="fa-solid fa-check"></i>Applied</span>
@@ -77,8 +78,9 @@
                                                 {% else %}
                                                     <a class="btn btn-outline-primary" href="{% url 'viewprofile' %}">Create Profile</a>
                                                 {% endif %}
-                                            {% else %}
-                                                <a class="btn btn-success" href="{% url 'login' %}">Log in to Apply</a>
+                                            {% comment %} {% else %}
+                                                <a class="btn btn-success" href="{% url 'login' %}">Log in to Apply</a> {% endcomment %}
+                                            {% endif %}
                                             {% endif %}
                                         </div>
                                         {% load humanize %}

@@ -50,6 +50,7 @@ def Check_Phone(request):
 # User Home_page
 @login_required(login_url='login')
 def HomePage(request):
+    print(request.user.id)
     try:
         try:
             check_personal = PersonalInfo.objects.get(student_id=request.user.id)
@@ -59,6 +60,10 @@ def HomePage(request):
             check_resume = Resume.objects.get(user__id=request.user.id)
         except Resume.DoesNotExist:
             check_resume = None
+        try: 
+            select=SelectedStudent.objects.filter(user__id=request.user.id)
+        except SelectedStudent.DoesNotExist:
+            select=None
         show_job = JobPosting.objects.all().order_by("-id")
         profile_image = UserProfile.objects.filter(user__id=request.user.id)
         check_additional = AdditionalSkill.objects.filter(user__id=request.user.id)
@@ -71,6 +76,7 @@ def HomePage(request):
             'check_additional': check_additional,
             'check_personal': check_personal,
             'check_resume': check_resume,
+            'SelectedStudent': select,
         }
         return render(request, 'user_templates/home.html', context)
     except Exception as e:
@@ -888,7 +894,7 @@ def html_to_pdf_view(request):
     additional_skill = AdditionalSkill.objects.filter(user__id=u)
     resarch = Research.objects.filter(user__id=u)
     sem_college = SemesterCollege.objects.filter(user__id=u).values_list('semester','year','sgpa','cgpa')
-    sem_college_name = SemesterCollege.objects.filter(user__id=u)[0]
+    sem_college_name = SemesterCollege.objects.filter(user__id=u)
     award = ExtraCurriculumAndAward.objects.filter(user__id=u,award__isnull=False)
     curriculum = ExtraCurriculumAndAward.objects.filter(user__id=u,curriculum__isnull=False)
 
@@ -897,13 +903,21 @@ def html_to_pdf_view(request):
 
     semester =[]
     if education.count() == 3:
-        semester.extend([sem_college[0]+sem_college[2]])
-        semester.extend([sem_college[1]+sem_college[3]])
+        try:
+            if sem_college.count() == 4:
+                semester.extend([sem_college[0]+sem_college[2]])
+                semester.extend([sem_college[1]+sem_college[3]])
+        except:
+            messages.error('please fill your all 4 semester')
     elif education.count() == 2:
-        semester.extend([sem_college[0] + sem_college[4]])
-        semester.extend([sem_college[1] + sem_college[5]])
-        semester.extend([sem_college[2] + sem_college[6]])
-        semester.extend([sem_college[3] + sem_college[7]])
+        try:
+            if sem_college.count() == 8:
+                semester.extend([sem_college[0] + sem_college[4]])
+                semester.extend([sem_college[1] + sem_college[5]])
+                semester.extend([sem_college[2] + sem_college[6]])
+                semester.extend([sem_college[3] + sem_college[7]])
+        except:
+            messages.error('please fill your all 8 semester')
 
     context = {
         'user_data': user_data,
@@ -973,25 +987,25 @@ def New_password(request):
 
 
 # selected student show here
+# def status_page(request):
+#     selected_students = SelectedStudent.objects.filter(selected=True)
+#     return render(request, 'user_templates/status.html', {'selected_students': selected_students})
+
+
 def status_page(request):
-    selected_students = SelectedStudent.objects.filter(selected=True)
-    return render(request, 'user_templates/status.html', {'selected_students': selected_students})
+    if request.user.is_authenticated:
+        # Retrieve selected student data for the logged-in user
+        selected_student = SelectedStudent.objects.filter(user=request.user, selected=True).first()
+
+            # Retrieve student's interests and status
+        interests = Job_application.objects.filter(user=request.user)
+        if not interests:
+            interests = []
+
+        return render(request, 'user_templates/status.html', {'selected_student': selected_student, 'interests': interests})
+    else:
+        return render(request, 'user_templates/status.html', {'selected_student': None, 'interests': []})
 
 
 
 
-# search company names
-
-# def job_search(request):
-#     if request.method == "GET":
-#         company_name = request.GET.get("company-name", "")
-#         location = request.GET.get("employment-type", "")
-
-#         # Filter jobs based on company name and location and extract company names
-#         matching_company_names = JobPosting.objects.filter(company_name__icontains=company_name, location__icontains=location).values_list('company_name', flat=True)
-
-#         # Create a comma-separated string of matching company names
-#         company_names_str = ", ".join(matching_company_names)
-
-#         # Return the matching company names as plain text
-#         return HttpResponse(company_names_str)

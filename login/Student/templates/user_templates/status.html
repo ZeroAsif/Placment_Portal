@@ -1,40 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Status Page</title>
-</head>
-<body>
-    <h1>Your Status</h1>
-    {% if request.user.is_authenticated %}
-        {% if request.user.selectedstudent_set.all %}
-            <p>You are selected for the following company:</p>
-            <ul>
-                {% for student in selected_students %}
-                <li>You are selected for {{ student.company_name.company_name }}</li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>You are not selected for any company.</p>
-        {% endif %}
+{% extends 'user_templates/base.html' %}
+
+{% block body %}
+
+<h1>Your Status</h1>
+{% if request.user.is_authenticated %}
+    {% if selected_student %}
+        <p>You are selected for the following company:</p>
+        <ul>
+            <li>You are selected for {{ selected_student.company_name.company_name }}</li>
+        </ul>
     {% else %}
-        <p>You are not logged in.</p>
+        <p>You are not selected for any company.</p>
     {% endif %}
 
 
 
-
-    <h1>Student Interest Status</h1>
-    <p>Number of Companies Interested: {{ numCompanies }}</p>
+    {% comment %} ********************* intrest show here  ******************************* {% endcomment %}
+    <h2>Your Interests</h2>
+    <p>Number of Companies Interested: {{ interests|length }}</p>
     <ul>
         {% for interest in interests %}
             <li>
-                <strong>Company Name:</strong> {{ interest.companyName }}<br>
-                <strong>Status:</strong> {{ interest.status }}
+                <strong>Company Name:</strong> {{ interest.job_posting.company_name }}<br>
+                
             </li>
         {% endfor %}
     </ul>
+{% else %}
+    <p>You are not logged in.</p>
+{% endif %}
 
-    
-</body>
-</html>
+{% endblock %}

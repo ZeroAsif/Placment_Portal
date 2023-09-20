@@ -589,22 +589,22 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Company name</label>
-                                <input type="text" name="company_name" class="form-control"/>
+                                <label class="form-label" for="">Company name *</label>
+                                <input type="text" name="company_name" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">location</label>
-                                <input type="text" name="location" class="form-control"/>
+                                <label class="form-label" for="">location *</label>
+                                <input type="text" name="location" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Working from</label>
-                                <input type="month" name="working_from" class="form-control"/>
+                                <label class="form-label" for="">Working from *</label>
+                                <input type="month" name="working_from" class="form-control"/ required>
                             </div>
                         </div>
                         <div class="col">
@@ -616,13 +616,13 @@
                     </div>
                     <div class="col">
                         <div class="form-outline">
-                            <label class="form-label" for="">Designation</label>
-                            <input type="text" name="designation" class="form-control"/>
+                            <label class="form-label" for="">Designation *</label>
+                            <input type="text" name="designation" class="form-control"/ required>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Role & Responsibility</label>
-                        <textarea class="form-control" name="rr" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Role & Responsibility *</label>
+                        <textarea class="form-control" name="rr" rows="3" required></textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -652,42 +652,42 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">School Name</label>
-                                <input type="text" name="institute_name_ssc" class="form-control"/>
+                                <label class="form-label" for="">School Name *</label>
+                                <input type="text" name="institute_name_ssc" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Board Name</label>
-                                <input type="text" name="board_name_scc" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Start Date</label>
-                                <input type="date" name="start_date_ssc" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">End Date</label>
-                                <input type="date" name="end_date_ssc" class="form-control"/>
+                                <label class="form-label" for="">Board Name *</label>
+                                <input type="text" name="board_name_scc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Percentage</label>
-                                <input type="text" name="percentage_ssc" class="form-control"/>
+                                <label class="form-label" for="">Start Date *</label>
+                                <input type="date" name="start_date_ssc" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date *</label>
+                                <input type="date" name="end_date_ssc" class="form-control" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage *</label>
+                                <input type="text" name="percentage_ssc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="description_ssc" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea class="form-control" name="description_ssc" rows="3" required></textarea>
                     </div>
 
                     <h1 class="modal-title fs-5 mb-2 my-3 d-flex justify-content-center align-items-center"
@@ -695,48 +695,49 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">College Name</label>
-                                <input type="text" name="institute_name_hsc" class="form-control"/>
+                                <label class="form-label" for="">College Name *</label>
+                        <textarea class="form-control" name="description_ssc" rows="3" ></textarea>
+                                <input type="text" name="institute_name_hsc" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Field Of Study</label>
-                                <input type="text" name="field_of_study_hsc" class="form-control"/>
+                                <label class="form-label" for="">Field Of Study *</label>
+                                <input type="text" name="field_of_study_hsc" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Board Name</label>
-                                <input type="text" name="board_name_hsc" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Start date</label>
-                                <input type="date" name="start_date_hsc" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">End date</label>
-                                <input type="date" name="end_date_hsc" class="form-control"/>
+                                <label class="form-label" for="">Board Name *</label>
+                                <input type="text" name="board_name_hsc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Percentage</label>
-                                <input type="text" name="percentage_hsc" class="form-control"/>
+                                <label class="form-label" for="">Start date *</label>
+                                <input type="date" name="start_date_hsc" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End date *</label>
+                                <input type="date" name="end_date_hsc" class="form-control" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage *</label>
+                                <input type="text" name="percentage_hsc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="description_hsc" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea class="form-control" name="description_hsc" rows="3" required></textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -766,42 +767,42 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">School Name</label>
-                                <input type="text" name="institute_name_ssc" class="form-control"/>
+                                <label class="form-label" for="">School Name *</label>
+                                <input type="text" name="institute_name_ssc" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Board Name</label>
-                                <input type="text" name="board_name_scc" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Start Date</label>
-                                <input type="date" name="start_date_ssc" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">End Date</label>
-                                <input type="date" name="end_date_ssc" class="form-control"/>
+                                <label class="form-label" for="">Board Name *</label>
+                                <input type="text" name="board_name_scc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Percentage</label>
-                                <input type="text" name="percentage_ssc" class="form-control"/>
+                                <label class="form-label" for="">Start Date *</label>
+                                <input type="date" name="start_date_ssc" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date *</label>
+                                <input type="date" name="end_date_ssc" class="form-control" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage *</label>
+                                <input type="text" name="percentage_ssc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="description_ssc" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea class="form-control" name="description_ssc" rows="3" required></textarea>
                     </div>
 
                     <h1 class="modal-title fs-5 mb-2 my-3 d-flex justify-content-center align-items-center"
@@ -809,48 +810,48 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">College Name</label>
-                                <input type="text" name="institute_name_hsc" class="form-control"/>
+                                <label class="form-label" for="">College Name *</label>
+                                <input type="text" name="institute_name_hsc" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Field Of Study</label>
-                                <input type="text" name="field_of_study_hsc" class="form-control"/>
+                                <label class="form-label" for="">Field Of Study *</label>
+                                <input type="text" name="field_of_study_hsc" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Board Name</label>
-                                <input type="text" name="board_name_hsc" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Start Date</label>
-                                <input type="date" name="start_date_hsc" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">End Date</label>
-                                <input type="date" name="end_date_hsc" class="form-control"/>
+                                <label class="form-label" for="">Board Name *</label>
+                                <input type="text" name="board_name_hsc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Percentage</label>
-                                <input type="text" name="percentage_hsc" class="form-control"/>
+                                <label class="form-label" for="">Start Date *</label>
+                                <input type="date" name="start_date_hsc" class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">End Date *</label>
+                                <input type="date" name="end_date_hsc" class="form-control" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">Percentage *</label>
+                                <input type="text" name="percentage_hsc" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="description_hsc" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea class="form-control" name="description_hsc" rows="3" required></textarea>
                     </div>
 
 
@@ -859,46 +860,46 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Institution Name</label>
-                                <input type="text" name="institute_name_degree" class="form-control"/>
+                                <label class="form-label" for="">Institution Name *</label>
+                                <input type="text" name="institute_name_degree" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Field Of Study</label>
-                                <input type="text" name="field_of_study_degree" class="form-control"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mb-4">
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">Start Date</label>
-                                <input type="date" name="start_date_degree" class="form-control"/>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="form-outline">
-                                <label class="form-label" for="">End Date</label>
-                                <input type="date" name="end_date_degree" class="form-control"/>
+                                <label class="form-label" for="">Field Of Study *</label>
+                                <input type="text" name="field_of_study_degree" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
-                            <label class="form-label" for="">Department</label>
-                            <input type="text" name="department_degree" class="form-control"/>
+                            <div class="form-outline">
+                                <label class="form-label" for="">Start Date *</label>
+                                <input type="date" name="start_date_degree" class="form-control" required/>
+                            </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">CGPA</label>
-                                <input type="text" name="percentage_degree" class="form-control"/>
+                                <label class="form-label" for="">End Date *</label>
+                                <input type="date" name="end_date_degree" class="form-control" required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col">
+                            <label class="form-label" for="">Department *</label>
+                            <input type="text" name="department_degree" class="form-control" required/>
+                        </div>
+                        <div class="col">
+                            <div class="form-outline">
+                                <label class="form-label" for="">CGPA *</label>
+                                <input type="text" name="percentage_degree" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                        <textarea class="form-control" name="description_degree" rows="3"></textarea>
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
+                        <textarea class="form-control" name="description_degree" rows="3" required ></textarea>
                     </div>
             </div>
             <div class="modal-footer">
@@ -1024,33 +1025,33 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Project Title</label>
-                                <input type="text" name="title" class="form-control"/>
+                                <label class="form-label" for="">Project Title *</label>
+                                <input type="text" name="title" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Guide name</label>
-                                <input type="text" name="guide_name" class="form-control"/>
+                                <label class="form-label" for="">Guide name *</label>
+                                <input type="text" name="guide_name" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Start date</label>
-                                <input type="date" name="std" class="form-control"/>
+                                <label class="form-label" for="">Start date *</label>
+                                <input type="date" name="std" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">End date</label>
-                                <input type="date" name="ede" class="form-control"/>
+                                <label class="form-label" for="">End date *</label>
+                                <input type="date" name="ede" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                        <label for="exampleFormControlTextarea1" class="form-label">Description *</label>
                         <textarea class="form-control" name="desc" rows="3"></textarea>
                     </div>
             </div>
@@ -1077,24 +1078,24 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Interested Hobbies</label>
-                                <input type="text" name="ij" class="form-control"/>
+                                <label class="form-label" for="">Interested Hobbies *</label>
+                                <input type="text" name="ij" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Language</label>
-                                <input type="text" name="lan" class="form-control"/>
+                                <label class="form-label" for="">Language *</label>
+                                <input type="text" name="lan" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Skill name</label>
-                                <input type="text" name="s_name" class="form-control"/>
+                                <label class="form-label" for="">Skill name *</label>
+                                <input type="text" name="s_name" class="form-control" required/>
                             </div>
                         </div>
                     </div>
@@ -1123,34 +1124,34 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Institute Name</label>
-                                <input type="text" name="institute_name" class="form-control"/>
+                                <label class="form-label" for="">Institute Name *</label>
+                                <input type="text" name="institute_name" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Semester</label>
-                                <input type="text" name="semester" class="form-control"/>
+                                <label class="form-label" for="">Semester *</label>
+                                <input type="text" name="semester" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">Year</label>
-                                <input type="month" name="year" class="form-control"/>
+                                <label class="form-label" for="">Year *</label>
+                                <input type="month" name="year" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">SGPA</label>
-                                <input type="txet" name="sgpa" class="form-control"/>
+                                <label class="form-label" for="">SGPA *</label>
+                                <input type="txet" name="sgpa" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">CGPA</label>
-                        <input type="text" name="cgpa" class="form-control"/>
+                        <label for="exampleFormControlTextarea1" class="form-label">CGPA *</label>
+                        <input type="text" name="cgpa" class="form-control" required/>
                     </div>
             </div>
             <div class="modal-footer">
@@ -1176,37 +1177,37 @@
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">title</label>
-                                <input type="text" name="title" class="form-control"/>
+                                <label class="form-label" for="">title *</label>
+                                <input type="text" name="title" class="form-control"  required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">supervisor</label>
-                                <input type="text" name="supervisor" class="form-control"/>
+                                <label class="form-label" for="">supervisor *</label>
+                                <input type="text" name="supervisor" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="row mb-4">
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">start date</label>
-                                <input type="month" name="start_date" class="form-control"/>
+                                <label class="form-label" for="">start date *</label>
+                                <input type="month" name="start_date" class="form-control" required/>
                             </div>
                         </div>
                         <div class="col">
                             <div class="form-outline">
-                                <label class="form-label" for="">end_date</label>
-                                <input type="month" name="end_date" class="form-control"/>
+                                <label class="form-label" for="">end_date *</label>
+                                <input type="month" name="end_date" class="form-control" required/>
                             </div>
                         </div>
                     </div>
                     <div class="col">
                         <label for="exampleFormControlTextarea1" class="form-label">technologies_used</label>
-                        <input type="text" name="tech" class="form-control"/>
+                        <input type="text" name="tech" class="form-control" required/>
                     </div>
                     <div class="col">
-                        <label for="exampleFormControlTextarea1" class="form-label">description</label>
+                        <label for="exampleFormControlTextarea1" class="form-label">description *</label>
                         <textarea class="form-control" name="description" rows="3" required></textarea>
                     </div>
             </div>
@@ -1253,6 +1254,14 @@
         </div>
         </form>
     </div>
+</div>
+<div class="container">
+<div class="align-items-center" >
+<form action="{% url 'download' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-primary">Generate PDF</button>
+</form>
+</div>
 </div>
 
 
