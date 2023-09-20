@@ -330,9 +330,11 @@ def ForgetPassword(request):
 
 
 
+
 def save_selected_students(request):
+    print('Save selected students')
     selected_student_id = request.POST.get('selected_students')
-    job_id = request.POST.get('job_students')
+    job_id = int(request.POST.get('job_students'))
 
     try:
         user_obj = User.objects.get(id=selected_student_id)
@@ -340,21 +342,24 @@ def save_selected_students(request):
 
         # Check if the student is already selected
         if SelectedStudent.objects.filter(user=user_obj, company_name=job_obj).exists():
-            messages.success(request,"Successfully selected student")
-            return render (request,'admin.html')
+            messages.success(request, "Student is already selected")
+        else:
+            # Create a new SelectedStudent object with the "You Are Selected" message
+            obj, created = SelectedStudent.objects.get_or_create(
+                user=user_obj,
+                company_name=job_obj,
+                selected=True,
+                defaults={"message": "You Are Selected"}
+            )
+            if created:
+                messages.success(request, "Student successfully selected")
 
-        # Create a new SelectedStudent object with the "You Are Selected" message
-        obj = SelectedStudent.objects.create(
-            user=user_obj,
-            company_name=job_obj,
-            selected=True,
-            message="You Are Selected"
-        )
-        obj.save()
-
-        return HttpResponse("You Are Selected")
+        return redirect('admins')  # Redirect to admin page after selection
     except User.DoesNotExist:
-        return HttpResponse("Already selected.")
+        return HttpResponse("User not found.")
     except JobPosting.DoesNotExist:
         return HttpResponse("Job posting not found.")
+
+
+# ****************************************************************
 

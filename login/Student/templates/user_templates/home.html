@@ -32,8 +32,10 @@
                                 <!--  Search Bar  -->
 
     <div class="col-md-10">
-        <input type="text" id="searchInput" class="form-control searchInput" placeholder="Search..."
-        data-accordion-id="{{ data.jdata.id }}">
+         <input type="text" id="searchInput" class="form-control searchInput" placeholder="Search..."
+           data-accordion-id="{{ data.jdata.id }}"> 
+        
+
     
 
         <!-- latest jobs-->
@@ -70,6 +72,7 @@
                                     <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                         <div class="d-flex mb-3">
                                             {% if user.is_authenticated %}
+                                                {% if not SelectedStudent %}
                                                 {% if check_personal and check_resume %}
                                                     {% if show_jobs.id in applied_jobs_ids %}
                                                         <span class="btn btn-success disabled"><i class="fa-solid fa-check"></i>Applied</span>
@@ -81,8 +84,9 @@
                                                 {% else %}
                                                     <a class="btn btn-outline-primary" href="{% url 'viewprofile' %}">Create Profile</a>
                                                 {% endif %}
-                                            {% else %}
-                                                <a class="btn btn-success" href="{% url 'login' %}">Log in to Apply</a>
+                                            {% comment %} {% else %}
+                                                <a class="btn btn-success" href="{% url 'login' %}">Log in to Apply</a> {% endcomment %}
+                                            {% endif %}
                                             {% endif %}
                                         </div>
                                         {% load humanize %}
@@ -102,10 +106,11 @@
 
 
 
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
+{% comment %} <script>
+ document.addEventListener('DOMContentLoaded', function () {
         const searchInput = document.getElementById('searchInput');
         const jobItems = document.querySelectorAll('.job-item');
 
@@ -116,6 +121,33 @@
                 const companyName = jobItem.querySelector('.text-truncate:nth-child(3)').textContent.toLowerCase();
                 if (companyName.includes(searchText)) {
                     jobItem.style.display = 'block';
+
+                } else {
+                    jobItem.style.display = 'none';
+                }
+            });
+        });
+    }); 
+
+</script> {% endcomment %}
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchInput = document.getElementById('searchInput');
+        const jobItems = document.querySelectorAll('.job-item');
+    
+        searchInput.addEventListener('input', function () {
+            const searchText = searchInput.value.trim().toLowerCase();
+    
+            jobItems.forEach(function (jobItem) {
+                const companyName = jobItem.querySelector('.text-truncate:nth-child(3)').textContent.toLowerCase();
+                const location = jobItem.querySelector('.text-truncate:nth-child(2)').textContent.toLowerCase();
+                const jobTitle = jobItem.querySelector('.view-description').textContent.toLowerCase();
+    
+                // Check if any of the criteria contain the search text
+                if (companyName.includes(searchText) || location.includes(searchText) || jobTitle.includes(searchText)) {
+                    jobItem.style.display = 'block';
                 } else {
                     jobItem.style.display = 'none';
                 }
@@ -124,7 +156,13 @@
     });
 </script>
 
-<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+
+
+
+
+{% comment %} ******************************************************************** {% endcomment %}
+
 <script>
 {% for flash in messages %}
     alertify.set('notifier','position', 'top-right');

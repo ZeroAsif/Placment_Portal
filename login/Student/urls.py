@@ -23,7 +23,7 @@ urlpatterns = [
     path("download-resume/<int:id>", Download_Resume, name='download-resume'),
     path("upload-image", Upload_Image, name='upload-image'),
     path('status/', status_page, name='status_page'),
-    path('job-search/', job_search, name='job_search'),
+    #  path('job-search/', job_search, name='job_search'),
 
     # this update path section
     path("update-personal-info/<str:id>", Update_Personal_Info, name='update-personal-info'),
