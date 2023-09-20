@@ -304,7 +304,7 @@ def generate_and_update_qr_code(personal_info):
         qr_image = qr_code.make_image(fill_color="black", back_color="white")
 
         # Load the LinkedIn logo image
-        logo_image = Image.open("static/images/linkind.png")
+        logo_image = Image.open("static/images/linkdin.jpg")
 
         # Resize the logo image to a smaller size
         logo_size = (qr_image.size[0] // 4, qr_image.size[1] // 4)
