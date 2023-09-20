@@ -65,8 +65,6 @@ def check_email(request):
 
 def SignupPage(request):
     try:
-        data =User.objects.all()
-        data.delete()
         if request.method == 'POST':
             uname = request.POST.get('username')
             email = request.POST.get('email', '')
