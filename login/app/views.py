@@ -238,38 +238,37 @@ def update_job_posting(request, job_id):
 @login_required(login_url='login')
 def ExportExcel(request, job_id):
     if request.method == 'POST':
-        print('inside post export')
-    if request.method == 'GET':
-        response = HttpResponse(content_type='application/ms-excel')
-        response['Content-Disposition'] = 'attachment; filename="data_export.xls"'
+        if request.method == 'GET':
+            response = HttpResponse(content_type='application/ms-excel')
+            response['Content-Disposition'] = 'attachment; filename="data_export.xls"'
 
-        wb = xlwt.Workbook(encoding='utf-8')
-        ws = wb.add_sheet('Data Export')
+            wb = xlwt.Workbook(encoding='utf-8')
+            ws = wb.add_sheet('Data Export')
 
-        # Write headers
-        headers = ['Sr.No', 'Name', 'Email', 'Phone Number', 'College ID']
-        for col_num, header_title in enumerate(headers):
-            ws.write(0, col_num, header_title)
+            # Write headers
+            headers = ['Sr.No', 'Name', 'Email', 'Phone Number', 'College ID']
+            for col_num, header_title in enumerate(headers):
+                ws.write(0, col_num, header_title)
 
-        student_data = Job_application.objects.filter(job_posting__id=job_id ,interested=True)
-        # Fetch data from your model or construct a list of dictionaries containing the data
-        data = []
-        for s_d in student_data:
-            data .append(             
-                {'Sr.No': s_d.user.personalinfo.student_id, 
-                 'Name': s_d.user.personalinfo.first_name, 
-                 'Email':  s_d.user.email, 
-                 'Phone Number':  s_d.user.personalinfo.phone_number, 
-                 'College ID':s_d.user.personalinfo.student_college_id},
-            )
+            student_data = Job_application.objects.filter(job_posting__id=job_id ,interested=True)
+            # Fetch data from your model or construct a list of dictionaries containing the data
+            data = []
+            for s_d in student_data:
+                data .append(             
+                    {'Sr.No': s_d.user.personalinfo.student_id, 
+                    'Name': s_d.user.personalinfo.first_name, 
+                    'Email':  s_d.user.email, 
+                    'Phone Number':  s_d.user.personalinfo.phone_number, 
+                    'College ID':s_d.user.personalinfo.student_college_id},
+                )
 
-        # Write data rows
-        for row_num, row_data in enumerate(data, start=1):
-            for col_num, value in enumerate(row_data.values()):
-                ws.write(row_num, col_num, value)
+            # Write data rows
+            for row_num, row_data in enumerate(data, start=1):
+                for col_num, value in enumerate(row_data.values()):
+                    ws.write(row_num, col_num, value)
 
-        wb.save(response)
-        return response
+            wb.save(response)
+            return response
 
 """ Change password are define here """
 

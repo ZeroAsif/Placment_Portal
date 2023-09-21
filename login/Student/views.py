@@ -51,7 +51,6 @@ def Check_Phone(request):
 # User Home_page
 @login_required(login_url='login')
 def HomePage(request):
-    print(request.user.id)
     try:
         try:
             check_personal = PersonalInfo.objects.get(student_id=request.user.id)
