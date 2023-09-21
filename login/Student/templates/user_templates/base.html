@@ -61,30 +61,12 @@
     </style>
 
 
-    <!--    User  Profile Card css -->
-    <!--    <style>-->
-    <!--        .card-img-top{-->
-    <!--            width: 60%;-->
-    <!--            border-radius: 50%;-->
-    <!--            margin: 0 auto;-->
-    <!--        }-->
-
-    <!--        .card{-->
-    <!--            padding: 1em .5em;-->
-    <!--            margin: 1em;-->
-    <!--            text-align: center;-->
-    <!--        }-->
-    <!--    </style>-->
 
 
     <style>
         .home_container{
             display:flex;
         }
-
-
-
-
 
     </style>
 
@@ -222,84 +204,6 @@
     <!-- Container fluid -->
 </nav>
 
-
-<!--&lt;!&ndash; Navbar &ndash;&gt;-->
-<!--<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-light gradient-custom">-->
-<!--    &lt;!&ndash; Container wrapper &ndash;&gt;-->
-<!--    <div class="container-fluid">-->
-<!--        &lt;!&ndash; Toggle button &ndash;&gt;-->
-<!--        <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"-->
-<!--                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"-->
-<!--                aria-label="Toggle navigation">-->
-<!--            <i class="fas fa-bars"></i>-->
-<!--        </button>-->
-
-<!--        &lt;!&ndash; Collapsible wrapper &ndash;&gt;-->
-<!--        <div class="collapse navbar-collapse" id="navbarSupportedContent">-->
-<!--            &lt;!&ndash; Navbar brand &ndash;&gt;-->
-<!--            <a class="navbar-brand navbar-nav mt-2 mt-lg-0" href="#">-->
-<!--                <h4 class="pt-1 mb-1">ICT</h4>-->
-<!--            </a>-->
-<!--            &lt;!&ndash; Left links &ndash;&gt;-->
-<!--            <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link active" href="{% url 'home' %}">Home</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Dashboard</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Team</a>-->
-<!--                </li>-->
-<!--                <li class="nav-item">-->
-<!--                    <a class="nav-link" href="#">Projects</a>-->
-<!--                </li>-->
-<!--            </ul>-->
-<!--            &lt;!&ndash; Left links &ndash;&gt;-->
-<!--        </div>-->
-<!--        &lt;!&ndash; Collapsible wrapper &ndash;&gt;-->
-
-<!--        &lt;!&ndash; Right elements &ndash;&gt;-->
-<!--        <div class="d-flex align-items-center">-->
-<!--            &lt;!&ndash; Avatar &ndash;&gt;-->
-<!--            <div class="dropdown">-->
-<!--                {% if profile_image %}-->
-<!--                {% for pp in profile_image %}-->
-<!--                <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"-->
-<!--                   id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                    <img src="media/{{pp.profile_picture}}" class="rounded-circle" height="25" width="25"-->
-<!--                         alt="PROFILE"/>-->
-<!--                </a>-->
-<!--                {% endfor %}-->
-<!--                {% else %}-->
-<!--                <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#"-->
-<!--                   id="navbarDropdownMenuAvatar" role="button" data-bs-toggle="dropdown" aria-expanded="false">-->
-<!--                    <img src="{% static 'images/ict.jpeg' %}" class="rounded-circle" height="25" width="25"-->
-<!--                         alt="PROFILE"/>-->
-<!--                </a>-->
-<!--                {% endif %}-->
-<!--                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">-->
-<!--                    <li>-->
-<!--                        <a class="dropdown-item" href="{% url 'viewprofile' %}"><i class="fa-solid fa-circle-user mx-2"-->
-<!--                                                                                   style="color: #005af5;"></i>Student-->
-<!--                            profile</a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a class="dropdown-item" href="{% url 'New-password' %}"><i class="fa-solid fa-circle-user mx-2"-->
-<!--                                                                                   style="color: #005af5;"></i>ChangePassword</a>-->
-<!--                    </li>-->
-<!--                    <li>-->
-<!--                        <a class="dropdown-item" href="{% url 'logout' %}"><i-->
-<!--                                class="fa-solid fa-right-from-bracket mx-2" style="color: #ff0000;"></i>Logout</a>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        &lt;!&ndash; Right elements &ndash;&gt;-->
-<!--    </div>-->
-<!--    &lt;!&ndash; Container wrapper &ndash;&gt;-->
-<!--</nav>-->
-<!--&lt;!&ndash; Navbar &ndash;&gt;-->
 
 
 {% block body %}{% endblock %}

@@ -415,13 +415,6 @@
 
 
         <div id="job-listing" class="section mt-3">
-            {% comment %} <div class="input-box">
-                <i class="uil uil-search"></i>
-                <input type="text" placeholder="Search here..." />
-                <button class="button" onclick="searchTable()">Search</button>
-            </div> {% endcomment %}
-
-            {% comment %} {% if job_posting %} {% endcomment %}
 
             {% for data in context %}
             <div class="accordion mt-3" id="accordionExample-{{ data.jdata.id }}">

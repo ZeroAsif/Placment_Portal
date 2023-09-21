@@ -1043,10 +1043,6 @@ def New_password(request):
     return render(request, 'user_templates/new_password.html')
 
 
-# selected student show here
-# def status_page(request):
-#     selected_students = SelectedStudent.objects.filter(selected=True)
-#     return render(request, 'user_templates/status.html', {'selected_students': selected_students})
 
 
 def status_page(request):
