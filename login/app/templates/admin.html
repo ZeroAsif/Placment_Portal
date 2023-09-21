@@ -146,14 +146,19 @@
     </style>
 
 
-
+<style>
+    .hide-radio-id {
+        display: none;
+    }
+</style>
 
 
 
 </head>
 
 <body>
-    {% if messages %}
+
+    {% comment %} {% if messages %}
     {% for message in messages %}
     <div class="container alert alert-danger alert-dismissible fade show" role="alert">
         <strong>{{message}}</strong>
@@ -161,6 +166,18 @@
     </div>
     {% endfor %}
     {% endif %}
+     {% endcomment %}
+    {% if messages %}
+    {% for message in messages %}
+     <div class="container d-flex justify-content-end mt-3">
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show small" role="alert">
+                    <strong>{{ message }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+         </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+    
 
 
     <div class="sidebar" id="sidebar">
@@ -484,23 +501,19 @@
                                                     {% endif %} title="View Resume" data-toggle="tooltip">
                                                     <i class="material-icons">visibility</i>
                                                 </a>
-                                                {% comment %} <form id="selected" method="post" action="{% url 'save_selected_students' %}">{% csrf_token %}
+
+                                                <form id="selected" method="post" action="{% url 'save_selected_students' %}" onsubmit="return selectStudent(this);">{% csrf_token %}
                                                     <div class="form-check form-switch">
                                                         <input class="form-check-input" name="job_students" type="hidden" value="{{ data.jdata.id }}">
-                                                        <input class="form-check-input" name="selected_students"  type="submit" id="customSwitch" value="{{ student.user.id }}" {% if student.selected %}checked{% endif %} onchange="selectStudent(this);">
+                                                        <input class="form-check-input" name="selected_students" type="submit"  id="customSwitch" value="{{ student.user.id }}" {% if student.selected %}checked{% endif %} onchange="selectStudent(this);">
                                                         <label  class="form-check-label"  for="customSwitch">Selected</label>
                                                         
                                                     </div>
-                                                </form> {% endcomment %}
-                                                
-                                                <form id="selected" method="post" action="{% url 'save_selected_students' %}">
-                                                    {% csrf_token %}
-                                                    <div class="form-check form-switch">
-                                                        <input class="form-check-input" name="job_students" type="hidden" value="{{ data.jdata.id }}">
-                                                        <input class="form-check-input" name="selected_students" type="checkbox" id="customSwitch" value="{{ student.user.id }}" {% if student.selected %}checked{% endif %} onchange="selectStudent(this);">
-                                                        <label class="form-check-label" for="customSwitch">Selected</label>
-                                                    </div>
                                                 </form>
+                                                
+
+                                                
+                                                
                                                 
                                             </td>
 
@@ -577,17 +590,8 @@
 
         {% comment %} **************POP UP MESSAGE**************{% endcomment %}
 
-        <script>
-            function selectStudent(checkbox) {
-                if (checkbox.checked) {
-                    // Show a pop-up message when the checkbox is checked
-                    if (window.confirm('Student successfully selected. Do you want to save your selection?')) {
-                        // If the user clicks OK in the confirmation dialog, submit the form
-                        document.getElementById("selected").submit();
-                    }
-                }
-            }
-        </script>
+
+
 
 </body>
 

@@ -35,7 +35,7 @@ def send_verification_email(user, request):
     verification_link = f'http://{current_site.domain}/verify_email/{uid}/{token}/'
     subject = 'Verify Your Email'
     message = message = f'Click the following link to verify your email:\n{verification_link}'
-    send_mail(subject, message, 'chemenggictplacement@gmail.com', [user.email])
+    send_mail(subject, message, 'shaikhsaud8286@gmail.com', [user.email])
 
 
 def verify_email(request, uid, token):
@@ -65,8 +65,6 @@ def check_email(request):
 
 def SignupPage(request):
     try:
-        data =User.objects.all()
-        data.delete()
         if request.method == 'POST':
             uname = request.POST.get('username')
             email = request.POST.get('email', '')
@@ -78,7 +76,7 @@ def SignupPage(request):
                 messages.error(request, 'Email prefix is required')
             elif len(pass1) < 8:
                 messages.error(request, 'Password must be at least 8 characters long')
-            elif pass1 != pass2:
+            elif pass1 != pass2:    
                 messages.error(request, 'Passwords do not match')
             elif User.objects.filter(Q(email=email) | Q(username=uname)).exists():
                messages.error(request, 'Username or Email address already exists')
@@ -257,11 +255,11 @@ def ExportExcel(request, job_id):
         # Fetch data from your model or construct a list of dictionaries containing the data
         data = []
         for s_d in student_data:
-            data .append(
-                {'Sr.No': s_d.user.personalinfo.student_id,
-                 'Name': s_d.user.personalinfo.first_name,
-                 'Email':  s_d.user.email,
-                 'Phone Number':  s_d.user.personalinfo.phone_number,
+            data .append(             
+                {'Sr.No': s_d.user.personalinfo.student_id, 
+                 'Name': s_d.user.personalinfo.first_name, 
+                 'Email':  s_d.user.email, 
+                 'Phone Number':  s_d.user.personalinfo.phone_number, 
                  'College ID':s_d.user.personalinfo.student_college_id},
             )
 
@@ -330,9 +328,7 @@ def ForgetPassword(request):
 
 
 
-
 def save_selected_students(request):
-    print('Save selected students')
     selected_student_id = request.POST.get('selected_students')
     job_id = int(request.POST.get('job_students'))
 
@@ -341,7 +337,7 @@ def save_selected_students(request):
         job_obj = JobPosting.objects.get(id=job_id)
 
         # Check if the student is already selected
-        if SelectedStudent.objects.filter(user=user_obj, company_name=job_obj).exists():
+        if SelectedStudent.objects.filter(user=user_obj, company_name=job_obj, selected=True).exists():
             messages.success(request, "Student is already selected")
         else:
             # Create a new SelectedStudent object with the "You Are Selected" message
@@ -353,12 +349,17 @@ def save_selected_students(request):
             )
             if created:
                 messages.success(request, "Student successfully selected")
+                # Set a JavaScript variable to indicate success
+                success = True
+            else:
+                success = False
 
         return redirect('admins')  # Redirect to admin page after selection
     except User.DoesNotExist:
         return HttpResponse("User not found.")
     except JobPosting.DoesNotExist:
         return HttpResponse("Job posting not found.")
+
 
 
 # ****************************************************************
