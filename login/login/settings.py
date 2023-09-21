@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-a(tlq(sh_h@ntp9*_i*fw5(4p-7j+s*$*0u)#pxb*k-s8!4e*d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'django_extensions',
     'app',
     'Student',
     'auth_app',
