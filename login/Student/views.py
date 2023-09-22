@@ -939,6 +939,7 @@ def Upload_Image(request):
 def html_to_pdf_view(request):
     # Generate HTML content using a template or manually
     u = request.user.id
+    user_email = request.user.email
     user_data = PersonalInfo.objects.get(student__id=u)
     user_profile = UserProfile.objects.filter(user__id=u)
     education_data = Education.objects.filter(user=u).order_by('-id').first()
@@ -977,6 +978,7 @@ def html_to_pdf_view(request):
 
     context = {
         'user_data': user_data,
+        'user_email': user_email,
         'user_profile': user_profile,
         'education_data': education_data,
         'education': education,
